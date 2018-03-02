@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.pc.chatting.SignUp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="214.5dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/SignName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/signbutton"
+            android:text="Sign Name"
+            android:textColor="#9e9494"/>
+
+        <Button
+            android:id="@+id/SignPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/signbutton"
+            android:text="Password"
+            android:textColor="#9e9494"/>
+
+        <Button
+            android:id="@+id/SignNickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/signbutton"
+            android:text="Nickname"
+            android:textColor="#9e9494"/>
+
+        <Button
+            android:id="@+id/SignNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/signbutton"
+            android:text="Phone number"
+            android:textColor="#9e9494"/>
+
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="24.5dp"
+            android:layout_marginRight="22.5dp"
+            android:layout_marginTop="31.5dp"
+            android:background="#8f91ec"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/SignComplete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="33.5dp"
+        android:background="@drawable/signcomplete"
+        android:text="Complete"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        />
+
+</LinearLayout>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Chatting</string>
+    <string name="sing_name">User Name</string>
 </resources>
