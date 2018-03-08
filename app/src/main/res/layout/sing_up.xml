@@ -7,11 +7,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.pc.chatting.SignUp">
-
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="214.5dp"/>
-
+        android:layout_height="214.5dp"
+        android:weightSum="5">
+    <ImageView
+        android:layout_width="193dp"
+        android:layout_height="59.5dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginLeft="31dp"
+        android:background="@mipmap/sing_logo"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

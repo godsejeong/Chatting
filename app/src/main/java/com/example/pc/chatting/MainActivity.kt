@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
+import android.util.Log
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,5 +18,6 @@ class MainActivity : AppCompatActivity() {
         val content = SpannableString("Sing Up")
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         singUp.text = content
+        Log.e("asdf","asdf")
     }
 }
