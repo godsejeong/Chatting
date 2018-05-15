@@ -25,6 +25,7 @@
         android:weightSum="6">
 
         <EditText
+            android:id="@+id/loginName"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="73.5dp"
@@ -36,6 +37,7 @@
             android:theme="@style/EditTextStyle"/>
 
         <EditText
+            android:id="@+id/loginPassword"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="73.5dp"
@@ -55,15 +57,15 @@
             android:layout_weight="1.3"
             android:background="@drawable/loginbutton"
             android:text="Sign In"
-            android:theme="@style/EditTextStyle"
             android:textColor="@android:color/white"
+            android:theme="@style/EditTextStyle"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:gravity="center"
             android:layout_weight="2.7"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -73,14 +75,14 @@
                 android:text="Don’t have an account yet?"/>
 
             <TextView
-            android:id="@+id/singUp"
-                android:layout_marginLeft="5dp"
+                android:id="@+id/singUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:gravity="center"
                 android:text="Sign up"
-                android:textStyle="bold"
-                android:textColor="#505050"/>
+                android:textColor="#505050"
+                android:textStyle="bold"/>
         </LinearLayout>
 
     </LinearLayout>
