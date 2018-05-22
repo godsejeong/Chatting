@@ -11,13 +11,20 @@ import retrofit2.Call
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Retrofit
 import android.os.AsyncTask.execute
+import com.example.pc.chatting.R.id.singUp
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.apache.http.params.HttpConnectionParams
+import android.os.AsyncTask.execute
+import okhttp3.Callback
+import retrofit2.Response
+
+
+
 
 class MainActivity : AppCompatActivity() {
     var retrofit : Retrofit? = null
-    val SERVER_URL =  "http://iwin247.info:3000"
-
+    val URL = "http://iwin247.info:3000"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,18 +37,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun init(){
-
-        val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor()
+//        var logging = HttpLoggingInterceptor()
+//        logging.level = HttpLoggingInterceptor.Level.BODY
+//
+//        var httpClient = OkHttpClient.Builder()
+//        httpClient.addInterceptor(logging)
 
         retrofit = Retrofit.Builder()
-                .baseUrl(SERVER_URL)
+                .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
+        val postService = retrofit!!.create(RetrofitServer::class.java)
+        val res : Call<Signin> = postService.SignIn("akat32","akat32!")
 
-                Log.e("init","in")
-       var service = retrofit!!.create(RetrofitServer::class.java)
+        res.enqueue(object : retrofit2.Callback<Signin> {
+            override fun onResponse(call: Call<Signin>?, response: Response<Signin>?) {
+                var signin  = response!!.body()!!.id
+                Log.e("siginin_id",signin)
+            }
 
-        //Log.e("repos",repos.toString())
+            override fun onFailure(call: Call<Signin>?, t: Throwable?) {
+                Log.e("retrofit Error", t!!.message)
+            }
+
+        })
+
     }
 }
