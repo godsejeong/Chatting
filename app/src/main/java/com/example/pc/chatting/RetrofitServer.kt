@@ -11,6 +11,7 @@ interface RetrofitServer {
     // iwin247.info:3000
     @FormUrlEncoded
     @POST("/signin")
-    fun SignIn(@Field("id") id : String,@Field("password") pw : String) : Call<Signin>
+    fun SignIn(@Field("id") id: Editable,
+               @Field("passwd") passwd: Editable) : Call<Signin>
 
 }

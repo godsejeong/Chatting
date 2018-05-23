@@ -10,12 +10,31 @@
     android:weightSum="10"
     tools:context="com.example.pc.chatting.MainActivity">
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:background="@mipmap/loginheader">
-    </ImageView>
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/topshape"
+            android:layout_marginBottom="11dp"
+            android:layout_gravity="right"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/welcome"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/downshape"
+            android:layout_marginTop="39dp"
+            android:layout_gravity="left"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,6 +68,7 @@
             android:theme="@style/EditTextStyle"/>
 
         <Button
+            android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="62.5dp"
