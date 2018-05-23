@@ -7,55 +7,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.pc.chatting.SignUp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="214.5dp"
         android:weightSum="5">
-    <ImageView
-        android:layout_width="193dp"
-        android:layout_height="59.5dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginLeft="31dp"
-        android:background="@mipmap/sing_logo"/>
+
+        <ImageView
+            android:layout_width="193dp"
+            android:layout_height="59.5dp"
+            android:layout_marginLeft="31dp"
+            android:layout_marginTop="57dp"
+            android:background="@mipmap/sing_logo"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/SignName"
+        <EditText
+            android:id="@+id/UserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/signbutton"
-            android:text="Sign Name"
+            android:gravity="center"
+            android:text="User Name"
             android:textColor="#9e9494"/>
 
-        <Button
-            android:id="@+id/SignPassword"
+        <EditText
+            android:id="@+id/UserPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/signbutton"
+            android:gravity="center"
             android:text="Password"
             android:textColor="#9e9494"/>
 
-        <Button
-            android:id="@+id/SignNickname"
+        <EditText
+            android:id="@+id/UserNickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/signbutton"
+            android:gravity="center"
             android:text="Nickname"
             android:textColor="#9e9494"/>
 
-        <Button
-            android:id="@+id/SignNumber"
+        <EditText
+            android:id="@+id/UserNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/signbutton"
+            android:gravity="center"
             android:text="Phone number"
             android:textColor="#9e9494"/>
 

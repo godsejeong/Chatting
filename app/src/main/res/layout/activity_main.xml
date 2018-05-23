@@ -65,6 +65,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="Password"
+            android:inputType="textPassword"
             android:theme="@style/EditTextStyle"/>
 
         <Button
@@ -95,7 +96,7 @@
                 android:text="Don’t have an account yet?"/>
 
             <TextView
-                android:id="@+id/singUp"
+                android:id="@+id/signUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
