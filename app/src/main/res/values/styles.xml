@@ -12,6 +12,6 @@
         <item name="colorControlActivated">#8f91ec</item>
     </style>
     <style name="SignUpStyle" parent="Base.V7.Widget.AppCompat.EditText">
-        <item name="colorControlActivated">#9e9494</item>
+        <item name="colorControlActivated">#1e1e1e</item>
     </style>
 </resources>

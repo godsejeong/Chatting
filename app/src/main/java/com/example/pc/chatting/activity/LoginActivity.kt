@@ -13,6 +13,7 @@ import com.example.pc.chatting.Signin
 import com.example.pc.chatting.util.RetrofitServer
 import com.example.pc.chatting.util.RetrofitUtil
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_resiger.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -28,8 +29,12 @@ class LoginActivity : AppCompatActivity() {
             Log.e("onclick","시발")
             id = loginName.text.toString()
             passwd = loginPassword.text.toString()
-            if (id.isEmpty() || passwd.isEmpty()) {
-                Toast.makeText(applicationContext, "아이디와 비밀번호를 모두 기입해 주세요", Toast.LENGTH_SHORT).show()
+            if (id.isEmpty()) {
+                Toast.makeText(applicationContext, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
+                loginName.requestFocus()
+            }else if(passwd.isEmpty()){
+                Toast.makeText(applicationContext, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+                loginPassword.requestFocus()
             } else {
                 Log.e("post", "post")
                 signIn()
