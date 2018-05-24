@@ -1,12 +1,14 @@
-package com.example.pc.chatting
+package com.example.pc.chatting.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.pc.chatting.R
 
-class SignUp : AppCompatActivity() {
 
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.sing_up)
+        setContentView(R.layout.activity_main)
+
     }
 }

@@ -6,5 +6,7 @@ package com.example.pc.chatting
  */
 
 data class Signin(val id : String,val passwd : String)
-data class User(val token : String)
+
+data class SignUp(val id : String,val passwd : String, val name : String, val email : String, val phone : Int)
+
 
