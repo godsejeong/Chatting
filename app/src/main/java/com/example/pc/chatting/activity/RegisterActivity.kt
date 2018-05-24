@@ -30,8 +30,21 @@ class RegisterActivity : AppCompatActivity() {
             email = userEmail.text.toString()
             phone = userPhone.text.toString()
 
-            if(id.isEmpty() || passwd.isEmpty() || name.isEmpty() || email.isEmpty() || phone.isEmpty()){
-                Toast.makeText(applicationContext,"모든 항목을 기입하십시오.", Toast.LENGTH_SHORT).show()
+            if(id.isEmpty()) {
+                Toast.makeText(applicationContext, "아이디를 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userId.requestFocus()
+            }else if(passwd.isEmpty()){
+                Toast.makeText(applicationContext, "비밀번호를 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userPassword.requestFocus()
+            }else if(name.isEmpty()){
+                Toast.makeText(applicationContext, "이름을 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userName.requestFocus()
+            }else if(email.isEmpty()){
+                Toast.makeText(applicationContext, "이메일을 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userEmail.requestFocus()
+            }else if(phone.isEmpty()){
+                Toast.makeText(applicationContext, "휴대폰번호를 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userPhone.requestFocus()
             }else{
                 signup()
             }
