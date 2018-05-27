@@ -13,6 +13,6 @@
     </style>
     <style name="SignUpStyle" parent="Base.V7.Widget.AppCompat.EditText">
         <item name="colorControlActivated">#f1f4fd</item>
-        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlNormal">#FFF0F3FC</item>
     </style>
 </resources>

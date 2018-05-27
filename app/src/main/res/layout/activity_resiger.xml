@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.pc.chatting.activity.RegisterActivity">
 
@@ -16,9 +16,9 @@
         <Button
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/back"/>
 
         <TextView
@@ -32,14 +32,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/circle"
             android:layout_centerInParent="true"
+            android:background="@drawable/circle"
             />
 
         <ImageView
@@ -58,97 +58,124 @@
         android:gravity="center"
         >
 
-        <ImageView
-            android:id="@+id/emailImg"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/email"/>
-
-        <EditText
-            android:id="@+id/userEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="50dp"
-            android:background="@drawable/signbutton"
-            android:gravity="center"
-            android:hint="user Email"
-            android:textColor="#1e1e1e"
-            android:textColorHint="#9e9494"
-            android:theme="@style/SignUpStyle"/>
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_above="@+id/userName"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/passwd"/>
-
-        <EditText
-            android:id="@+id/userPassword"
+        <LinearLayout
+            android:id="@+id/emailLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userEmail"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/signbutton"
-            android:gravity="center"
-            android:hint="Password"
-            android:textColor="#1e1e1e"
-            android:textColorHint="#9e9494"
-            android:theme="@style/SignUpStyle"/>
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/signbutton">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_above="@+id/userPhone"
-            android:background="@drawable/user"/>
+            <ImageView
+                android:id="@+id/emailImg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/email"/>
 
-        <EditText
-            android:id="@+id/userName"
+            <EditText
+                android:id="@+id/userEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:hint="User Email"
+                android:textColor="#1e1e1e"
+                android:textColorHint="#9e9494"
+                android:theme="@style/SignUpStyle"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/passwdLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userPassword"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="50dp"
+            android:layout_below="@+id/emailLayout"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
-            android:background="@drawable/signbutton"
-            android:gravity="center"
-            android:hint="User Name"
-            android:textColor="#1e1e1e"
-            android:textColorHint="#9e9494"
-            android:theme="@style/SignUpStyle"/>
+            android:background="@drawable/signbutton">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_above="@+id/lineview"
-            android:background="@drawable/phone"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_above="@+id/userName"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/passwd"/>
 
-        <EditText
-            android:id="@+id/userPhone"
+            <EditText
+                android:id="@+id/userPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:gravity="center"
+                android:hint="Password"
+                android:textColor="#1e1e1e"
+                android:textColorHint="#9e9494"
+                android:theme="@style/SignUpStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nameLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userName"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="50dp"
+            android:layout_below="@+id/passwdLayout"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
-            android:background="@drawable/signbutton"
-            android:gravity="center"
-            android:hint="Phone number"
-            android:textColor="#1e1e1e"
-            android:textColorHint="#9e9494"
-            android:theme="@style/SignUpStyle"/>
+            android:background="@drawable/signbutton">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/user"/>
+
+            <EditText
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:gravity="center"
+                android:hint="User Name"
+                android:textColor="#1e1e1e"
+                android:textColorHint="#9e9494"
+                android:theme="@style/SignUpStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/phoneLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/signbutton">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/phone"/>
+
+            <EditText
+                android:id="@+id/userPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:gravity="center"
+                android:hint="Phone number"
+                android:textColor="#1e1e1e"
+                android:textColorHint="#9e9494"
+                android:theme="@style/SignUpStyle"/>
+
+        </LinearLayout>
 
         <View
             android:id="@+id/lineview"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_below="@+id/userPhone"
+            android:layout_below="@id/phoneLayout"
             android:layout_marginLeft="24.5dp"
             android:layout_marginRight="22.5dp"
             android:layout_marginTop="27.5dp"
@@ -160,11 +187,11 @@
         android:id="@+id/completeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/lineview"
         android:layout_gravity="center"
         android:layout_marginTop="23.5dp"
         android:background="@drawable/signcomplete"
         android:text="Complete"
-        android:layout_below="@+id/lineview"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         />
