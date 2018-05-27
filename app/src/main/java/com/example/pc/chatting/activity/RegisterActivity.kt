@@ -19,6 +19,7 @@ class RegisterActivity : AppCompatActivity() {
     var name : String = ""
     var email : String = ""
     var phone : String = ""
+    var emptycheck : Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
@@ -46,19 +47,26 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             if(email.isEmpty()) {
+                emptycheck = true
                 userEmail.error = "이메일을 입력하십시오"
                 userEmail.requestFocus()
-            }else if(passwd.isEmpty()){
-
+            }
+            if(passwd.isEmpty()){
+                emptycheck = true
                 userPassword.error = "비밀번호를 입력하십시오"
                 userPassword.requestFocus()
-            }else if(name.isEmpty()){
+            }
+            if(name.isEmpty()){
+                emptycheck = true
                 userName.error = "이름을 입력하십시오"
                 userName.requestFocus()
-            }else if(phone.isEmpty()){
+            }
+            if(phone.isEmpty()){
+                emptycheck = true
                 userPhone.error = "전화번호를 입력하십시오"
                 userPhone.requestFocus()
-            }else{
+            }
+            if(!emptycheck){
                 signup()
             }
         }

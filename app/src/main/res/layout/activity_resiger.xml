@@ -31,6 +31,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/userProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
@@ -59,13 +60,14 @@
         android:gravity="center"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/emailLayout"
             android:layout_width="match_parent"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/signbutton">
 
             <ImageView
@@ -80,30 +82,29 @@
                 android:id="@+id/userEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:gravity="center"
                 android:hint="User Email"
-                android:layout_marginRight="10dp"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/passwdLayout"
             android:layout_width="match_parent"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/emailLayout"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/signbutton">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_above="@+id/userName"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/passwd"/>
@@ -114,21 +115,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:hint="Password"
                 android:gravity="center"
+                android:hint="Password"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/nameLayout"
             android:layout_width="match_parent"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/passwdLayout"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/signbutton">
 
@@ -144,22 +145,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:hint="User Name"
-                android:gravity="center"
                 android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:hint="User Name"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/phoneLayout"
             android:layout_width="match_parent"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nameLayout"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/signbutton">
 
@@ -175,14 +176,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:gravity="center"
                 android:hint="Phone number"
-                android:layout_marginRight="10dp"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:id="@+id/lineview"

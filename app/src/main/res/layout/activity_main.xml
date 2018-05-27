@@ -17,12 +17,12 @@
         android:gravity="center">
     </LinearLayout>
 
-    <android.support.v7.app.AlertController.RecycleListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8">
-    </android.support.v7.app.AlertController.RecycleListView>
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:orientation="horizontal"

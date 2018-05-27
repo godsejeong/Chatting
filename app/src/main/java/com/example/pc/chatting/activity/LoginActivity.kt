@@ -9,25 +9,28 @@ import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.pc.chatting.DB
 import com.example.pc.chatting.R
 import com.example.pc.chatting.Signin
+import com.example.pc.chatting.Token
 import com.example.pc.chatting.util.RetrofitServer
 import com.example.pc.chatting.util.RetrofitUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_resiger.*
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     var id : String = ""
     var passwd : String = ""
+    var token : Token? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         loginId.hint = "Email"
         loginPassword.hint = "Password"
-
         loginBtn.setOnClickListener {
             id = loginId.text.toString()
             passwd = loginPassword.text.toString()
@@ -56,6 +59,47 @@ class LoginActivity : AppCompatActivity() {
         //글꼴 변경
     }
 
+//    fun DB(){
+//        val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
+//        val res : Call<DB> = postService.DB()
+//        res.enqueue(object : retrofit2.Callback<DB> {
+//            override fun onResponse(call: Call<DB>?, response: Response<DB>?) {
+//                Log.d("Retrofit", response!!.code().toString())
+//
+//                if (response.isSuccessful) {
+//                    response.body()?.let {
+//                        Log.e("respones", response.message())
+//                    }
+//                }else{
+//                    Log.e("respones", response.message())
+//                }}
+//
+//            override fun onFailure(call: Call<DB>?, t: Throwable?) {
+//            Log.e("retrofit Error", t!!.message)
+//            }
+//        })
+//    }
+    fun tokenservice(){
+        val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
+        val res : Call<List<Token>> = postService.Token()
+        res.enqueue(object  : retrofit2.Callback<List<Token>> {
+            override fun onResponse(call: Call<List<Token>>?, response: Response<List<Token>>?) {
+                if(response!!.code() == 200){
+                    response.body()?.let {
+                        Log.e("token","토큰생성 완료")
+                    }
+                }else{
+
+                    Log.e("token","토큰생성 비완료")
+                }
+            }
+
+            override fun onFailure(call: Call<List<Token>>?, t: Throwable?) {
+                Log.e("retrofit Error", t!!.message)
+            }
+        })
+    }
+
     fun signIn(){
 
         var intent = Intent(this, MainActivity::class.java)
@@ -68,6 +112,7 @@ class LoginActivity : AppCompatActivity() {
 
                 if(response!!.code() == 200){
                     response.body()?.let {
+                            tokenservice()
                                 Toast.makeText(applicationContext,"로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                                 startActivity(intent)
                     }
