@@ -61,7 +61,9 @@
 
         <LinearLayout
             android:id="@+id/emailLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/signbutton">
@@ -76,10 +78,11 @@
 
             <EditText
                 android:id="@+id/userEmail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
+                android:gravity="center"
                 android:hint="User Email"
+                android:layout_marginRight="10dp"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>
@@ -88,7 +91,9 @@
 
         <LinearLayout
             android:id="@+id/passwdLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/emailLayout"
             android:layout_centerHorizontal="true"
@@ -105,11 +110,12 @@
 
             <EditText
                 android:id="@+id/userPassword"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="75dp"
-                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:hint="Password"
+                android:gravity="center"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>
@@ -117,7 +123,9 @@
 
         <LinearLayout
             android:id="@+id/nameLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/passwdLayout"
             android:layout_centerHorizontal="true"
@@ -133,11 +141,12 @@
 
             <EditText
                 android:id="@+id/userName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:gravity="center"
+                android:layout_marginLeft="10dp"
                 android:hint="User Name"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>
@@ -145,7 +154,9 @@
 
         <LinearLayout
             android:id="@+id/phoneLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nameLayout"
             android:layout_centerHorizontal="true"
@@ -161,11 +172,12 @@
 
             <EditText
                 android:id="@+id/userPhone"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:hint="Phone number"
+                android:layout_marginRight="10dp"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
                 android:theme="@style/SignUpStyle"/>

@@ -3,6 +3,7 @@ package com.example.pc.chatting.activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -24,16 +25,19 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        loginId.hint = "Email"
+        loginPassword.hint = "Password"
 
         loginBtn.setOnClickListener {
-            Log.e("onclick","시발")
-            id = loginName.text.toString()
+            id = loginId.text.toString()
             passwd = loginPassword.text.toString()
             if (id.isEmpty()) {
-                Toast.makeText(applicationContext, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
-                loginName.requestFocus()
+                loginId.error = "아이디를 입력해주세요"
+                //Toast.makeText(applicationContext, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
+                loginId.requestFocus()
             }else if(passwd.isEmpty()){
-                Toast.makeText(applicationContext, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+                loginPassword.error = "비밀번호를 입력해주세요"
+                //Toast.makeText(applicationContext, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
                 loginPassword.requestFocus()
             } else {
                 Log.e("post", "post")
@@ -56,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
 
         var intent = Intent(this, MainActivity::class.java)
         val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
-        val res : Call<Signin> = postService.SignIn(loginName.text,loginPassword.text)
+        val res : Call<Signin> = postService.SignIn(loginId.text,loginPassword.text)
         Log.e("asdf", res.request().toString())
         res.enqueue(object : retrofit2.Callback<Signin> {
             override fun onResponse(call: Call<Signin>?, response: Response<Signin>?) {
@@ -65,8 +69,11 @@ class LoginActivity : AppCompatActivity() {
                 if(response!!.code() == 200){
                     response.body()?.let {
                                 Toast.makeText(applicationContext,"로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                                startActivity(intent) }
+                                startActivity(intent)
+                    }
                 }else{
+                    loginId.error = "다시 입력해 주세요"
+                    loginPassword.error = "다시 입력해 주세요"
                     Toast.makeText(applicationContext,"아이디나 비밀번호를 다시 입력해 주세요", Toast.LENGTH_SHORT).show()
                 }
             }

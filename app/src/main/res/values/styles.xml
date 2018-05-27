@@ -8,11 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="loginStyle" parent="Base.V7.Widget.AppCompat.EditText">
+    <style name="loginStyle">
         <item name="colorControlActivated">#8f91ec</item>
         <item name="colorControlNormal">@color/colorPrimaryDark</item>
     </style>
-    <style name="SignUpStyle" parent="Base.V7.Widget.AppCompat.EditText">
+    <style name="SignUpStyle">
         <item name="colorControlActivated">#f1f4fd</item>
         <item name="colorControlNormal">#FFF0F3FC</item>
     </style>

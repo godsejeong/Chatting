@@ -22,6 +22,10 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
+        userPassword.hint = "Password"
+        userName.hint =  "User Name"
+        userEmail.hint = "User Email"
+        userPhone.hint = "Phone Number"
 
         backBtn.setOnClickListener{
             finish()
@@ -34,22 +38,25 @@ class RegisterActivity : AppCompatActivity() {
             phone = userPhone.text.toString()
 
             if(passwd.length < 8 && passwd.length < 12){
-                Toast.makeText(applicationContext, "비밀번호를 8자에서 12자 이내로 입력하시오", Toast.LENGTH_SHORT).show()
-            }else if(!(email.contains("@"))){
-                Toast.makeText(applicationContext, "이메일 형식에 맞게 입력하시오", Toast.LENGTH_SHORT).show()
+                userPassword.error = "8자에서 12자 이내로 입력하시오"
+            }
+
+            if(!(email.contains("@"))){
+                userEmail.error = "이메일 형식에 맞게 입력하세요"
             }
 
             if(email.isEmpty()) {
-                Toast.makeText(applicationContext, "아이디를 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userEmail.error = "이메일을 입력하십시오"
                 userEmail.requestFocus()
             }else if(passwd.isEmpty()){
-                Toast.makeText(applicationContext, "비밀번호를 입력하십시오.", Toast.LENGTH_SHORT).show()
+
+                userPassword.error = "비밀번호를 입력하십시오"
                 userPassword.requestFocus()
             }else if(name.isEmpty()){
-                Toast.makeText(applicationContext, "이름을 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userName.error = "이름을 입력하십시오"
                 userName.requestFocus()
             }else if(phone.isEmpty()){
-                Toast.makeText(applicationContext, "휴대폰번호를 입력하십시오.", Toast.LENGTH_SHORT).show()
+                userPhone.error = "전화번호를 입력하십시오"
                 userPhone.requestFocus()
             }else{
                 signup()
