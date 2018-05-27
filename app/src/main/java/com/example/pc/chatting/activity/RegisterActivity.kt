@@ -23,6 +23,10 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
 
+        backBtn.setOnClickListener{
+            finish()
+        }
+
         completeBtn.setOnClickListener {
             passwd = userPassword.text.toString()
             name = userName.text.toString()
