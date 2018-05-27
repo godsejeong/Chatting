@@ -24,24 +24,26 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_resiger)
 
         completeBtn.setOnClickListener {
-            id = userId.text.toString()
             passwd = userPassword.text.toString()
             name = userName.text.toString()
             email = userEmail.text.toString()
             phone = userPhone.text.toString()
 
-            if(id.isEmpty()) {
+            if(passwd.length < 8 && passwd.length < 12){
+                Toast.makeText(applicationContext, "비밀번호를 8자에서 12자 이내로 입력하시오", Toast.LENGTH_SHORT).show()
+            }else if(!(email.contains("@"))){
+                Toast.makeText(applicationContext, "이메일 형식에 맞게 입력하시오", Toast.LENGTH_SHORT).show()
+            }
+
+            if(email.isEmpty()) {
                 Toast.makeText(applicationContext, "아이디를 입력하십시오.", Toast.LENGTH_SHORT).show()
-                userId.requestFocus()
+                userEmail.requestFocus()
             }else if(passwd.isEmpty()){
                 Toast.makeText(applicationContext, "비밀번호를 입력하십시오.", Toast.LENGTH_SHORT).show()
                 userPassword.requestFocus()
             }else if(name.isEmpty()){
                 Toast.makeText(applicationContext, "이름을 입력하십시오.", Toast.LENGTH_SHORT).show()
                 userName.requestFocus()
-            }else if(email.isEmpty()){
-                Toast.makeText(applicationContext, "이메일을 입력하십시오.", Toast.LENGTH_SHORT).show()
-                userEmail.requestFocus()
             }else if(phone.isEmpty()){
                 Toast.makeText(applicationContext, "휴대폰번호를 입력하십시오.", Toast.LENGTH_SHORT).show()
                 userPhone.requestFocus()
@@ -54,7 +56,6 @@ class RegisterActivity : AppCompatActivity() {
     fun signup(){
         val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
         val res : Call<SignUp> = postService.SignUp(
-                userId.text,
                 userPassword.text,
                 userName.text,
                 userEmail.text,

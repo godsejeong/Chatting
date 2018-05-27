@@ -1,5 +1,7 @@
 package com.example.pc.chatting.util
 
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -9,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitUtil {
 
     val URL = "http://iwin247.info:3000"
-
+    
     var retrofit = Retrofit.Builder()
             .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create())

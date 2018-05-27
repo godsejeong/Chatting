@@ -19,9 +19,8 @@ interface RetrofitServer {
 
     @FormUrlEncoded
     @POST("/signup")
-    fun SignUp(@Field("id") id: Editable,
+    fun SignUp(@Field("email") email: Editable,
                @Field("passwd") passwd: Editable,
                @Field("name") name: Editable,
-               @Field("email") email: Editable,
                @Field("phone") phone: Editable) : Call<SignUp>
 }
