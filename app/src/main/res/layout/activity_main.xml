@@ -10,13 +10,15 @@
     android:orientation="vertical"
     >
 
-    <LinearLayout
+    <Button
+        android:id="@+id/logout"
+        android:text="로그아웃"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center">
-    </LinearLayout>
-
+    </Button>
+<!--이거 디자인 나오면 리니어로 바꿔줘야 됨-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerMain"
         android:layout_width="match_parent"
@@ -35,7 +37,8 @@
             android:id="@+id/ChatFrindMain"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            />
         <ImageView
             android:id="@+id/chatMassgeMain"
             android:layout_width="0dp"

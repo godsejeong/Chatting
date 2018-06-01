@@ -27,8 +27,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        autologin()
-
         loginId.hint = "Email"
         loginPassword.hint = "Password"
 
@@ -94,32 +92,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
         }
-            fun autologin() {
-                var intent = Intent(this, MainActivity::class.java)
-               var pres : SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
-                var token : String = pres.getString("token","")
-                Log.e("자동로그인",token)
-                val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
-                val res: Call<Token> = postService.Token(token)
-                res.enqueue(object : Callback<Token> {
-
-
-                    override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
-                        if (response!!.code() == 200) {
-                            startActivity(intent)
-                            Toast.makeText(applicationContext, "자동 로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Log.e("auto", "자동로그인 비완료")
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Token>?, t: Throwable?) {
-                        Log.e("retrofit Error", t!!.message)
-                        Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
-                    }
-
-                })
-            }
-        }
+}
 
 

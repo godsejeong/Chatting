@@ -14,6 +14,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
 import kotlin.math.log
+import android.provider.MediaStore
+import android.content.Intent
+
+
 
 class RegisterActivity : AppCompatActivity() {
     var id : String = ""
@@ -32,6 +36,10 @@ class RegisterActivity : AppCompatActivity() {
         userName.hint =  "User Name"
         userEmail.hint = "User Email"
         userPhone.hint = "Phone Number"
+
+        userProfile.setOnClickListener{
+            startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE),1)
+        }
 
         backBtn.setOnClickListener{
             finish()
@@ -98,6 +106,9 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    }
+
     fun signup(){
         val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
         val res : Call<SignUp> = postService.SignUp(
@@ -110,7 +121,6 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call<SignUp>?, response: Response<SignUp>?) {
                 Log.e("register",response!!.code().toString())
                 if(response!!.code() == 200){
-
                     Toast.makeText(applicationContext,"회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     finish()
                 }else if(response!!.code() == 409){
