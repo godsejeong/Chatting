@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_resiger.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 class RegisterActivity : AppCompatActivity() {
     var id : String = ""
@@ -39,11 +40,15 @@ class RegisterActivity : AppCompatActivity() {
             phone = userPhone.text.toString()
 
             if(passwd.length < 8 && passwd.length < 12){
+                emptycheck = true
                 userPassword.error = "8자에서 12자 이내로 입력하시오"
+                userPassword.requestFocus()
             }
 
             if(!(email.contains("@"))){
+                emptycheck = true
                 userEmail.error = "이메일 형식에 맞게 입력하세요"
+                userEmail.requestFocus()
             }
 
             if(email.isEmpty()) {
@@ -84,6 +89,7 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call<SignUp>?, response: Response<SignUp>?) {
                 Log.e("register",response!!.code().toString())
                 if(response!!.code() == 200){
+
                     Toast.makeText(applicationContext,"회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     finish()
                 }else if(response!!.code() == 409){

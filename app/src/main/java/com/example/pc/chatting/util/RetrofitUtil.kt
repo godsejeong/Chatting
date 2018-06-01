@@ -1,7 +1,6 @@
 package com.example.pc.chatting.util
 
 import com.example.pc.chatting.Signin
-import com.example.pc.chatting.Token
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -16,7 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitUtil {
 
     val URL = "http://iwin247.info:3000"
-    
+
+
+
     var retrofit = Retrofit.Builder()
             .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -24,12 +25,5 @@ object RetrofitUtil {
 
     val MULTIPART_FORM_DATA = "multipart/form-data"
 
-//    fun autologin(){
-//        val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
-//        val res : Call<List<Token>> = postService.Token()
-//        res.enqueue(object  : retrofit2.Callback<Token> {
-//
-//        }
-//
-//    }
+
 }
