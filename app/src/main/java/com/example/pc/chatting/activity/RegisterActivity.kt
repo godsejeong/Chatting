@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_resiger.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.regex.Pattern
 import kotlin.math.log
 
 class RegisterActivity : AppCompatActivity() {
@@ -24,6 +25,9 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
+
+
+
         userPassword.hint = "Password"
         userName.hint =  "User Name"
         userEmail.hint = "User Email"
@@ -39,16 +43,33 @@ class RegisterActivity : AppCompatActivity() {
             email = userEmail.text.toString()
             phone = userPhone.text.toString()
 
-            if(passwd.length < 8 && passwd.length < 12){
+            var emails = ("^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$")//email 정규식
+            var passwords = ("^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$")//passwd 정규식
+            var phones = ("^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$") //phone number 정규식
+            val emailm = Pattern.matches(emails,userEmail.text)
+            val phonem = Pattern.matches(phones,userPhone.text)
+            val passwordm = Pattern.matches(passwords,userPassword.text)
+            //정규식 변환
+
+            Log.e("i", emailm.toString())
+
+            if(!passwordm){
                 emptycheck = true
-                userPassword.error = "8자에서 12자 이내로 입력하시오"
+                userPassword.error = "8자 이상 입력하고 숫자와 영문자를 적어도 하나 이상 입력해주세요"
                 userPassword.requestFocus()
             }
 
-            if(!(email.contains("@"))){
+            if(!emailm){
                 emptycheck = true
                 userEmail.error = "이메일 형식에 맞게 입력하세요"
                 userEmail.requestFocus()
+            }
+
+            if(!phonem){
+                emptycheck = true
+                userPhone.error = "휴대폰번호 형식에 맞게 입력하세요" +
+                        "ex)01000000000"
+                userPhone.requestFocus()
             }
 
             if(email.isEmpty()) {

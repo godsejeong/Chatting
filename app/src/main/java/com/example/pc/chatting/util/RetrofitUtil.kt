@@ -16,8 +16,6 @@ object RetrofitUtil {
 
     val URL = "http://iwin247.info:3000"
 
-
-
     var retrofit = Retrofit.Builder()
             .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create())
