@@ -33,7 +33,9 @@
         </activity>
         <activity android:name=".activity.LoginActivity">
         </activity>
+        <activity android:name=".activity.CameraPopupActivity" android:theme="@android:style/Theme.Dialog">
 
+        </activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.mydomain.fileprovider"

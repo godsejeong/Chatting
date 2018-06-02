@@ -25,13 +25,9 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import android.R.attr.path
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.opengl.Visibility
 import android.view.View
-import retrofit2.http.Url
-import java.net.URI
+import com.example.pc.chatting.R.id.*
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -41,10 +37,10 @@ class RegisterActivity : AppCompatActivity() {
      var email : String = ""
      var phone : String = ""
      var emptycheck : Boolean = false
+     var path : String? = null
+     var uri: Uri? = null
+
     private var fileUri: Uri? = null
-    var path : String? = null
-    var pictureFilePath : String? = null
-    private val imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
@@ -57,11 +53,8 @@ class RegisterActivity : AppCompatActivity() {
         userPhone.hint = "Phone Number"
 
         userProfile.setOnClickListener{
-            var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            Log.e("cameraUri", fileUri.toString())
-            fileUri = getOutputMediaFileUri();
-            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileUri)
-            startActivityForResult(cameraIntent, 100)
+            var intent = Intent(this,CameraPopupActivity::class.java)
+            startActivityForResult(intent,1)
         }
 
         backBtn.setOnClickListener{
@@ -129,7 +122,37 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    fun camera(){
+        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        Log.e("cameraUri", fileUri.toString())
+        fileUri = getOutputMediaFileUri()
+        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileUri)
+        startActivityForResult(cameraIntent, 100)
+    }
+    fun gallery(){
+        val galleryIntent = Intent(Intent.ACTION_PICK)
+        galleryIntent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE;
+        galleryIntent.data = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        startActivityForResult(galleryIntent,200)
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == 0){
+            Profile.setImageResource(R.drawable.emptyimg)
+            cameraImg.visibility = View.GONE
+        }
+        if(resultCode == 1) {
+            camera()
+        }
+        if(resultCode == 2){
+            gallery()
+        }
+
+        if(requestCode == 200 && resultCode === Activity.RESULT_OK){
+            uri = data!!.data
+            Profile.setImageURI(uri)
+            cameraImg.visibility = View.GONE
+        }
+
         if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
             //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
             Log.e("camera", "camera")
@@ -165,7 +188,6 @@ class RegisterActivity : AppCompatActivity() {
 
                 Profile.setImageBitmap(resultBitmap)
                 cameraImg.visibility = View.GONE
-                //		selPhoto = Images.Media.getBitmap( getContentResolver(), imgUri );
 
             } catch (e: IOException) {
 
@@ -175,6 +197,8 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
+
     fun signup(){
         val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
         val res : Call<SignUp> = postService.SignUp(
@@ -207,12 +231,12 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun getOutputMediaFileUri(): Uri? {
         // check for external storage
-                // Create an image file nameFile imagePath = new File(Context.getFilesDir(), "images");
-                var imagePath : String = "IMG_" +SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                var image = File.createTempFile(imagePath, ".jpg", storageDir)
-                path = image.absolutePath
-                return FileProvider.getUriForFile(this, "com.mydomain.fileprovider", image)
+        // Create an image file nameFile imagePath = new File(Context.getFilesDir(), "images");
+        var imagePath : String = "IMG_" + SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        var image = File.createTempFile(imagePath, ".jpg", storageDir)
+        path = image.absolutePath
+        return FileProvider.getUriForFile(this, "com.mydomain.fileprovider", image)
     }
 
     private fun rotateImage(source: Bitmap, angle: Float): Bitmap {

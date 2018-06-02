@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="#fdfdfe"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <Button
+        android:id="@+id/popupCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="사진 촬영"
+        android:gravity="left|center"
+        android:textSize="15dp"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#fdfdfe"/>
+
+    <Button
+        android:id="@+id/popupGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="엘범에서 사진 선택"
+        android:gravity="left|center"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:background="#fdfdfe"/>
+
+
+    <Button
+        android:id="@+id/popupBasic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="기본 이미지로 설정"
+        android:gravity="left|center"
+        android:textSize="15dp"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#fdfdfe"/>
+
+</LinearLayout>
