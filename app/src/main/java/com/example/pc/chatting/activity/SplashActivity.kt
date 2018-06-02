@@ -15,7 +15,6 @@ import com.example.pc.chatting.util.RetrofitUtil
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.orm.SugarRecord.last
 
 
 
@@ -24,7 +23,6 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        Log.e("자동로그인", autologin().toString())
         val handler = Handler()
         handler.postDelayed({
 
@@ -41,9 +39,11 @@ class SplashActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
                     if (response!!.code() == 200) {
-                        Toast.makeText(applicationContext, "자동로그인이 되었습니다.", Toast.LENGTH_SHORT).show()
-                        startActivity(successintent)
-                        Log.e("auto", "자동로그인 완료")
+                        response.body()?.let {
+                            Toast.makeText(applicationContext, "자동로그인이 되었습니다.", Toast.LENGTH_SHORT).show()
+                            startActivity(successintent)
+                            Log.e("auto", "자동로그인 완료")
+                        }
                     } else {
                         startActivity(failintent)
                         Log.e("auto", "자동로그인 비완료")
@@ -57,36 +57,5 @@ class SplashActivity : AppCompatActivity() {
             })
         }, 3000)
 
-    }
-
-    private fun autologin() : Boolean{
-        var bl = false
-        var intent = Intent(this, MainActivity::class.java)
-        var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
-        var token: String = pres.getString("token", "")
-        Log.e("자동로그인", token)
-        val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
-        val res: Call<Token> = postService.Token(token)
-        res.enqueue(object : Callback<Token> {
-
-            override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
-                if (response!!.code() == 200) {
-                    bl = true
-                    Log.e("auto", "자동로그인 완료")
-                } else {
-                    bl = false
-                    Log.e("auto", "자동로그인 비완료")
-                }
-            }
-
-            override fun onFailure(call: Call<Token>?, t: Throwable?) {
-                bl = false
-                Log.e("retrofit Error", t!!.message)
-                Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
-            }
-
-        })
-        Log.e("returnbl", bl.toString())
-        return bl
     }
 }

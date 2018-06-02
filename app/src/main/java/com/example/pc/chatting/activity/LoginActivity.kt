@@ -27,6 +27,16 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val content = SpannableString("Sing Up")
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        signUpBtn.text = content
+        //글꼴 변경
+
+        signUpBtn.setOnClickListener {
+            var intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
         loginId.hint = "Email"
         loginPassword.hint = "Password"
 
@@ -35,27 +45,14 @@ class LoginActivity : AppCompatActivity() {
                 passwd = loginPassword.text.toString()
                 if (id.isEmpty()) {
                     loginId.error = "아이디를 입력해주세요"
-                    //Toast.makeText(applicationContext, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
                     loginId.requestFocus()
                 } else if (passwd.isEmpty()) {
                     loginPassword.error = "비밀번호를 입력해주세요"
-                    //Toast.makeText(applicationContext, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
                     loginPassword.requestFocus()
                 } else {
                     Log.e("post", "post")
                     signIn()
                 }
-
-
-            signUpBtn.setOnClickListener {
-                var intent = Intent(this, RegisterActivity::class.java)
-                startActivity(intent)
-            }
-
-            val content = SpannableString("Sing Up")
-            content.setSpan(UnderlineSpan(), 0, content.length, 0)
-            signUpBtn.text = content
-            //글꼴 변경
         }
     }
         fun signIn() {
@@ -75,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
                             var editer : SharedPreferences.Editor = pres.edit()
                             editer.putString("token",token)
                             editer.commit()
+                            //토큰값 저장
                             Log.e("토큰",token)
                             Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                             startActivity(intent)

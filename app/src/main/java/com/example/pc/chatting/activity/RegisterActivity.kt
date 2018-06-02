@@ -3,6 +3,7 @@ package com.example.pc.chatting.activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.media.ExifInterface
 import android.widget.Toast
 import com.example.pc.chatting.R
 import com.example.pc.chatting.SignUp
@@ -13,19 +14,37 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
-import kotlin.math.log
 import android.provider.MediaStore
 import android.content.Intent
-
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.net.Uri
+import android.os.Environment
+import android.support.v4.content.FileProvider
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import android.R.attr.path
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.opengl.Visibility
+import android.view.View
+import retrofit2.http.Url
+import java.net.URI
 
 
 class RegisterActivity : AppCompatActivity() {
-    var id : String = ""
-    var passwd : String = ""
-    var name : String = ""
-    var email : String = ""
-    var phone : String = ""
-    var emptycheck : Boolean = false
+     var id : String = ""
+     var passwd : String = ""
+     var name : String = ""
+     var email : String = ""
+     var phone : String = ""
+     var emptycheck : Boolean = false
+    private var fileUri: Uri? = null
+    var path : String? = null
+    var pictureFilePath : String? = null
+    private val imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
@@ -38,7 +57,11 @@ class RegisterActivity : AppCompatActivity() {
         userPhone.hint = "Phone Number"
 
         userProfile.setOnClickListener{
-            startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE),1)
+            var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            Log.e("cameraUri", fileUri.toString())
+            fileUri = getOutputMediaFileUri();
+            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileUri)
+            startActivityForResult(cameraIntent, 100)
         }
 
         backBtn.setOnClickListener{
@@ -107,8 +130,51 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    }
+        if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
+            //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
+            Log.e("camera", "camera")
 
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,fileUri)
+                var resultBitmap: Bitmap? = null
+                var ei = ExifInterface(path)
+                val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_UNDEFINED)
+
+
+                when (orientation) {
+
+                    ExifInterface.ORIENTATION_ROTATE_90 -> {
+                        resultBitmap = rotateImage(bitmap, 90F)
+                    }
+
+                    ExifInterface.ORIENTATION_ROTATE_180 -> {
+                        resultBitmap = rotateImage(bitmap, 180F)
+                    }
+                    ExifInterface.ORIENTATION_ROTATE_270 -> {
+                        resultBitmap = rotateImage(bitmap, 270F)
+                    }
+
+                    ExifInterface.ORIENTATION_NORMAL -> {
+                    }
+
+                    else -> {
+                        resultBitmap = bitmap
+                    }
+                }
+
+                Profile.setImageBitmap(resultBitmap)
+                cameraImg.visibility = View.GONE
+                //		selPhoto = Images.Media.getBitmap( getContentResolver(), imgUri );
+
+            } catch (e: IOException) {
+
+                // TODO Auto-generated catch block
+
+                e.printStackTrace()
+            }
+        }
+    }
     fun signup(){
         val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
         val res : Call<SignUp> = postService.SignUp(
@@ -121,8 +187,10 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call<SignUp>?, response: Response<SignUp>?) {
                 Log.e("register",response!!.code().toString())
                 if(response!!.code() == 200){
-                    Toast.makeText(applicationContext,"회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    finish()
+                    response.body()?.let {
+                        Toast.makeText(applicationContext, "회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
                 }else if(response!!.code() == 409){
                     Toast.makeText(applicationContext,"이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show()
                 }else if(response!!.code() == 400){
@@ -135,5 +203,22 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun getOutputMediaFileUri(): Uri? {
+        // check for external storage
+                // Create an image file nameFile imagePath = new File(Context.getFilesDir(), "images");
+                var imagePath : String = "IMG_" +SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                var image = File.createTempFile(imagePath, ".jpg", storageDir)
+                path = image.absolutePath
+                return FileProvider.getUriForFile(this, "com.mydomain.fileprovider", image)
+    }
+
+    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height,
+                matrix, true)
     }
 }
