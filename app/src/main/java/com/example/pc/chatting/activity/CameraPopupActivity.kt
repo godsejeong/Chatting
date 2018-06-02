@@ -23,6 +23,10 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import android.view.Window.FEATURE_NO_TITLE
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+
+
 
 
 
@@ -36,9 +40,15 @@ class CameraPopupActivity : Activity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_camera_popup)
 
+
+        val popupView = layoutInflater.inflate(R.layout.activity_camera_popup, null)
+        var mPopupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        mPopupWindow.isFocusable = true
+
         popupBasic.setOnClickListener {
             var intent = Intent(this,RegisterActivity::class.java)
             setResult(0,intent)
+            intent.putExtra("img","basic")
             finish()
             Toast.makeText(applicationContext, "empty", Toast.LENGTH_SHORT).show()
         }

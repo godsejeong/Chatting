@@ -137,8 +137,11 @@ class RegisterActivity : AppCompatActivity() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == 0){
-            Profile.setImageResource(R.drawable.emptyimg)
-            cameraImg.visibility = View.GONE
+            var img = data?.getStringExtra("img")
+            if(img == "basic") {
+                Profile.setImageResource(R.drawable.emptyimg)
+                cameraImg.visibility = View.GONE
+            }
         }
         if(resultCode == 1) {
             camera()
