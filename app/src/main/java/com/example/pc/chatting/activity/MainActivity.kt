@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         logout.setOnClickListener{
             var pres : SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
             val editor = pres.edit()

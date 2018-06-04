@@ -1,7 +1,6 @@
 package com.example.pc.chatting.util
 
 import android.text.Editable
-import com.example.pc.chatting.DB
 import com.example.pc.chatting.SignUp
 import com.example.pc.chatting.Signin
 import com.example.pc.chatting.data.Token
@@ -24,6 +23,8 @@ interface RetrofitServer {
                @Field("passwd") passwd: Editable,
                @Field("name") name: Editable,
                @Field("phone") phone: Editable) : Call<SignUp>
+
+
 
     @GET("/auto/{token}")
     fun Token(@Path("token") token : String) : Call<Token>

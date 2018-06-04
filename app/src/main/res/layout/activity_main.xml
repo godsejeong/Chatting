@@ -18,7 +18,9 @@
         android:layout_weight="1"
         android:gravity="center">
     </Button>
+
 <!--이거 디자인 나오면 리니어로 바꿔줘야 됨-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerMain"
         android:layout_width="match_parent"

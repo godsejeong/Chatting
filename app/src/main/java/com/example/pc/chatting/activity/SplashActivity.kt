@@ -33,8 +33,7 @@ class SplashActivity : AppCompatActivity() {
 
             var successintent = Intent(this, MainActivity::class.java)
             var failintent = Intent(this,LoginActivity::class.java)
-            val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
-            val res: Call<Token> = postService.Token(token)
+            val res: Call<Token> = RetrofitUtil.postService.Token(token)
             res.enqueue(object : Callback<Token> {
 
                 override fun onResponse(call: Call<Token>?, response: Response<Token>?) {

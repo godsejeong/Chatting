@@ -21,7 +21,7 @@ object RetrofitUtil {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    val MULTIPART_FORM_DATA = "multipart/form-data"
+    val postService = retrofit!!.create(RetrofitServer::class.java)
 
 
 }

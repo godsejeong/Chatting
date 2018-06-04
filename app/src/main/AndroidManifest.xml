@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.example.pc.chatting">
-
+    <!--retrofit-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <!--camera-->
@@ -25,7 +25,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RegisterActivity">
-
         </activity>
         <activity android:name=".activity.ChatList">
         </activity>
@@ -34,8 +33,8 @@
         <activity android:name=".activity.LoginActivity">
         </activity>
         <activity android:name=".activity.CameraPopupActivity" android:theme="@android:style/Theme.Dialog">
-
         </activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.mydomain.fileprovider"

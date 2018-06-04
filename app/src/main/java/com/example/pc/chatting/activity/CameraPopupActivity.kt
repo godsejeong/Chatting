@@ -40,10 +40,10 @@ class CameraPopupActivity : Activity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_camera_popup)
 
-
         val popupView = layoutInflater.inflate(R.layout.activity_camera_popup, null)
         var mPopupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         mPopupWindow.isFocusable = true
+        //팝업 외의 화면 선택시 나가짐
 
         popupBasic.setOnClickListener {
             var intent = Intent(this,RegisterActivity::class.java)

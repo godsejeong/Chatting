@@ -27,7 +27,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.app.Activity
 import android.view.View
-import com.example.pc.chatting.R.id.*
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -44,8 +43,6 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
-
-
 
         userPassword.hint = "Password"
         userName.hint =  "User Name"
@@ -129,12 +126,14 @@ class RegisterActivity : AppCompatActivity() {
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileUri)
         startActivityForResult(cameraIntent, 100)
     }
+
     fun gallery(){
         val galleryIntent = Intent(Intent.ACTION_PICK)
-        galleryIntent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE;
+        galleryIntent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE
         galleryIntent.data = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         startActivityForResult(galleryIntent,200)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == 0){
             var img = data?.getStringExtra("img")
@@ -152,6 +151,7 @@ class RegisterActivity : AppCompatActivity() {
 
         if(requestCode == 200 && resultCode === Activity.RESULT_OK){
             uri = data!!.data
+
             Profile.setImageURI(uri)
             cameraImg.visibility = View.GONE
         }
@@ -169,25 +169,23 @@ class RegisterActivity : AppCompatActivity() {
 
 
                 when (orientation) {
-
                     ExifInterface.ORIENTATION_ROTATE_90 -> {
                         resultBitmap = rotateImage(bitmap, 90F)
                     }
-
                     ExifInterface.ORIENTATION_ROTATE_180 -> {
                         resultBitmap = rotateImage(bitmap, 180F)
                     }
                     ExifInterface.ORIENTATION_ROTATE_270 -> {
                         resultBitmap = rotateImage(bitmap, 270F)
                     }
-
                     ExifInterface.ORIENTATION_NORMAL -> {
                     }
-
                     else -> {
                         resultBitmap = bitmap
                     }
                 }
+
+
 
                 Profile.setImageBitmap(resultBitmap)
                 cameraImg.visibility = View.GONE
@@ -201,10 +199,9 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-
     fun signup(){
-        val postService = RetrofitUtil.retrofit!!.create(RetrofitServer::class.java)
-        val res : Call<SignUp> = postService.SignUp(
+
+        val res : Call<SignUp> = RetrofitUtil.postService.SignUp(
                 userPassword.text,
                 userName.text,
                 userEmail.text,
@@ -228,7 +225,6 @@ class RegisterActivity : AppCompatActivity() {
             override fun onFailure(call: Call<SignUp>?, t: Throwable?) {
                 Log.e("retrofit Error", t!!.message)
             }
-
         })
     }
 
