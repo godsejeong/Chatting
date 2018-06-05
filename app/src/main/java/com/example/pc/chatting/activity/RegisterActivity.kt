@@ -127,14 +127,10 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
     }
 
     fun gallery(){
-        if(EasyPermissions.hasPermissions(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            val galleryIntent = Intent(Intent.ACTION_PICK)
-            galleryIntent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE
-            galleryIntent.data = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+           val galleryIntent = Intent(Intent.ACTION_PICK)
+            galleryIntent.type = "image/*"
             startActivityForResult(galleryIntent,200)
-        } else {
-            EasyPermissions.requestPermissions(this,"파일을 읽으려면 권한이 필요합니다",300, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -154,11 +150,15 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
         }
 
         if(requestCode == 200 && resultCode === Activity.RESULT_OK){
-                uri = data!!.data
+            uri = data!!.data
+            if(EasyPermissions.hasPermissions(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Profile.setImageURI(uri)
                 cameraImg.visibility = View.GONE
                 file = File(getRealPathFromURIPath(uri!!,this))
                 Log.e("uripath", file.toString())
+            } else {
+                EasyPermissions.requestPermissions(this,"파일을 읽으려면 권한이 필요합니다",300, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
         }
 
         if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
@@ -213,16 +213,17 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
     fun signup(){
 
         val res : Call<SignUp> = RetrofitUtil.postService.SignUp(
-                userPassword.text,
-                userName.text,
-                userEmail.text,
-                userPhone.text,
+                email,
+                passwd,
+                name,
+                Integer.parseInt(userPhone.text.toString()),
                 RetrofitUtil.createMultipartBody(file!!,"img")
         )
 
         res.enqueue(object : Callback<SignUp>{
             override fun onResponse(call: Call<SignUp>?, response: Response<SignUp>?) {
                 Log.e("register",response!!.code().toString())
+                Log.e("register_Message",response!!.message())
                 if(response!!.code() == 200){
                     response.body()?.let {
                         Toast.makeText(applicationContext, "회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()

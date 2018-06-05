@@ -63,7 +63,6 @@ class LoginActivity : AppCompatActivity() {
             res.enqueue(object : retrofit2.Callback<Signin> {
                 override fun onResponse(call: Call<Signin>?, response: Response<Signin>?) {
                     Log.d("Retrofit", response!!.code().toString())
-
                     if (response!!.code() == 200) {
                         response.body()?.let {
                             var pres : SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)

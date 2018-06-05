@@ -23,10 +23,10 @@ interface RetrofitServer {
 
     @Multipart
     @POST("/signup")
-    fun SignUp(@Part("email") email: Editable,
-               @Part("passwd") passwd: Editable,
-               @Part("name") name: Editable,
-               @Part("phone") phone: Editable,
+    fun SignUp(@Part("email") email : String,
+               @Part("passwd") passwd : String,
+               @Part("name") name: String,
+               @Part("phone") phone: Int,
                @Part img : MultipartBody.Part) : Call<SignUp>
 
 
