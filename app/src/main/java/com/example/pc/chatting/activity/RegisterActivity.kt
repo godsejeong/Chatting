@@ -3,11 +3,9 @@ package com.example.pc.chatting.activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.media.ExifInterface
 import android.widget.Toast
 import com.example.pc.chatting.R
 import com.example.pc.chatting.SignUp
-import com.example.pc.chatting.util.RetrofitServer
 import com.example.pc.chatting.util.RetrofitUtil
 import kotlinx.android.synthetic.main.activity_resiger.*
 import retrofit2.Call
@@ -22,15 +20,14 @@ import android.net.Uri
 import android.os.Environment
 import android.support.v4.content.FileProvider
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.Activity
 import android.view.View
+import pub.devrel.easypermissions.EasyPermissions
 
-
-class RegisterActivity : AppCompatActivity() {
-     var id : String = ""
+class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks{
+    var id : String = ""
      var passwd : String = ""
      var name : String = ""
      var email : String = ""
@@ -38,6 +35,7 @@ class RegisterActivity : AppCompatActivity() {
      var emptycheck : Boolean = false
      var path : String? = null
      var uri: Uri? = null
+     var file : File? = null
 
     private var fileUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,6 +117,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+
     fun camera(){
         var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         Log.e("cameraUri", fileUri.toString())
@@ -128,16 +127,21 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun gallery(){
-        val galleryIntent = Intent(Intent.ACTION_PICK)
-        galleryIntent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE
-        galleryIntent.data = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        startActivityForResult(galleryIntent,200)
+        if(EasyPermissions.hasPermissions(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            val galleryIntent = Intent(Intent.ACTION_PICK)
+            galleryIntent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE
+            galleryIntent.data = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            startActivityForResult(galleryIntent,200)
+        } else {
+            EasyPermissions.requestPermissions(this,"파일을 읽으려면 권한이 필요합니다",300, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == 0){
             var img = data?.getStringExtra("img")
             if(img == "basic") {
+                //setdata
                 Profile.setImageResource(R.drawable.emptyimg)
                 cameraImg.visibility = View.GONE
             }
@@ -150,52 +154,59 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         if(requestCode == 200 && resultCode === Activity.RESULT_OK){
-            uri = data!!.data
-
-            Profile.setImageURI(uri)
-            cameraImg.visibility = View.GONE
+                uri = data!!.data
+                Profile.setImageURI(uri)
+                cameraImg.visibility = View.GONE
+                file = File(getRealPathFromURIPath(uri!!,this))
+                Log.e("uripath", file.toString())
         }
 
         if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
             //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
             Log.e("camera", "camera")
+            var resultBitmap : Bitmap? = null
 
-            try {
-                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,fileUri)
-                var resultBitmap: Bitmap? = null
-                var ei = ExifInterface(path)
-                val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                        ExifInterface.ORIENTATION_UNDEFINED)
+            uri = fileUri
+            Profile.setImageURI(uri)
+            cameraImg.visibility = View.GONE
+            var filepath = getRealPathFromURIPath(uri!!,this)
+            file = File(filepath)
+            Log.e("filepath", filepath)
 
-
-                when (orientation) {
-                    ExifInterface.ORIENTATION_ROTATE_90 -> {
-                        resultBitmap = rotateImage(bitmap, 90F)
-                    }
-                    ExifInterface.ORIENTATION_ROTATE_180 -> {
-                        resultBitmap = rotateImage(bitmap, 180F)
-                    }
-                    ExifInterface.ORIENTATION_ROTATE_270 -> {
-                        resultBitmap = rotateImage(bitmap, 270F)
-                    }
-                    ExifInterface.ORIENTATION_NORMAL -> {
-                    }
-                    else -> {
-                        resultBitmap = bitmap
-                    }
-                }
-
-
-
-                Profile.setImageBitmap(resultBitmap)
-                cameraImg.visibility = View.GONE
-
-            } catch (e: IOException) {
-
-                // TODO Auto-generated catch block
-
-                e.printStackTrace()
-            }
+//            try {
+//                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,fileUri)
+//                var ei = ExifInterface(path)
+//                val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+//                        ExifInterface.ORIENTATION_UNDEFINED)
+//
+//                when (orientation) {
+//                    ExifInterface.ORIENTATION_ROTATE_90 -> {
+//                        resultBitmap = rotateImage(bitmap, 90F)
+//                    }
+//                    ExifInterface.ORIENTATION_ROTATE_180 -> {
+//                        resultBitmap = rotateImage(bitmap, 180F)
+//                    }
+//                    ExifInterface.ORIENTATION_ROTATE_270 -> {
+//                        resultBitmap = rotateImage(bitmap, 270F)
+//                    }
+//                    ExifInterface.ORIENTATION_NORMAL -> {
+//                    }
+//                    else -> {
+//                        resultBitmap = bitmap
+//                    }
+//                }
+//
+//
+//
+//                Profile.setImageBitmap(resultBitmap)
+//                cameraImg.visibility = View.GONE
+//
+//            } catch (e: IOException) {
+//
+//                // TODO Auto-generated catch block
+//
+//                e.printStackTrace()
+//            }
         }
     }
 
@@ -205,8 +216,10 @@ class RegisterActivity : AppCompatActivity() {
                 userPassword.text,
                 userName.text,
                 userEmail.text,
-                userPhone.text
+                userPhone.text,
+                RetrofitUtil.createMultipartBody(file!!,"img")
         )
+
         res.enqueue(object : Callback<SignUp>{
             override fun onResponse(call: Call<SignUp>?, response: Response<SignUp>?) {
                 Log.e("register",response!!.code().toString())
@@ -226,6 +239,27 @@ class RegisterActivity : AppCompatActivity() {
                 Log.e("retrofit Error", t!!.message)
             }
         })
+    }
+
+    private fun getRealPathFromURIPath(contentURI: Uri, activity: Activity): String {
+        val cursor = activity.contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            return contentURI.path
+        } else {
+            cursor.moveToFirst()
+            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            return cursor.getString(idx)
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {
+        if(uri != null) {
+            gallery()
+        }
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) {
+        Toast.makeText(this,"권한이 없습니다",Toast.LENGTH_SHORT).show()
     }
 
     private fun getOutputMediaFileUri(): Uri? {

@@ -1,6 +1,9 @@
 package com.example.pc.chatting
 
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import okhttp3.MultipartBody
 
 
 /**
@@ -9,7 +12,7 @@ import android.graphics.Bitmap
 
 data class Signin(val email : String,val passwd : String,var token : String)
 
-data class SignUp(val email : String,val passwd : String, val name : String, val phone : Int)
+data class SignUp(val email : String,val passwd : String, val name : String, val phone : Int, val img : MultipartBody.Part)
 
 
 

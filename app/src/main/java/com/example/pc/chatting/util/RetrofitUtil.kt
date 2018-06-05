@@ -1,13 +1,12 @@
 package com.example.pc.chatting.util
 
-import com.example.pc.chatting.Signin
-import kotlinx.android.synthetic.main.activity_login.*
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
+import okhttp3.MediaType
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+
 
 /**
  * Created by pc on 2018-05-18.
@@ -22,6 +21,11 @@ object RetrofitUtil {
             .build()
 
     val postService = retrofit!!.create(RetrofitServer::class.java)
+
+    fun createMultipartBody(file: File, name: String): MultipartBody.Part {
+        val mFile = RequestBody.create(MediaType.parse("images/*"), file)
+        return MultipartBody.Part.createFormData(name, file.name, mFile)
+    }
 
 
 }

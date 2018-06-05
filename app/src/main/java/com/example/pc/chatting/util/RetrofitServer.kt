@@ -4,8 +4,12 @@ import android.text.Editable
 import com.example.pc.chatting.SignUp
 import com.example.pc.chatting.Signin
 import com.example.pc.chatting.data.Token
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
+import retrofit2.http.Multipart
+
+
 
 /**
  * Created by pc on 2018-02-13.
@@ -17,13 +21,13 @@ interface RetrofitServer {
     fun SignIn(@Field("email") email: Editable,
                @Field("passwd") passwd: Editable) : Call<Signin>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("/signup")
-    fun SignUp(@Field("email") email: Editable,
-               @Field("passwd") passwd: Editable,
-               @Field("name") name: Editable,
-               @Field("phone") phone: Editable) : Call<SignUp>
-
+    fun SignUp(@Part("email") email: Editable,
+               @Part("passwd") passwd: Editable,
+               @Part("name") name: Editable,
+               @Part("phone") phone: Editable,
+               @Part img : MultipartBody.Part) : Call<SignUp>
 
 
     @GET("/auto/{token}")
