@@ -50,7 +50,6 @@ class CameraPopupActivity : Activity() {
             setResult(0,intent)
             intent.putExtra("img","basic")
             finish()
-            Toast.makeText(applicationContext, "empty", Toast.LENGTH_SHORT).show()
         }
         popupCamera.setOnClickListener { camera() }
         popupGallery.setOnClickListener { gallery() }

@@ -15,33 +15,31 @@ import java.util.regex.Pattern
 import android.provider.MediaStore
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
-import android.support.v4.content.FileProvider
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 import android.app.Activity
+import android.content.Context
+import android.support.v4.content.FileProvider
 import android.view.View
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
-class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks{
+open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks{
     var id : String = ""
      var passwd : String = ""
      var name : String = ""
      var email : String = ""
      var phone : String = ""
      var emptycheck : Boolean = false
-     var path : String? = null
      var uri: Uri? = null
      var file : File? = null
-
-    private var fileUri: Uri? = null
+     var path : String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
-
         userPassword.hint = "Password"
         userName.hint =  "User Name"
         userEmail.hint = "User Email"
@@ -117,20 +115,26 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
         }
     }
 
-
     fun camera(){
-        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        Log.e("cameraUri", fileUri.toString())
-        fileUri = getOutputMediaFileUri()
-        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileUri)
-        startActivityForResult(cameraIntent, 100)
+        if(EasyPermissions.hasPermissions(this, android.Manifest.permission.CAMERA)) {
+            var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            Log.e("cameraUri", uri.toString())
+            uri = getOutputMediaFileUri()
+            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri)
+            startActivityForResult(cameraIntent, 100)
+        } else {
+            EasyPermissions.requestPermissions(this,"사진을 찍으려면 권한이 필요합니다",200, android.Manifest.permission.CAMERA)
+        }
     }
 
     fun gallery(){
-           val galleryIntent = Intent(Intent.ACTION_PICK)
+        if(EasyPermissions.hasPermissions(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
             startActivityForResult(galleryIntent,200)
-
+        } else {
+            EasyPermissions.requestPermissions(this,"파일을 읽으려면 권한이 필요합니다",300, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -141,6 +145,10 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
                 Profile.setImageResource(R.drawable.emptyimg)
                 cameraImg.visibility = View.GONE
             }
+
+            uri = Uri.parse(R.drawable.emptyimg.toString())
+            file = File(getRealPathFromURIPath(uri!!,this))
+            Log.e("uripath", file.toString())
         }
         if(resultCode == 1) {
             camera()
@@ -148,70 +156,48 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
         if(resultCode == 2){
             gallery()
         }
-
         if(requestCode == 200 && resultCode === Activity.RESULT_OK){
             uri = data!!.data
-            if(EasyPermissions.hasPermissions(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                ImageCrop()
                 Profile.setImageURI(uri)
                 cameraImg.visibility = View.GONE
-                file = File(getRealPathFromURIPath(uri!!,this))
-                Log.e("uripath", file.toString())
-            } else {
-                EasyPermissions.requestPermissions(this,"파일을 읽으려면 권한이 필요합니다",300, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-            }
+//                file = File(getRealPathFromURIPath(uri!!,this))
+//                Log.e("uripath", file.toString())
         }
 
         if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
             //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
             Log.e("camera", "camera")
             var resultBitmap : Bitmap? = null
-
-            uri = fileUri
+                ImageCrop()
+//                Profile.setImageURI(uri)
+//                cameraImg.visibility = View.GONE
+//                //var filepath = getRealPathFromURI(this,uri!!)
+//                //val myUri = Uri.parse(fileUri.toString())
+//                Log.e("filepath", uri.toString())
+                }
+        if(requestCode == 10 && resultCode === Activity.RESULT_OK){
+            uri = data!!.data
             Profile.setImageURI(uri)
             cameraImg.visibility = View.GONE
-            var filepath = getRealPathFromURIPath(uri!!,this)
-            file = File(filepath)
-            Log.e("filepath", filepath)
-
-//            try {
-//                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,fileUri)
-//                var ei = ExifInterface(path)
-//                val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-//                        ExifInterface.ORIENTATION_UNDEFINED)
-//
-//                when (orientation) {
-//                    ExifInterface.ORIENTATION_ROTATE_90 -> {
-//                        resultBitmap = rotateImage(bitmap, 90F)
-//                    }
-//                    ExifInterface.ORIENTATION_ROTATE_180 -> {
-//                        resultBitmap = rotateImage(bitmap, 180F)
-//                    }
-//                    ExifInterface.ORIENTATION_ROTATE_270 -> {
-//                        resultBitmap = rotateImage(bitmap, 270F)
-//                    }
-//                    ExifInterface.ORIENTATION_NORMAL -> {
-//                    }
-//                    else -> {
-//                        resultBitmap = bitmap
-//                    }
-//                }
-//
-//
-//
-//                Profile.setImageBitmap(resultBitmap)
-//                cameraImg.visibility = View.GONE
-//
-//            } catch (e: IOException) {
-//
-//                // TODO Auto-generated catch block
-//
-//                e.printStackTrace()
-//            }
+            Log.e("uripath", uri.toString())
         }
     }
 
-    fun signup(){
 
+    fun ImageCrop(){
+        var CropIntent = Intent("com.android.camera.action.CROP")
+        CropIntent.setDataAndType(uri,"image/*")
+        CropIntent.putExtra("output",uri)
+        CropIntent.putExtra("outputX", 640) // crop한 이미지의 x축 크기 (integer)
+        CropIntent.putExtra("outputY", 480) // crop한 이미지의 y축 크기 (integer)
+        CropIntent.putExtra("aspectX", 4) // crop 박스의 x축 비율 (integer)
+        CropIntent.putExtra("aspectY", 3) // crop 박스의 y축 비율 (integer)
+        CropIntent.putExtra("scale", true)
+        CropIntent.putExtra("return-data", true)
+        startActivityForResult(CropIntent,10)
+    }
+    fun signup(){
         val res : Call<SignUp> = RetrofitUtil.postService.SignUp(
                 email,
                 passwd,
@@ -242,20 +228,40 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
         })
     }
 
+    private fun getOutputMediaFileUri() : Uri? {
+                if (isExternalStorageAvailable()) {
+                    val imagePath = "IMG_" + SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                    val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera")
+                    val image = File.createTempFile(imagePath, ".jpg", storageDir)
+                    path = image.absolutePath
+                    return FileProvider.getUriForFile(this, "com.example.pc.chatting.fileprovider", image)
+                }
+
+            return null
+        }
+
+
+    private fun isExternalStorageAvailable() : Boolean{
+            val state = Environment.getExternalStorageState()
+            return Environment.MEDIA_MOUNTED == state
+        }
     private fun getRealPathFromURIPath(contentURI: Uri, activity: Activity): String {
         val cursor = activity.contentResolver.query(contentURI, null, null, null, null)
-        if (cursor == null) {
-            return contentURI.path
+        return if (cursor == null) {
+            contentURI.path
         } else {
             cursor.moveToFirst()
             val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            return cursor.getString(idx)
+            cursor.getString(idx)
         }
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {
-        if(uri != null) {
+        if(requestCode == 300) {
             gallery()
+        }
+        if(requestCode == 200){
+            camera()
         }
     }
 
@@ -263,20 +269,5 @@ class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallback
         Toast.makeText(this,"권한이 없습니다",Toast.LENGTH_SHORT).show()
     }
 
-    private fun getOutputMediaFileUri(): Uri? {
-        // check for external storage
-        // Create an image file nameFile imagePath = new File(Context.getFilesDir(), "images");
-        var imagePath : String = "IMG_" + SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        var image = File.createTempFile(imagePath, ".jpg", storageDir)
-        path = image.absolutePath
-        return FileProvider.getUriForFile(this, "com.mydomain.fileprovider", image)
-    }
 
-    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(angle)
-        return Bitmap.createBitmap(source, 0, 0, source.width, source.height,
-                matrix, true)
-    }
 }

@@ -121,7 +121,8 @@
                 android:hint="Password"
                 android:textColor="#1e1e1e"
                 android:textColorHint="#9e9494"
-                android:theme="@style/SignUpStyle"/>
+                android:theme="@style/SignUpStyle"
+                android:layout_alignParentLeft="true"/>
         </RelativeLayout>
 
         <RelativeLayout
