@@ -19,11 +19,23 @@ import android.net.Uri
 import android.os.Environment
 import java.io.File
 import android.app.Activity
+import android.app.PendingIntent.getActivity
+import android.content.ComponentName
 import android.content.Context
+import android.content.pm.ResolveInfo
+import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
+import android.media.ThumbnailUtils
 import android.support.v4.content.FileProvider
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.orm.SugarContext.init
+import com.soundcloud.android.crop.Crop
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
 import java.io.IOException
+import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,6 +49,8 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
      var uri: Uri? = null
      var file : File? = null
      var path : String? = null
+     var fileuri : Uri? = null
+     var image : File? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
@@ -117,10 +131,12 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     fun camera(){
         if(EasyPermissions.hasPermissions(this, android.Manifest.permission.CAMERA)) {
-            var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            Log.e("cameraUri", uri.toString())
-            uri = getOutputMediaFileUri()
-            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri)
+            var cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+            Log.e("cameraUri", fileuri.toString())
+            file = getOutputMediaFileUri()
+            fileuri = FileProvider.getUriForFile(this,"com.example.pc.provider",file)
+            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,fileuri)
+            //cameraIntent.putExtra("return-data",true)
             startActivityForResult(cameraIntent, 100)
         } else {
             EasyPermissions.requestPermissions(this,"사진을 찍으려면 권한이 필요합니다",200, android.Manifest.permission.CAMERA)
@@ -140,6 +156,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == 0){
             var img = data?.getStringExtra("img")
+            file = DrawableFileUtill
             if(img == "basic") {
                 //setdata
                 Profile.setImageResource(R.drawable.emptyimg)
@@ -148,7 +165,6 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
             uri = Uri.parse(R.drawable.emptyimg.toString())
             file = File(getRealPathFromURIPath(uri!!,this))
-            Log.e("uripath", file.toString())
         }
         if(resultCode == 1) {
             camera()
@@ -158,45 +174,50 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         }
         if(requestCode == 200 && resultCode === Activity.RESULT_OK){
             uri = data!!.data
-                ImageCrop()
-                Profile.setImageURI(uri)
-                cameraImg.visibility = View.GONE
-//                file = File(getRealPathFromURIPath(uri!!,this))
-//                Log.e("uripath", file.toString())
+            Profile.setImageURI(fileuri)
+            cameraImg.visibility = View.GONE
+            file = File(getRealPathFromURIPath(uri!!,this))
+            Log.e("uripath", uri.toString())
+
+            //ImageCrop(false)
         }
 
         if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
             //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
             Log.e("camera", "camera")
-            var resultBitmap : Bitmap? = null
-                ImageCrop()
-//                Profile.setImageURI(uri)
-//                cameraImg.visibility = View.GONE
-//                //var filepath = getRealPathFromURI(this,uri!!)
-//                //val myUri = Uri.parse(fileUri.toString())
-//                Log.e("filepath", uri.toString())
-                }
-        if(requestCode == 10 && resultCode === Activity.RESULT_OK){
-            uri = data!!.data
-            Profile.setImageURI(uri)
+            uri = fileuri
+            Profile.setImageURI(fileuri)
             cameraImg.visibility = View.GONE
-            Log.e("uripath", uri.toString())
+            Log.e("requestcamerauri", uri.toString())
+            //ImageCrop(true)
+//            file = image
+//            MediaScannerConnection.scanFile(this,arrayOf<String>(uri!!.path),null,
+//                    object : MediaScannerConnection.OnScanCompletedListener{
+//                        override fun onScanCompleted(path: String, uri: Uri) {}
+//                    })
+
         }
+
+//        if(requestCode == 10 && resultCode === Activity.RESULT_OK){
+//            //Log.e("crop",data!!.data.toString())
+//            var bundle = data!!.extras
+//            var bitmap : Bitmap = bundle.getParcelable("data")
+//            Profile.setImageBitmap(bitmap)
+//            cameraImg.visibility = View.GONE
+//            var bl = data?.getStringExtra("img")
+//            if(bl == "camera") {
+//                file = File(getRealPathFromURIPath(uri!!,this))
+//                Log.e("uripath","겔리리 들옴")
+//            }else if(bl == "gallery"){
+//                file = image
+//                Log.e("uripath","카메라 들옴")
+//            }
+//            Log.e("uripath", uri.toString())
+//        }
     }
 
 
-    fun ImageCrop(){
-        var CropIntent = Intent("com.android.camera.action.CROP")
-        CropIntent.setDataAndType(uri,"image/*")
-        CropIntent.putExtra("output",uri)
-        CropIntent.putExtra("outputX", 640) // crop한 이미지의 x축 크기 (integer)
-        CropIntent.putExtra("outputY", 480) // crop한 이미지의 y축 크기 (integer)
-        CropIntent.putExtra("aspectX", 4) // crop 박스의 x축 비율 (integer)
-        CropIntent.putExtra("aspectY", 3) // crop 박스의 y축 비율 (integer)
-        CropIntent.putExtra("scale", true)
-        CropIntent.putExtra("return-data", true)
-        startActivityForResult(CropIntent,10)
-    }
+    //서버 통신
     fun signup(){
         val res : Call<SignUp> = RetrofitUtil.postService.SignUp(
                 email,
@@ -228,23 +249,25 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         })
     }
 
-    private fun getOutputMediaFileUri() : Uri? {
+    //camera_저장경로 설정
+    private fun getOutputMediaFileUri() : File? {
                 if (isExternalStorageAvailable()) {
                     val imagePath = "IMG_" + SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
                     val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera")
-                    val image = File.createTempFile(imagePath, ".jpg", storageDir)
-                    path = image.absolutePath
-                    return FileProvider.getUriForFile(this, "com.example.pc.chatting.fileprovider", image)
+                    image = File.createTempFile(imagePath, ".jpg", storageDir)
+                    path = image!!.absolutePath
+                    Log.e("imagepath", image.toString())
+                    return image
                 }
 
             return null
         }
-
-
     private fun isExternalStorageAvailable() : Boolean{
             val state = Environment.getExternalStorageState()
             return Environment.MEDIA_MOUNTED == state
         }
+
+    //uri->filepath 변환
     private fun getRealPathFromURIPath(contentURI: Uri, activity: Activity): String {
         val cursor = activity.contentResolver.query(contentURI, null, null, null, null)
         return if (cursor == null) {
@@ -255,7 +278,29 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             cursor.getString(idx)
         }
     }
+    object DrawableFileUtill{
+        fun getDrawableResource(id: Int, name: String, context: Context): File {
+            val bitmap = BitmapFactory.decodeResource(context.resources, id)
+            //drawable 리소스에서 비트맵 만들기
+            val storage = context.cacheDir
+            //임시파일 저장위치
+            val fileName = "$name.png"
+            //확장자명 : png
+            val tempFile = File(storage, fileName)
+            try {
+                tempFile.createNewFile()
+                val outputStream = FileOutputStream(tempFile)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream)
+                outputStream.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
 
+            return tempFile
+        }
+    }
+
+    //esaypermission_override
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {
         if(requestCode == 300) {
             gallery()
@@ -264,10 +309,39 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             camera()
         }
     }
-
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) {
         Toast.makeText(this,"권한이 없습니다",Toast.LENGTH_SHORT).show()
     }
 
-
+//###########################################이미지 크롭##########################################################
+//    fun ImageCrop(a : Boolean){
+//        this.grantUriPermission("com.android.camera", uri,
+//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//        var CropIntent = Intent("com.android.camera.action.CROP")
+//        CropIntent.setDataAndType(uri,"image/*")
+//
+//        var list = packageManager.queryIntentActivities(intent, 0)
+//        var size = list.size
+//        if(size == 0){
+//            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show()
+//            return
+//        } else {
+//            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show()
+//            CropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//            CropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+//            CropIntent.putExtra("output", uri)
+//            CropIntent.putExtra("outputX", 640) // crop한 이미지의 x축 크기 (integer)
+//            CropIntent.putExtra("outputY", 480) // crop한 이미지의 y축 크기 (integer)
+//            CropIntent.putExtra("aspectX", 4) // crop 박스의 x축 비율 (integer)
+//            CropIntent.putExtra("aspectY", 3) // crop 박스의 y축 비율 (integer)
+//            CropIntent.putExtra("scale", true)
+//            if(a) {
+//                CropIntent.putExtra("camera", "camera")
+//            }else{
+//                CropIntent.putExtra("camera", "gallery")
+//            }
+//            CropIntent.putExtra("return-data", true)
+//        }
+//        startActivityForResult(CropIntent,10)
+//    }
 }

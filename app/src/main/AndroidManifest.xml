@@ -6,10 +6,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <!--camera-->
-    <uses-permission android:name="android.hardware.CAMERA"/>
+    <uses-feature android:name="android.hardware.CAMERA"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
 
     <application
@@ -36,10 +37,10 @@
         </activity>
         <activity android:name=".activity.CameraPopupActivity" android:theme="@android:style/Theme.Dialog">
         </activity>
-
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.pc.chatting.fileprovider"
+            android:authorities="com.example.pc.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
