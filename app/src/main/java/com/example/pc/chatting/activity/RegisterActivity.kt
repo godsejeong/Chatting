@@ -24,8 +24,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.ResolveInfo
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.media.ThumbnailUtils
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -51,6 +55,21 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
      var path : String? = null
      var fileuri : Uri? = null
      var image : File? = null
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun BasicProfileSetting(){
+        var drawable : Drawable = getDrawable(R.drawable.emptyimg)
+        var bitmap = (drawable as BitmapDrawable).bitmap
+        var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting")//파일경로
+        filepath.mkdir()
+        file = File.createTempFile("BasicProfile", ".jpg", filepath)//파일생성
+        Log.e("basicuri", file.toString())
+        var stream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
+        stream.flush()
+        stream.close()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resiger)
@@ -153,18 +172,16 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == 0){
+            BasicProfileSetting()
             var img = data?.getStringExtra("img")
-            file = DrawableFileUtill
             if(img == "basic") {
                 //setdata
                 Profile.setImageResource(R.drawable.emptyimg)
                 cameraImg.visibility = View.GONE
             }
-
-            uri = Uri.parse(R.drawable.emptyimg.toString())
-            file = File(getRealPathFromURIPath(uri!!,this))
         }
         if(resultCode == 1) {
             camera()
@@ -253,7 +270,8 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     private fun getOutputMediaFileUri() : File? {
                 if (isExternalStorageAvailable()) {
                     val imagePath = "IMG_" + SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                    val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera")
+                    val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Chatting")
+                    storageDir!!.mkdir()
                     image = File.createTempFile(imagePath, ".jpg", storageDir)
                     path = image!!.absolutePath
                     Log.e("imagepath", image.toString())
