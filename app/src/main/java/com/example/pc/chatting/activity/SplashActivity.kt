@@ -26,7 +26,6 @@ class SplashActivity : AppCompatActivity() {
         val handler = Handler()
         handler.postDelayed({
 
-            var intent = Intent(this, MainActivity::class.java)
             var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
             var token: String = pres.getString("token", "")
             Log.e("자동로그인", token)

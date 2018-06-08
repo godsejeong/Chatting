@@ -19,30 +19,20 @@ import android.net.Uri
 import android.os.Environment
 import java.io.File
 import android.app.Activity
-import android.app.PendingIntent.getActivity
-import android.content.ComponentName
+import android.app.Application
 import android.content.Context
-import android.content.pm.ResolveInfo
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.media.MediaScannerConnection
-import android.media.ThumbnailUtils
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import com.orm.SugarContext.init
-import com.soundcloud.android.crop.Crop
 import pub.devrel.easypermissions.EasyPermissions
-import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.util.*
-
 open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks{
     var id : String = ""
      var passwd : String = ""
@@ -55,19 +45,19 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
      var path : String? = null
      var fileuri : Uri? = null
      var image : File? = null
-
+     var i : Int = 0
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun BasicProfileSetting(){
-        var drawable : Drawable = getDrawable(R.drawable.emptyimg)
-        var bitmap = (drawable as BitmapDrawable).bitmap
-        var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting")//파일경로
-        filepath.mkdir()
-        file = File.createTempFile("BasicProfile", ".jpg", filepath)//파일생성
-        Log.e("basicuri", file.toString())
-        var stream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
-        stream.flush()
-        stream.close()
+            var drawable: Drawable = getDrawable(R.drawable.emptyimg)
+            var bitmap = (drawable as BitmapDrawable).bitmap
+            var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Chatting")//파일경로
+            filepath.mkdir()
+            file= File.createTempFile("BasicProfile", ".jpg", filepath)//파일생성
+            Log.e("basicuri", file.toString())
+            var stream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -175,7 +165,12 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == 0){
-            BasicProfileSetting()
+            i++
+            if(i == 1){
+                BasicProfileSetting()
+            }
+
+
             var img = data?.getStringExtra("img")
             if(img == "basic") {
                 //setdata
