@@ -19,7 +19,6 @@ import android.net.Uri
 import android.os.Environment
 import java.io.File
 import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -168,29 +167,29 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             i++
             if(i == 1){
                 BasicProfileSetting()
-            }
-
+            }//static
 
             var img = data?.getStringExtra("img")
-            if(img == "basic") {
+            if(img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
                 //setdata
                 Profile.setImageResource(R.drawable.emptyimg)
                 cameraImg.visibility = View.GONE
             }
         }
+
         if(resultCode == 1) {
             camera()
         }
         if(resultCode == 2){
             gallery()
         }
+
         if(requestCode == 200 && resultCode === Activity.RESULT_OK){
             uri = data!!.data
             Profile.setImageURI(fileuri)
             cameraImg.visibility = View.GONE
             file = File(getRealPathFromURIPath(uri!!,this))
             Log.e("uripath", uri.toString())
-
             //ImageCrop(false)
         }
 
@@ -289,27 +288,6 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             cursor.moveToFirst()
             val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
             cursor.getString(idx)
-        }
-    }
-    object DrawableFileUtill{
-        fun getDrawableResource(id: Int, name: String, context: Context): File {
-            val bitmap = BitmapFactory.decodeResource(context.resources, id)
-            //drawable 리소스에서 비트맵 만들기
-            val storage = context.cacheDir
-            //임시파일 저장위치
-            val fileName = "$name.png"
-            //확장자명 : png
-            val tempFile = File(storage, fileName)
-            try {
-                tempFile.createNewFile()
-                val outputStream = FileOutputStream(tempFile)
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream)
-                outputStream.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            return tempFile
         }
     }
 
