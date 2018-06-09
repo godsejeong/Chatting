@@ -14,13 +14,11 @@ import retrofit2.Response
 import java.util.regex.Pattern
 import android.provider.MediaStore
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import java.io.File
 import android.app.Activity
-import android.content.Context
-import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -29,34 +27,36 @@ import android.support.v4.content.FileProvider
 import android.view.View
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.FileOutputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks{
-     var id : String = ""
-     var passwd : String = ""
-     var name : String = ""
-     var email : String = ""
-     var phone : String = ""
-     var emptycheck : Boolean = false
-     var uri: Uri? = null
-     var file : File? = null
-     var path : String? = null
-     var fileuri : Uri? = null
-     var image : File? = null
-     var i : Int = 0
+open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+    var id: String = ""
+    var passwd: String = ""
+    var name: String = ""
+    var email: String = ""
+    var phone: String = ""
+    var emptycheck: Boolean = false
+    var uri: Uri? = null
+    var file: File? = null
+    var path: String? = null
+    var fileuri: Uri? = null
+    var image: File? = null
+    var i: Int = 0
+
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun BasicProfileSetting(){
             var drawable: Drawable = getDrawable(R.drawable.emptyimg)
             var bitmap = (drawable as BitmapDrawable).bitmap
-            var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Chatting")//파일경로
+            var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"Chatting")//파일경로
             filepath.mkdir()
-            file= File.createTempFile("BasicProfile", ".jpg", filepath)//파일생성
+            file= File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"Chatting/basicimg.jpg")//파일생성
+            //메모리 관리를 위해 파일명 고정
             Log.e("basicuri", file.toString())
             var stream = FileOutputStream(file)
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-//            stream.flush()
-//            stream.close()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +66,6 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         userName.hint =  "User Name"
         userEmail.hint = "User Email"
         userPhone.hint = "Phone Number"
-
         userProfile.setOnClickListener{
             var intent = Intent(this,CameraPopupActivity::class.java)
             startActivityForResult(intent,1)
@@ -115,23 +114,33 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 emptycheck = true
                 userEmail.error = "이메일을 입력하십시오"
                 userEmail.requestFocus()
+            }else{
+                emptycheck = false
             }
             if(passwd.isEmpty()){
                 emptycheck = true
                 userPassword.error = "비밀번호를 입력하십시오"
                 userPassword.requestFocus()
+            }else{
+                emptycheck = false
             }
             if(name.isEmpty()){
                 emptycheck = true
                 userName.error = "이름을 입력하십시오"
                 userName.requestFocus()
+            }else{
+                emptycheck = false
             }
             if(phone.isEmpty()){
                 emptycheck = true
                 userPhone.error = "전화번호를 입력하십시오"
                 userPhone.requestFocus()
+            }else{
+                emptycheck = false
             }
+
             if(!emptycheck){
+                Log.e("signupcheak","ok!!")
                 signup()
             }
         }
@@ -167,7 +176,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             i++
             if(i == 1){
                 BasicProfileSetting()
-            }//static
+            }else{//static
 
             var img = data?.getStringExtra("img")
             if(img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
@@ -186,7 +195,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
         if(requestCode == 200 && resultCode === Activity.RESULT_OK){
             uri = data!!.data
-            Profile.setImageURI(fileuri)
+            Profile.setImageURI(uri)
             cameraImg.visibility = View.GONE
             file = File(getRealPathFromURIPath(uri!!,this))
             Log.e("uripath", uri.toString())
