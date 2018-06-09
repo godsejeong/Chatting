@@ -172,51 +172,51 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode == 0){
+        if (resultCode == 0) {
             i++
-            if(i == 1){
+            if (i == 1) {
                 BasicProfileSetting()
-            }else{//static
+            } else {//static
 
-            var img = data?.getStringExtra("img")
-            if(img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
-                //setdata
-                Profile.setImageResource(R.drawable.emptyimg)
-                cameraImg.visibility = View.GONE
+                var img = data?.getStringExtra("img")
+                if (img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
+                    //setdata
+                    Profile.setImageResource(R.drawable.emptyimg)
+                    cameraImg.visibility = View.GONE
+                }
             }
-        }
 
-        if(resultCode == 1) {
-            camera()
-        }
-        if(resultCode == 2){
-            gallery()
-        }
+            if (resultCode == 1) {
+                camera()
+            }
+            if (resultCode == 2) {
+                gallery()
+            }
 
-        if(requestCode == 200 && resultCode === Activity.RESULT_OK){
-            uri = data!!.data
-            Profile.setImageURI(uri)
-            cameraImg.visibility = View.GONE
-            file = File(getRealPathFromURIPath(uri!!,this))
-            Log.e("uripath", uri.toString())
-            //ImageCrop(false)
-        }
+            if (requestCode == 200 && resultCode === Activity.RESULT_OK) {
+                uri = data!!.data
+                Profile.setImageURI(uri)
+                cameraImg.visibility = View.GONE
+                file = File(getRealPathFromURIPath(uri!!, this))
+                Log.e("uripath", uri.toString())
+                //ImageCrop(false)
+            }
 
-        if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
-            //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
-            Log.e("camera", "camera")
-            uri = fileuri
-            Profile.setImageURI(fileuri)
-            cameraImg.visibility = View.GONE
-            Log.e("requestcamerauri", uri.toString())
-            //ImageCrop(true)
+            if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
+                //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
+                Log.e("camera", "camera")
+                uri = fileuri
+                Profile.setImageURI(fileuri)
+                cameraImg.visibility = View.GONE
+                Log.e("requestcamerauri", uri.toString())
+                //ImageCrop(true)
 //            file = image
 //            MediaScannerConnection.scanFile(this,arrayOf<String>(uri!!.path),null,
 //                    object : MediaScannerConnection.OnScanCompletedListener{
 //                        override fun onScanCompleted(path: String, uri: Uri) {}
 //                    })
 
-        }
+            }
 
 //        if(requestCode == 10 && resultCode === Activity.RESULT_OK){
 //            //Log.e("crop",data!!.data.toString())
@@ -234,6 +234,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 //            }
 //            Log.e("uripath", uri.toString())
 //        }
+        }
     }
 
 
