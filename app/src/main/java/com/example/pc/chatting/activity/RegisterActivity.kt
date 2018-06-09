@@ -33,7 +33,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks{
-    var id : String = ""
+     var id : String = ""
      var passwd : String = ""
      var name : String = ""
      var email : String = ""
@@ -54,9 +54,9 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             file= File.createTempFile("BasicProfile", ".jpg", filepath)//파일생성
             Log.e("basicuri", file.toString())
             var stream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            stream.flush()
-            stream.close()
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+//            stream.flush()
+//            stream.close()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
