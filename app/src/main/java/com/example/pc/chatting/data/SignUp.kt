@@ -1,5 +1,5 @@
 package com.example.pc.chatting.data
 
-import okhttp3.MultipartBody
+import android.graphics.Bitmap
 
-class SignUp(val email : String , val passwd : String , val name : String , val phone : Int , val img : MultipartBody.Part)
+class SignUp(val email : String , val passwd : String , val name : String , val phone : Int , val profileImg : String)

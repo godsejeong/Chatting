@@ -12,25 +12,34 @@
 
     <Button
         android:id="@+id/logout"
-        android:text="로그아웃"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:text="로그아웃">
     </Button>
 
-<!--이거 디자인 나오면 리니어로 바꿔줘야 됨-->
-    <FrameLayout
-        android:id="@+id/framelayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerMain"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8">
-    </android.support.v7.widget.RecyclerView>
+    <ImageView
+        android:id="@+id/mainImg"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="#f10000"
+        android:text="로그아웃">
+    </ImageView>
 
-    </FrameLayout>
+<!--이거 디자인 나오면 리니어로 바꿔줘야 됨-->
+    <!--<FrameLayout-->
+        <!--android:id="@+id/framelayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/RecyclerMain"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="8">-->
+    <!--</android.support.v7.widget.RecyclerView>-->
+
+    <!--</FrameLayout>-->
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/frindAddFab"
             android:layout_width="wrap_content"

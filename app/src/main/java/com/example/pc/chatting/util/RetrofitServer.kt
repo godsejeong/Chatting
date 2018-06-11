@@ -31,7 +31,7 @@ interface RetrofitServer {
                @Part("passwd") passwd : String,
                @Part("name") name: String,
                @Part("phone") phone: Int,
-               @Part img : MultipartBody.Part) : Call<SignUp>
+               @Part profileImg : MultipartBody.Part) : Call<SignUp>
 
 
     @GET("/auto/{token}")

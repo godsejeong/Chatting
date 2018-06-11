@@ -14,12 +14,27 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.google.gson.Gson
-
-
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import android.net.Uri
+import android.util.Base64
+import android.util.Base64.NO_WRAP
+import android.provider.MediaStore.Images
+import android.provider.MediaStore.Images.Media.getBitmap
+import java.io.BufferedInputStream
+import java.net.URL
+import android.R.attr.bitmap
+import android.app.Activity
+import android.app.PendingIntent.getActivity
 
 
 class MainActivity : AppCompatActivity() {
     var token = ""
+    var img = ""
+    var email = ""
+    var name = ""
+    var phone = 0
+    var bit : Bitmap? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -53,14 +68,19 @@ class MainActivity : AppCompatActivity() {
 
                 if (response!!.code() == 200) {
                     response.body()?.let {
-                        var email = response.body()!!.user.email
-                        var name = response.body()!!.user.name
-                        var img = response.body()!!.user.img
-                        var phone = response.body()!!.user.phone
+                        email = response.body()!!.user.email
+                        name = response.body()!!.user.name
+                        img = response.body()!!.user.profileImg
+
+                        getBitimap()
+                        phone = response.body()!!.user.phone
                         Log.e("mainEmail",email)
                         Log.e("mainName",name)
                         Log.e("mainImg",img.toString())
                         Log.e("mainPhone",phone.toString())
+
+
+
                     }
                 } else {
 
@@ -72,5 +92,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    fun getBitimap() {
+        Thread{
+        bit = BitmapFactory.decodeStream(URL(img).openStream())
+        }
+        mainImg.setImageBitmap(bit)
     }
 }

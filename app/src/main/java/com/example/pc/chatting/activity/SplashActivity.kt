@@ -39,6 +39,7 @@ class SplashActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
                     if (response!!.code() == 200) {
                             response.body()?.let {
+                                Log.e("splash",Gson().toJson(response!!.body()!!.user))
                             Toast.makeText(applicationContext, "자동로그인이 되었습니다.", Toast.LENGTH_SHORT).show()
                             startActivity(successintent)
                             Log.e("auto", "자동로그인 완료")

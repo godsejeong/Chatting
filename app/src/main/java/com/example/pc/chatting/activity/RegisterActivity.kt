@@ -83,7 +83,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
             var emails = ("^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$")//email 정규식
             var passwords = ("^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$")//passwd 정규식
-            var phones = ("^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$") //phone number 정규식
+            var phones = ("^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-[0-9]{3,4}-[0-9]{4}$") //phone number 정규식
             val emailm = Pattern.matches(emails,userEmail.text)
             val phonem = Pattern.matches(phones,userPhone.text)
             val passwordm = Pattern.matches(passwords,userPassword.text)
@@ -153,7 +153,6 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             file = getOutputMediaFileUri()
             fileuri = FileProvider.getUriForFile(this,"com.example.pc.provider",file)
             cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,fileuri)
-            //cameraIntent.putExtra("return-data",true)
             startActivityForResult(cameraIntent, 100)
         } else {
             EasyPermissions.requestPermissions(this,"사진을 찍으려면 권한이 필요합니다",200, android.Manifest.permission.CAMERA)
@@ -185,7 +184,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                     cameraImg.visibility = View.GONE
                 }
             }
-
+        }
             if (resultCode == 1) {
                 camera()
             }
@@ -234,7 +233,6 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 //            }
 //            Log.e("uripath", uri.toString())
 //        }
-        }
     }
 
 
@@ -245,7 +243,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 passwd,
                 name,
                 Integer.parseInt(userPhone.text.toString()),
-                RetrofitUtil.createMultipartBody(file!!,"img")
+                RetrofitUtil.createMultipartBody(file!!,"profileImg")
         )
 
         res.enqueue(object : Callback<SignUp>{
