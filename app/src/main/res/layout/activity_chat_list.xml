@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.pc.chatting.activity.ChatList"
+    tools:context="com.example.pc.chatting.activity.ChatListAcivity"
     android:weightSum="10"
     android:orientation="vertical"
     >
@@ -17,12 +17,12 @@
         android:gravity="center">
     </LinearLayout>
 
-    <android.support.v7.app.AlertController.RecycleListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8">
-    </android.support.v7.app.AlertController.RecycleListView>
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:orientation="horizontal"

@@ -29,7 +29,7 @@
         </activity>
         <activity android:name=".activity.RegisterActivity">
         </activity>
-        <activity android:name=".activity.ChatList">
+        <activity android:name=".activity.ChatListAcivity">
         </activity>
         <activity android:name=".activity.MainActivity">
         </activity>

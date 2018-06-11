@@ -48,9 +48,9 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     fun BasicProfileSetting(){
             var drawable: Drawable = getDrawable(R.drawable.emptyimg)
             var bitmap = (drawable as BitmapDrawable).bitmap
-            var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"Chatting")//파일경로
+            var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting")//파일경로
             filepath.mkdir()
-            file= File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"Chatting/basicimg.jpg")//파일생성
+            file= File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting/basicimg.jpg")//파일생성
             //메모리 관리를 위해 파일명 고정
             Log.e("basicuri", file.toString())
             var stream = FileOutputStream(file)
