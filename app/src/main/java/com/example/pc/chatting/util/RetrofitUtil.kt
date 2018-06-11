@@ -1,10 +1,16 @@
 package com.example.pc.chatting.util
 
+import android.util.Log
+import android.widget.Toast
+import com.example.pc.chatting.data.Token
 import okhttp3.MediaType
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 
@@ -19,13 +25,10 @@ object RetrofitUtil {
             .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
     val postService = retrofit!!.create(RetrofitServer::class.java)
 
     fun createMultipartBody(file: File, name: String): MultipartBody.Part {
         val mFile = RequestBody.create(MediaType.parse("images/*"), file)
         return MultipartBody.Part.createFormData(name, file.name, mFile)
     }
-
-
 }

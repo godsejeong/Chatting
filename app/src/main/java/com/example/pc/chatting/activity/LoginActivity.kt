@@ -10,13 +10,10 @@ import android.text.style.UnderlineSpan
 import android.util.Log
 import android.widget.Toast
 import com.example.pc.chatting.R
-import com.example.pc.chatting.Signin
-import com.example.pc.chatting.data.Token
-import com.example.pc.chatting.util.RetrofitServer
+import com.example.pc.chatting.data.SignIn
 import com.example.pc.chatting.util.RetrofitUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
@@ -58,10 +55,10 @@ class LoginActivity : AppCompatActivity() {
         fun signIn() {
 
             var intent = Intent(this, MainActivity::class.java)
-            val res: Call<Signin> = RetrofitUtil.postService.SignIn(loginId.text, loginPassword.text)
+            val res: Call<SignIn> = RetrofitUtil.postService.SignIn(loginId.text, loginPassword.text)
             Log.e("asdf", res.request().toString())
-            res.enqueue(object : retrofit2.Callback<Signin> {
-                override fun onResponse(call: Call<Signin>?, response: Response<Signin>?) {
+            res.enqueue(object : retrofit2.Callback<SignIn> {
+                override fun onResponse(call: Call<SignIn>?, response: Response<SignIn>?) {
                     Log.d("Retrofit", response!!.code().toString())
                     if (response!!.code() == 200) {
                         response.body()?.let {
@@ -71,6 +68,7 @@ class LoginActivity : AppCompatActivity() {
                             editer.putString("token",token)
                             editer.commit()
                             //토큰값 저장
+                            intent.putExtra("token",token)
                             Log.e("토큰",token)
                             Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                             startActivity(intent)
@@ -82,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<Signin>?, t: Throwable?) {
+                override fun onFailure(call: Call<SignIn>?, t: Throwable?) {
                     Log.e("retrofit Error", t!!.message)
                     Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
                 }

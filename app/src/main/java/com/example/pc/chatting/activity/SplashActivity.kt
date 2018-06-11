@@ -12,6 +12,7 @@ import com.example.pc.chatting.R
 import com.example.pc.chatting.data.Token
 import com.example.pc.chatting.util.RetrofitServer
 import com.example.pc.chatting.util.RetrofitUtil
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
 
             var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
             var token: String = pres.getString("token", "")
-            Log.e("자동로그인", token)
+            //Log.e("자동로그인", token)
 
             var successintent = Intent(this, MainActivity::class.java)
             var failintent = Intent(this,LoginActivity::class.java)
@@ -37,7 +38,7 @@ class SplashActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
                     if (response!!.code() == 200) {
-                        response.body()?.let {
+                            response.body()?.let {
                             Toast.makeText(applicationContext, "자동로그인이 되었습니다.", Toast.LENGTH_SHORT).show()
                             startActivity(successintent)
                             Log.e("auto", "자동로그인 완료")
@@ -49,8 +50,9 @@ class SplashActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<Token>?, t: Throwable?) {
-                    Log.e("retrofit Error", t!!.message)
-                    Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
+                    Log.e("retrofit Error!!", t!!.message)
+                    startActivity(failintent)
+                    Toast.makeText(applicationContext,"Sever Error", Toast.LENGTH_SHORT).show()
                 }
             })
         }, 3000)

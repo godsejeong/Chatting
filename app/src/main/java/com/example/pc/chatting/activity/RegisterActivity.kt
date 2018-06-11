@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.pc.chatting.R
-import com.example.pc.chatting.SignUp
 import com.example.pc.chatting.util.RetrofitUtil
 import kotlinx.android.synthetic.main.activity_resiger.*
 import retrofit2.Call
@@ -25,6 +24,7 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.view.View
+import com.example.pc.chatting.data.SignUp
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
