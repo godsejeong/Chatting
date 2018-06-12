@@ -28,64 +28,70 @@ import android.app.PendingIntent.getActivity
 import com.bumptech.glide.Glide
 import android.graphics.BitmapFactory
 import android.R.attr.bitmap
+import com.example.pc.chatting.data.SignUp
+import ninja.sakib.pultusorm.core.PultusORM
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 
 
 class MainActivity : AppCompatActivity() {
-    var token = ""
-    var img = ""
-    var email = ""
-    var name = ""
-    var phone = ""
-    var bitmap : Bitmap? = null
+    var token: String = ""
+    var img: String = ""
+    var email: String = ""
+    var name: String = ""
+    var phone: String = ""
+    lateinit var pultusORM: PultusORM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var pres : SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
+        var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
         val editor = pres.edit()
-
+        val appPath: String = applicationContext.filesDir.absolutePath
+        pultusORM = PultusORM("user.db", appPath)
         try {
             token = intent.getStringExtra("token")
-            Log.e("token",token)
-        }catch (e : IllegalStateException){
+            Log.e("token", token)
+        } catch (e: IllegalStateException) {
             token = pres.getString("token", "")
-            Log.e("token",token)
+            Log.e("token", token)
         }
-        token()
-        Log.e("mainEmail",pres.getString("email", ""))
-        Log.e("mainName",pres.getString("name", ""))
-        Log.e("mainImg",pres.getString("img", ""))
-        Log.e("mainPhone",pres.getString("phone", ""))
-        //Glide.with(this).load(img).into(mainImg)
 
-        logout.setOnClickListener{
+        token()
+
+        val userList: List<Any> = pultusORM.find(SignUp())
+        Log.e("suerList", userList.size.toString())
+        var user = userList[userList.size - 1] as SignUp
+
+        email = user.email
+        name = user.name
+        phone = user.phone
+        img = user.profileImg
+        mainEmail.text = mainEmail.text.toString() + email
+        mainName.text = mainName.text.toString() + name
+        mainPhone.text = mainPhone.text.toString() + phone
+        Glide.with(this).load(img).into(mainImg)
+
+        logout.setOnClickListener {
             editor.remove("token")
             editor.commit()
+            pultusORM.drop(SignUp())
             System.exit(0)
         }
     }
+
     //서버연동
-    fun token(){
-        var pres : SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
-        var editer : SharedPreferences.Editor = pres.edit()
+    fun token() {
         val res: Call<Token> = RetrofitUtil.postService.Token(token)
         res.enqueue(object : Callback<Token> {
 
             override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
-
+                Log.e("아 씨발", "로그야 찍혀라")
                 if (response!!.code() == 200) {
                     response.body()?.let {
-                        email = response.body()!!.user.email
-                        name = response.body()!!.user.name
-                        img = response.body()!!.user.profileImg
-                        phone = response.body()!!.user.phone
-                        editer.putString("email",email)
-                        editer.putString("name",name)
-                        editer.putString("img",img)
-                        editer.putString("phone",phone)
+                        Log.e("로그찍음", "200")
+                        pultusORM.save(response!!.body()!!.user)
                     }
                 } else {
 
@@ -98,32 +104,4 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
-//    fun Imgload(){
-//        val mThread = object : Thread() {
-//            override fun run() {
-//                try {
-//                    val url = URL(img)
-//
-//                    // Web에서 이미지를 가져온 뒤
-//                    // ImageView에 지정할 Bitmap을 만든다
-//                    val conn = url.openConnection() as HttpURLConnection
-//                    conn.doInput = true // 서버로 부터 응답 수신
-//                    conn.connect()
-//
-//                    val is_ = conn.inputStream // InputStream 값 가져오기
-//                    bitmap = BitmapFactory.decodeStream(is_) // Bitmap으로 변환
-//
-//                } catch (e: MalformedURLException) {
-//                    e.printStackTrace()
-//
-//                } catch (e: IOException) {
-//                    e.printStackTrace()
-//                }
-//            }
-//        }
-//        mThread.start()
-//
-//    }
-
 }

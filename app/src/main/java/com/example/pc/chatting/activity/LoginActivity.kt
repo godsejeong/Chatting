@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.pc.chatting.R
 import com.example.pc.chatting.data.SignIn
+import com.example.pc.chatting.data.Token
 import com.example.pc.chatting.util.RetrofitUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call

@@ -24,6 +24,7 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.view.View
+import com.bumptech.glide.Glide
 import com.example.pc.chatting.data.SignUp
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.FileOutputStream
@@ -45,6 +46,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    //drawable -> file저장
     fun BasicProfileSetting(){
             var drawable: Drawable = getDrawable(R.drawable.emptyimg)
             var bitmap = (drawable as BitmapDrawable).bitmap
@@ -194,7 +196,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
             if (requestCode == 200 && resultCode === Activity.RESULT_OK) {
                 uri = data!!.data
-                Profile.setImageURI(uri)
+                Glide.with(this).load(uri).into(Profile)
                 cameraImg.visibility = View.GONE
                 file = File(getRealPathFromURIPath(uri!!, this))
                 Log.e("uripath", uri.toString())
@@ -205,7 +207,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
                 Log.e("camera", "camera")
                 uri = fileuri
-                Profile.setImageURI(fileuri)
+                Glide.with(this).load(uri).into(Profile)
                 cameraImg.visibility = View.GONE
                 Log.e("requestcamerauri", uri.toString())
                 //ImageCrop(true)

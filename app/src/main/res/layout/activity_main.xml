@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,21 +16,46 @@
         android:gravity="center"
         android:text="로그아웃">
     </Button>
+    <TextView
+        android:id="@+id/mainName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이름 : "
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:textSize="20sp"/>
 
+    <TextView
+        android:id="@+id/mainPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="폰번호 : "
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/mainEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이메일 : "
+        android:layout_marginTop="150dp"
+        android:gravity="center"
+        android:textSize="20sp"/>
     <ImageView
         android:id="@+id/mainImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_gravity="center"
+        android:layout_marginTop="100dp"
         android:background="#f10000"
         android:text="로그아웃">
     </ImageView>
 
     <!--이거 디자인 나오면 리니어로 바꿔줘야 됨-->
-    <!--<FrameLayout-->
-    <!--android:id="@+id/framelayout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
+    <FrameLayout
+    android:id="@+id/framelayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <!--<android.support.v7.widget.RecyclerView-->
     <!--android:id="@+id/RecyclerMain"-->
     <!--android:layout_width="match_parent"-->
@@ -39,7 +63,7 @@
     <!--android:layout_weight="8">-->
     <!--</android.support.v7.widget.RecyclerView>-->
 
-    <!--</FrameLayout>-->
+    </FrameLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/frindAddFab"
         android:layout_width="wrap_content"
