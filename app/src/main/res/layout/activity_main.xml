@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.pc.chatting.activity.ChatListAcivity"
-    android:weightSum="10"
     android:orientation="vertical"
+    android:weightSum="10"
+    tools:context="com.example.pc.chatting.activity.ChatListAcivity"
     >
 
     <Button
@@ -20,33 +20,33 @@
 
     <ImageView
         android:id="@+id/mainImg"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#f10000"
         android:text="로그아웃">
     </ImageView>
 
-<!--이거 디자인 나오면 리니어로 바꿔줘야 됨-->
+    <!--이거 디자인 나오면 리니어로 바꿔줘야 됨-->
     <!--<FrameLayout-->
-        <!--android:id="@+id/framelayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <!--android:id="@+id/framelayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
     <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/RecyclerMain"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="8">-->
+    <!--android:id="@+id/RecyclerMain"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="8">-->
     <!--</android.support.v7.widget.RecyclerView>-->
 
     <!--</FrameLayout>-->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/frindAddFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="10dp"
-            android:src="@drawable/add"
-            />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/frindAddFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="10dp"
+        android:src="@drawable/add"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

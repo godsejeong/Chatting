@@ -151,7 +151,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             var cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
             Log.e("cameraUri", fileuri.toString())
             file = getOutputMediaFileUri()
-            fileuri = FileProvider.getUriForFile(this,"com.example.pc.provider",file)
+            fileuri = FileProvider.getUriForFile(this,"com.example.pc.provider",file!!)
             cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,fileuri)
             startActivityForResult(cameraIntent, 100)
         } else {
