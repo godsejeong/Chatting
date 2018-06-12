@@ -13,6 +13,7 @@ import com.example.pc.chatting.data.Token
 import com.example.pc.chatting.util.RetrofitServer
 import com.example.pc.chatting.util.RetrofitUtil
 import com.google.gson.Gson
+import ninja.sakib.pultusorm.core.PultusORM
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +25,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
         val handler = Handler()
         handler.postDelayed({
 

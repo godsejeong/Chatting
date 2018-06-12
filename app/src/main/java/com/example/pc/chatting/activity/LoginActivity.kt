@@ -63,16 +63,20 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("Retrofit", response!!.code().toString())
                     if (response!!.code() == 200) {
                         response.body()?.let {
+
+
                             var pres : SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
                             token = response.body()!!.token
                             var editer : SharedPreferences.Editor = pres.edit()
                             editer.putString("token",token)
-                            editer.commit()
-                            //토큰값 저장
+
                             intent.putExtra("token",token)
                             Log.e("토큰",token)
                             Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                             startActivity(intent)
+
+                            editer.commit()
+                            //토큰값 저장
                         }
                     } else {
                         loginId.error = "다시 입력해 주세요"

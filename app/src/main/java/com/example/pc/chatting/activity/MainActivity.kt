@@ -30,37 +30,39 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val appPath: String = applicationContext.filesDir.absolutePath
-        pultusORM = PultusORM("chatting.db", appPath)
+        pultusORM = PultusORM("user.db", appPath)
         var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
         val editor = pres.edit()
+
         try {
             token = intent.getStringExtra("token")
             Log.e("token", token)
+            token()
         } catch (e: IllegalStateException) {
             token = pres.getString("token", "")
             Log.e("token", token)
         }
 
-        token()
-        val userList: List<String> = pultusORM.find(SignUp()) as List<String>
-        Log.e("suerList", userList.size.toString())
-        var user = userList[userList.size - 1] as SignUp
 
-        email = user.email
-        name = user.name
-        phone = user.phone
-        img = user.profileImg
+        val userList: List<Any> = pultusORM.find(SignUp())
+        if(userList.isNotEmpty()) {
+            Log.e("suerList", userList.size.toString())
+            var user = userList[userList.size - 1] as SignUp
 
+            email = user.email
+            name = user.name
+            phone = user.phone
+            img = user.profileImg
 
-
-        mainEmail.text = mainEmail.text.toString() + email
-        mainName.text = mainName.text.toString() + name
-        mainPhone.text = mainPhone.text.toString() + phone
-        Glide.with(this).load(img).into(mainImg)
-
+            mainEmail.text = mainEmail.text.toString() + email
+            mainName.text = mainName.text.toString() + name
+            mainPhone.text = mainPhone.text.toString() + phone
+            Glide.with(this).load(img).into(mainImg)
+        }
         logout.setOnClickListener {
-            pultusORM.delete(SignUp())
+            pultusORM.delete(Token())
             editor.remove("token")
+            token = ""
             editor.commit()
             System.exit(0)
         }
@@ -76,8 +78,8 @@ class MainActivity : AppCompatActivity() {
                 if (response!!.code() == 200) {
                     response.body()?.let {
                         Log.e("로그찍음", "200")
-                        pultusORM.delete(SignUp::class.java)
-                        pultusORM.save(response!!.body()!!.user)
+                        pultusORM.save(response!!.body()!!.user!!)
+                        Log.e("로그찍음", pultusORM.save(response!!.body()!!.user!!).toString())
                     }
                 } else {
                     Log.e("로그찍음", "error")

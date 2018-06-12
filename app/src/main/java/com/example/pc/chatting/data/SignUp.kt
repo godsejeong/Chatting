@@ -1,8 +1,6 @@
 package com.example.pc.chatting.data
 
-import android.graphics.Bitmap
-
-class SignUp{
+class SignUp(){
     var _id : String = ""
     val email : String = ""
     val passwd : String = ""
