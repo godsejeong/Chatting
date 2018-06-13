@@ -9,11 +9,10 @@ import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import com.example.pc.chatting.R
+import com.example.pc.chatting.data.SignUp
 import com.example.pc.chatting.data.Token
-import com.example.pc.chatting.util.RetrofitServer
 import com.example.pc.chatting.util.RetrofitUtil
 import com.google.gson.Gson
-import ninja.sakib.pultusorm.core.PultusORM
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +39,7 @@ class SplashActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
                     if (response!!.code() == 200) {
-                            response.body()?.let {
+                        response.body()?.let {
                             Log.e("splash",Gson().toJson(response!!.body()!!.user))
                             Toast.makeText(applicationContext, "자동로그인이 되었습니다.", Toast.LENGTH_SHORT).show()
                             startActivity(successintent)

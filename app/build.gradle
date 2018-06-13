@@ -44,7 +44,6 @@ dependencies {
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
     implementation 'com.android.support:design:26.1.0'
-
     //glide
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'

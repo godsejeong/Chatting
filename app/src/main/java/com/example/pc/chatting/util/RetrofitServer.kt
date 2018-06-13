@@ -38,9 +38,9 @@ interface RetrofitServer {
     fun Token(@Path("token") token : String) : Call<Token>
 
 
-    //@Multipart
+    @FormUrlEncoded
     @POST("/add")
-    fun Useradd()
+    fun Useradd(@Field("email") email : String) : Call<SignUp>
 
 
 }

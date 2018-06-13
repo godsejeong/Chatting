@@ -2,4 +2,6 @@
     <string name="app_name">Chatting</string>
     <string name="sing_name">User Name</string>
     <string name="rationale_camera">This app needs access to your camera so you can take pictures.</string>
+    <string name="title_activity_addfrindacitvity">addfrindacitvity</string>
+    <string name="title_activity_add_frind">AddFrindActivity</string>
 </resources>

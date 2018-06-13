@@ -2,7 +2,6 @@ package com.example.pc.chatting.util
 
 import android.util.Log
 import android.widget.Toast
-import com.example.pc.chatting.data.Token
 import okhttp3.MediaType
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
