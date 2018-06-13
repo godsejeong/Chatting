@@ -10,7 +10,5 @@ class ChatListAcivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_list)
 
-
-
     }
 }

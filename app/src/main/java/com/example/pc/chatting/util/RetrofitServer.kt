@@ -1,6 +1,7 @@
 package com.example.pc.chatting.util
 
 import android.text.Editable
+import com.example.pc.chatting.data.FrindAdd
 import com.example.pc.chatting.data.SignIn
 import com.example.pc.chatting.data.SignUp
 import com.example.pc.chatting.data.Token
@@ -40,7 +41,8 @@ interface RetrofitServer {
 
     @FormUrlEncoded
     @POST("/add")
-    fun Useradd(@Field("email") email : String) : Call<SignUp>
+    fun Useradd(@Field("token") token : String,
+                @Field("email") email : String) : Call<FrindAdd>
 
 
 }

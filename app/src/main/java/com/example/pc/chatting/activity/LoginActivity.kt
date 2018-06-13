@@ -11,18 +11,27 @@ import android.util.Log
 import android.widget.Toast
 import com.example.pc.chatting.R
 import com.example.pc.chatting.data.SignIn
+import com.example.pc.chatting.data.Token
 import com.example.pc.chatting.util.RetrofitUtil
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
+import ninja.sakib.pultusorm.core.PultusORM
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
+    lateinit var pultusORM : PultusORM
     var id: String = ""
     var passwd: String = ""
     var token : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
+        val appPath: String = applicationContext.filesDir.absolutePath
+        pultusORM = PultusORM("user.db", appPath)
 
         val content = SpannableString("Sing Up")
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
@@ -53,8 +62,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
         fun signIn() {
-
-            var intent = Intent(this, MainActivity::class.java)
             val res: Call<SignIn> = RetrofitUtil.postService.SignIn(loginId.text, loginPassword.text)
             Log.e("asdf", res.request().toString())
             res.enqueue(object : retrofit2.Callback<SignIn> {
@@ -68,13 +75,11 @@ class LoginActivity : AppCompatActivity() {
                             token = response.body()!!.token
                             var editer : SharedPreferences.Editor = pres.edit()
                             editer.putString("token",token)
-
-                            intent.putExtra("token",token)
-                            Log.e("토큰",token)
-                            Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                            startActivity(intent)
-
                             editer.commit()
+                            Log.e("토큰",token)
+                            userToken()
+                            Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+
                             //토큰값 저장
                         }
                     } else {
@@ -90,6 +95,28 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
         }
+
+    fun userToken(){
+            var intent = Intent(this, MainActivity::class.java)
+            val res: Call<Token> = RetrofitUtil.postService.Token(token)
+            res.enqueue(object : Callback<Token> {
+                override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
+                    if (response!!.code() == 200) {
+                        response.body()?.let {
+                            pultusORM.save(response!!.body()!!.user!!)
+                            startActivity(intent)
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, "알 수 없는 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Token>?, t: Throwable?) {
+                    Log.e("retrofit Error!", t!!.message)
+                    Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
 }
 
 
