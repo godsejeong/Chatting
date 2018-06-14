@@ -280,7 +280,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                     path = image!!.absolutePath
                     Log.e("imagepath", image.toString())
                     return image
-                }
+                 }
 
             return null
         }

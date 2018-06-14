@@ -1,10 +1,7 @@
 package com.example.pc.chatting.util
 
 import android.text.Editable
-import com.example.pc.chatting.data.FrindAdd
-import com.example.pc.chatting.data.SignIn
-import com.example.pc.chatting.data.SignUp
-import com.example.pc.chatting.data.Token
+import com.example.pc.chatting.data.*
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -38,6 +35,10 @@ interface RetrofitServer {
     @GET("/auto/{token}")
     fun Token(@Path("token") token : String) : Call<Token>
 
+
+    @FormUrlEncoded
+    @POST("/search")
+    fun UserFind(@Field("email")email : String) : Call<FrindData>
 
     @FormUrlEncoded
     @POST("/add")

@@ -7,11 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.example.pc.chatting.R
-import com.example.pc.chatting.data.FrindAdd
-import com.example.pc.chatting.data.SignUp
-import com.example.pc.chatting.data.Token
+import com.example.pc.chatting.adapter.FrindListAdapter
+import com.example.pc.chatting.data.*
 import com.example.pc.chatting.util.RetrofitUtil
-import com.google.gson.Gson
 
 import kotlinx.android.synthetic.main.activity_add_frind.*
 import retrofit2.Call
@@ -21,6 +19,12 @@ import retrofit2.Response
 class AddFrindActivity : AppCompatActivity() {
     var frindEmail  = ""
     var token = ""
+    var email = ""
+    var phone = ""
+    var img = ""
+    var name = ""
+    var frindItems: ArrayList<FrindListData> = ArrayList()
+    lateinit var adapter: FrindListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_frind)
@@ -29,33 +33,42 @@ class AddFrindActivity : AppCompatActivity() {
 
         addBtn.setOnClickListener {
             frindEmail = addFrindEt.text.toString()
-            addFrind()
-            Log.e("finrdEmail",frindEmail)
-            //Log.e("mytoken",token)
+            userFind()
+            adapter = FrindListAdapter(this,token,frindItems, R.layout.frind_list_item)
+            frindList.adapter=adapter
+            Log.e("frindEmail",email)
+            Log.e("frindName",name)
+            Log.e("frindeImg",img)
+            Log.e("frindePhone",email)
+
+
         }
     }
 
-    fun addFrind(){
-        val res: Call<FrindAdd> = RetrofitUtil.postService.Useradd(token,frindEmail)
-        res.enqueue(object : Callback<FrindAdd>{
-            override fun onResponse(call: Call<FrindAdd>?, response: Response<FrindAdd>?) {
-                if(response!!.code() == 200){
-                    response.body()?.let {
+    fun userFind(){
+        val res : Call<FrindData> = RetrofitUtil.postService.UserFind(frindEmail)
+        res.enqueue(object : Callback<FrindData>{
 
-                        Log.e("frindlog",token)
-                        Log.e("Frindadd",Gson().toJson(response.body()!!))
-                        Toast.makeText(applicationContext, "친구가 추가되었습니다.", Toast.LENGTH_SHORT).show()
-                    }
-                }else if(response!!.code() == 404 ){
-                    Log.e("frindlog",token)
+            override fun onResponse(call: Call<FrindData>?, response: Response<FrindData>?) {
+                if(response!!.code() == 200 ){
+                    email = response!!.body()!!.email
+                    name = response!!.body()!!.name
+                    img = response!!.body()!!.profileImg
+                    phone = response!!.body()!!.phone
+
+                    frindItems.add(FrindListData(name,img))
+
+                }else if(response!!.code() == 404) {
                     Toast.makeText(applicationContext, "친구가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
-                }else if(response!!.code() == 500 ){
+                }else{
                     Toast.makeText(applicationContext, "알 수 없는 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<FrindAdd>?, t: Throwable?) {
-                Log.e("retrofit Error", t!!.message)}
+            override fun onFailure(call: Call<FrindData>?, t: Throwable?) {
+                Toast.makeText(applicationContext, "서버 오류", Toast.LENGTH_SHORT).show()
+                Log.e("retrofit Error", t!!.message)
+            }
         })
     }
 }
