@@ -27,7 +27,9 @@ class FrindListAdapter(context : Context,token : String,data : ArrayList<FrindLi
     private var layout: Int = 0
     private var token = ""
     private var context : Context? = null
+
     init{
+        Log.e("어뎁터","로그찍힘")
         this.inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater?
         this.data = data
         this.layout = layout
@@ -35,17 +37,28 @@ class FrindListAdapter(context : Context,token : String,data : ArrayList<FrindLi
         this.context = context
     }
 
+    override fun getItem(position: Int): FrindListData {
+        return data!![position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getCount(): Int {
+        return data!!.size
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view:View? = inflater?.inflate(R.layout.frind_list_item,parent,false)
 
-        var name = view?.findViewById (R.id.itemName) as TextView
-        var img = view?.findViewById (R.id.itemImg) as ImageView
-        var Btn = view?.findViewById (R.id.itemBtn) as Button
         var frindData: FrindListData = getItem(position)
-        name.text = frindData.name
+
+        view!!.itemName.text = frindData.name
         Glide.with(context).load(frindData.img).into(view.itemImg)
-        Btn.setOnClickListener{
-            val res: Call<FrindAdd> = RetrofitUtil.postService.Useradd(token,name.text.toString())
+
+        view!!.itemBtn.setOnClickListener{
+            val res: Call<FrindAdd> = RetrofitUtil.postService.Useradd(view.itemName.text.toString(),token)
             res.enqueue(object : Callback<FrindAdd> {
                 override fun onResponse(call: Call<FrindAdd>?, response: Response<FrindAdd>?) {
                     if(response!!.code() == 200){
@@ -63,19 +76,6 @@ class FrindListAdapter(context : Context,token : String,data : ArrayList<FrindLi
         }
         return view!!
     }
-
-    override fun getItem(position: Int): FrindListData {
-        return data!!.get(position)
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getCount(): Int {
-        return data!!.size
-    }
-
 
 
 }

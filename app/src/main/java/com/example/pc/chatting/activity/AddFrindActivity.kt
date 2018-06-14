@@ -23,8 +23,9 @@ class AddFrindActivity : AppCompatActivity() {
     var phone = ""
     var img = ""
     var name = ""
+    var context : Context = this
     var frindItems: ArrayList<FrindListData> = ArrayList()
-    lateinit var adapter: FrindListAdapter
+    var adapter: FrindListAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_frind)
@@ -34,14 +35,7 @@ class AddFrindActivity : AppCompatActivity() {
         addBtn.setOnClickListener {
             frindEmail = addFrindEt.text.toString()
             userFind()
-            adapter = FrindListAdapter(this,token,frindItems, R.layout.frind_list_item)
-            frindList.adapter=adapter
-            Log.e("frindEmail",email)
-            Log.e("frindName",name)
-            Log.e("frindeImg",img)
-            Log.e("frindePhone",email)
-
-
+            Log.e("frind",frindItems.toString())
         }
     }
 
@@ -55,9 +49,9 @@ class AddFrindActivity : AppCompatActivity() {
                     name = response!!.body()!!.name
                     img = response!!.body()!!.profileImg
                     phone = response!!.body()!!.phone
-
                     frindItems.add(FrindListData(name,img))
-
+                    adapter = FrindListAdapter(context,token,frindItems,R.layout.frind_list_item)
+                    frindList.adapter= adapter
                 }else if(response!!.code() == 404) {
                     Toast.makeText(applicationContext, "친구가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                 }else{
@@ -70,5 +64,7 @@ class AddFrindActivity : AppCompatActivity() {
                 Log.e("retrofit Error", t!!.message)
             }
         })
+
+
     }
 }

@@ -210,31 +210,7 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 Glide.with(this).load(uri).into(Profile)
                 cameraImg.visibility = View.GONE
                 Log.e("requestcamerauri", uri.toString())
-                //ImageCrop(true)
-//            file = image
-//            MediaScannerConnection.scanFile(this,arrayOf<String>(uri!!.path),null,
-//                    object : MediaScannerConnection.OnScanCompletedListener{
-//                        override fun onScanCompleted(path: String, uri: Uri) {}
-//                    })
-
             }
-
-//        if(requestCode == 10 && resultCode === Activity.RESULT_OK){
-//            //Log.e("crop",data!!.data.toString())
-//            var bundle = data!!.extras
-//            var bitmap : Bitmap = bundle.getParcelable("data")
-//            Profile.setImageBitmap(bitmap)
-//            cameraImg.visibility = View.GONE
-//            var bl = data?.getStringExtra("img")
-//            if(bl == "camera") {
-//                file = File(getRealPathFromURIPath(uri!!,this))
-//                Log.e("uripath","겔리리 들옴")
-//            }else if(bl == "gallery"){
-//                file = image
-//                Log.e("uripath","카메라 들옴")
-//            }
-//            Log.e("uripath", uri.toString())
-//        }
     }
 
 
@@ -313,36 +289,4 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) {
         Toast.makeText(this,"권한이 없습니다",Toast.LENGTH_SHORT).show()
     }
-
-//###########################################이미지 크롭##########################################################
-//    fun ImageCrop(a : Boolean){
-//        this.grantUriPermission("com.android.camera", uri,
-//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//        var CropIntent = Intent("com.android.camera.action.CROP")
-//        CropIntent.setDataAndType(uri,"image/*")
-//
-//        var list = packageManager.queryIntentActivities(intent, 0)
-//        var size = list.size
-//        if(size == 0){
-//            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        } else {
-//            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show()
-//            CropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            CropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-//            CropIntent.putExtra("output", uri)
-//            CropIntent.putExtra("outputX", 640) // crop한 이미지의 x축 크기 (integer)
-//            CropIntent.putExtra("outputY", 480) // crop한 이미지의 y축 크기 (integer)
-//            CropIntent.putExtra("aspectX", 4) // crop 박스의 x축 비율 (integer)
-//            CropIntent.putExtra("aspectY", 3) // crop 박스의 y축 비율 (integer)
-//            CropIntent.putExtra("scale", true)
-//            if(a) {
-//                CropIntent.putExtra("camera", "camera")
-//            }else{
-//                CropIntent.putExtra("camera", "gallery")
-//            }
-//            CropIntent.putExtra("return-data", true)
-//        }
-//        startActivityForResult(CropIntent,10)
-//    }
 }
