@@ -90,8 +90,11 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<SignIn>?, t: Throwable?) {
-                    Log.e("retrofit Error", t!!.message)
                     Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
+                    Log.e("retrofit Error", t!!.message)
+                    if(t!!.message!!.contains("No address associated with hostname")){
+                        Toast.makeText(applicationContext, "인터넷이 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             })
         }

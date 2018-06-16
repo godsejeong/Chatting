@@ -28,11 +28,41 @@
             android:text="클릭ㄱㄱ"/>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/frindList"
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/frindLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
-    </ListView>
+        <ImageView
+            android:id="@+id/frindImg"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1.2"
+            />
+
+        <TextView
+            android:id="@+id/frindName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:text="이름"/>
+
+        <Button
+            android:id="@+id/frindBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="2.8"
+            android:text="친구추가"/>
+    </LinearLayout>
+
 
 </LinearLayout>

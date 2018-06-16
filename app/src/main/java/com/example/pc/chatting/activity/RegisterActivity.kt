@@ -227,15 +227,15 @@ open class RegisterActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         res.enqueue(object : Callback<SignUp>{
             override fun onResponse(call: Call<SignUp>?, response: Response<SignUp>?) {
                 Log.e("register",response!!.code().toString())
-                Log.e("register_Message",response!!.message())
+                Log.e("register_Message",response.message())
                 if(response!!.code() == 200){
                     response.body()?.let {
                         Toast.makeText(applicationContext, "회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
                         finish()
                     }
-                }else if(response!!.code() == 409){
+                }else if(response.code() == 409){
                     Toast.makeText(applicationContext,"이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show()
-                }else if(response!!.code() == 400){
+                }else if(response.code() == 400){
                     Toast.makeText(applicationContext,"Server Error", Toast.LENGTH_SHORT).show()
                 }
             }
