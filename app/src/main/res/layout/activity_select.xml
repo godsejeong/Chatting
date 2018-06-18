@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="190dp"
-        android:background="@drawable/selecterbtn"
+        android:background="@drawable/selectbutton"
         android:text="Login"
         android:textColor="#0088d7"/>
 
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="@drawable/selecterbtn"
+        android:background="@drawable/selectbutton"
         android:text="Sign Up"
         android:textColor="#0088d7"/>
 
