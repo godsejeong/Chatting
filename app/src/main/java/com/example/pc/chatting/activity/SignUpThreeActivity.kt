@@ -1,4 +1,4 @@
-package com.example.pc.chatting
+package com.example.pc.chatting.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -17,7 +17,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.pc.chatting.activity.CameraPopupActivity
+import com.example.pc.chatting.R
 import com.example.pc.chatting.data.SignUp
 import com.example.pc.chatting.util.RetrofitUtil
 import kotlinx.android.synthetic.main.activity_resiger.*
@@ -50,9 +50,11 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
         Name = intent.getStringExtra("name")
         Phone = intent.getStringExtra("phone")
         signUpThreeFinish.setOnClickListener{
-
+            signup()
         }
-
+        signUpThreeFinish.setOnClickListener {
+            finish()
+        }
         ProfileLayout.setOnClickListener{
             var intent = Intent(this, CameraPopupActivity::class.java)
             startActivityForResult(intent,1)
@@ -84,11 +86,8 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        BasicProfileSetting()
         if (resultCode == 0) {
-            i++
-            if (i == 1) {
-                BasicProfileSetting()
-            } else {//static
 
                 var img = data?.getStringExtra("img")
                 if (img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
@@ -97,7 +96,6 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
                     cameraImg.visibility = View.GONE
                 }
             }
-        }
         if (resultCode == 1) {
             camera()
         }
@@ -129,7 +127,7 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
                 Email,
                 Passwd,
                 Name,
-                Phone,
+                Integer.parseInt(Phone),
                 RetrofitUtil.createMultipartBody(file!!,"profileImg")
         )
 

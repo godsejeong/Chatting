@@ -62,11 +62,11 @@
         </activity>
         <activity android:name=".activity.SelectActivity">
         </activity>
-        <activity android:name=".SignUpOneActivity">
+        <activity android:name=".activity.SignUpOneActivity">
         </activity>
-        <activity android:name=".SignUpTwoActivity">
+        <activity android:name=".activity.SignUpTwoActivity">
         </activity>
-        <activity android:name=".SignUpThreeActivity">
+        <activity android:name=".activity.SignUpThreeActivity">
         </activity>
     </application>
 

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpTwoActivity"
+    tools:context=".activity.SignUpTwoActivity"
     android:background="@drawable/background"
     android:weightSum="10"
     android:orientation="vertical">

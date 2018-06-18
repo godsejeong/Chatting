@@ -1,8 +1,9 @@
-package com.example.pc.chatting
+package com.example.pc.chatting.activity
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.pc.chatting.R
 import kotlinx.android.synthetic.main.activity_sign_up_one.*
 import kotlinx.android.synthetic.main.activity_sign_up_two.*
 
@@ -19,7 +20,7 @@ class SignUpTwoActivity : AppCompatActivity() {
         signUpOneNext.setOnClickListener {
             Name = signUpEmail.text.toString()
             Phone = signUpPhone.text.toString()
-            var intent = Intent(this,SignUpTwoActivity::class.java)
+            var intent = Intent(this, SignUpTwoActivity::class.java)
             intent.putExtra("name",Name)
             intent.putExtra("phone",Phone)
             intent.putExtra("email",Email)
