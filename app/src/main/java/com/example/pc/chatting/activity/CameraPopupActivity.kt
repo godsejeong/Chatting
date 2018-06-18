@@ -17,7 +17,6 @@ import android.view.Window
 import android.widget.Toast
 import com.example.pc.chatting.R
 import kotlinx.android.synthetic.main.activity_camera_popup.*
-import kotlinx.android.synthetic.main.activity_resiger.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -46,7 +45,7 @@ class CameraPopupActivity : Activity() {
         //팝업 외의 화면 선택시 나가짐
 
         popupBasic.setOnClickListener {
-            var intent = Intent(this,RegisterActivity::class.java)
+            var intent = Intent(this,SignUpThreeActivity::class.java)
             setResult(0,intent)
             intent.putExtra("img","basic")
             finish()
@@ -58,13 +57,13 @@ class CameraPopupActivity : Activity() {
     }
 
     fun camera(){
-        var intent = Intent(this,RegisterActivity::class.java)
+        var intent = Intent(this,SignUpThreeActivity::class.java)
         setResult(1,intent)
         finish()
     }
 
     fun gallery(){
-        var intent = Intent(this,RegisterActivity::class.java)
+        var intent = Intent(this,SignUpThreeActivity::class.java)
         setResult(2,intent)
         finish()
     }

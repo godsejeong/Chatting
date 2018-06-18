@@ -17,7 +17,7 @@ class SelectActivity : AppCompatActivity() {
         }
 
         selectSignUp.setOnClickListener {
-            startActivity(Intent(this,RegisterActivity::class.java))
+            startActivity(Intent(this,SignUpOneActivity::class.java))
         }
 
     }

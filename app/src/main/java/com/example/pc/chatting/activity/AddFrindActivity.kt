@@ -11,13 +11,11 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.pc.chatting.R
-import com.example.pc.chatting.adapter.FrindListAdapter
 import com.example.pc.chatting.data.*
 import com.example.pc.chatting.util.RetrofitUtil
 import com.google.gson.Gson
 
 import kotlinx.android.synthetic.main.activity_add_frind.*
-import kotlinx.android.synthetic.main.frind_list_item.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +28,6 @@ class AddFrindActivity : AppCompatActivity() {
     var img = ""
     var name = ""
     var context : Context = this
-    var adapter: FrindListAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_frind)

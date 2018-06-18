@@ -9,7 +9,8 @@
     </style>
 
     <style name="loginStyle">
-        <item name="colorControlActivated">#8f91ec</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 

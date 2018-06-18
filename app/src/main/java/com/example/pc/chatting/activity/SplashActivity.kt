@@ -32,8 +32,8 @@ class SplashActivity : AppCompatActivity() {
             var token: String = pres.getString("token", "")
             //Log.e("자동로그인", token)
 
-            var successintent = Intent(this, SelectActivity::class.java)
-            var failintent = Intent(this,LoginActivity::class.java)
+            var successintent = Intent(this,MainActivity::class.java)
+            var failintent = Intent(this,SelectActivity::class.java)
             val res: Call<Token> = RetrofitUtil.postService.Token(token)
             res.enqueue(object : Callback<Token> {
 

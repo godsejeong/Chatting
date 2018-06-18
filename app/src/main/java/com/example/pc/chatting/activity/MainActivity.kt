@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             token = ""
             pultusORM.drop(User())
             Log.e("endtoken",token)
-            var intent = Intent(this,LoginActivity::class.java)
+            var intent = Intent(this,SelectActivity::class.java)
             startActivity(intent)
         }
 

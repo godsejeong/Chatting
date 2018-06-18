@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide
 import com.example.pc.chatting.R
 import com.example.pc.chatting.data.SignUp
 import com.example.pc.chatting.util.RetrofitUtil
-import kotlinx.android.synthetic.main.activity_resiger.*
 import kotlinx.android.synthetic.main.activity_sign_up_three.*
 import pub.devrel.easypermissions.EasyPermissions
 import retrofit2.Call
@@ -49,16 +48,20 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
         Passwd = intent.getStringExtra("passwd")
         Name = intent.getStringExtra("name")
         Phone = intent.getStringExtra("phone")
+
         signUpThreeFinish.setOnClickListener{
             signup()
         }
-        signUpThreeFinish.setOnClickListener {
+
+        signUpThreeBack.setOnClickListener {
             finish()
         }
+
         ProfileLayout.setOnClickListener{
             var intent = Intent(this, CameraPopupActivity::class.java)
             startActivityForResult(intent,1)
         }
+
     }
 
     fun camera(){
@@ -86,14 +89,13 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        BasicProfileSetting()
         if (resultCode == 0) {
-
+            BasicProfileSetting()
                 var img = data?.getStringExtra("img")
                 if (img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
                     //setdata
-                    Profile.setImageResource(R.drawable.emptyimg)
-                    cameraImg.visibility = View.GONE
+                    signUpProfile.setImageResource(R.drawable.emptyimg)
+                    signUpCamera.visibility = View.GONE
                 }
             }
         if (resultCode == 1) {
@@ -105,8 +107,8 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
 
         if (requestCode == 200 && resultCode === Activity.RESULT_OK) {
             uri = data!!.data
-            Glide.with(this).load(uri).into(Profile)
-            cameraImg.visibility = View.GONE
+            Glide.with(this).load(uri).into(signUpProfile)
+            signUpCamera.visibility = View.GONE
             file = File(getRealPathFromURIPath(uri!!, this))
             Log.e("uripath", uri.toString())
             //ImageCrop(false)
@@ -116,18 +118,19 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
             //RESULT_OK -> 카메라를 실제로 찍었는지, 취소로 나갔는지
             Log.e("camera", "camera")
             uri = fileuri
-            Glide.with(this).load(uri).into(Profile)
-            cameraImg.visibility = View.GONE
+            Glide.with(this).load(uri).into(signUpProfile)
+            signUpCamera.visibility = View.GONE
             Log.e("requestcamerauri", uri.toString())
         }
     }
 
     fun signup(){
+        var loginintent = Intent(this,LoginActivity::class.java)
         val res : Call<SignUp> = RetrofitUtil.postService.SignUp(
                 Email,
                 Passwd,
                 Name,
-                Integer.parseInt(Phone),
+                Phone,
                 RetrofitUtil.createMultipartBody(file!!,"profileImg")
         )
 
@@ -138,7 +141,7 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
                 if(response!!.code() == 200){
                     response.body()?.let {
                         Toast.makeText(applicationContext, "회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                        finish()
+                        startActivity(loginintent)
                     }
                 }else if(response.code() == 409){
                     Toast.makeText(applicationContext,"이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show()
@@ -165,8 +168,9 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
             return image
         }
 
-        return null
+        return image
     }
+
     private fun isExternalStorageAvailable() : Boolean{
         val state = Environment.getExternalStorageState()
         return Environment.MEDIA_MOUNTED == state

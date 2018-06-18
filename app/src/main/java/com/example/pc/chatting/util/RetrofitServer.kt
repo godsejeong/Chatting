@@ -25,11 +25,11 @@ interface RetrofitServer {
 
     @Multipart
     @POST("/signup")
-    fun SignUp(@Part("email") email : String,
-               @Part("passwd") passwd : String,
+    fun SignUp(@Part("email") email: String,
+               @Part("passwd") passwd: String,
                @Part("name") name: String,
-               @Part("phone") phone: Int,
-               @Part profileImg : MultipartBody.Part) : Call<SignUp>
+               @Part("phone") phone: String,
+               @Part profileImg: MultipartBody.Part) : Call<SignUp>
 
 
     @GET("/auto/{token}")

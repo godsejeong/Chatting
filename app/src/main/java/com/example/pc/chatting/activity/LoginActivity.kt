@@ -33,13 +33,10 @@ class LoginActivity : AppCompatActivity() {
         val appPath: String = applicationContext.filesDir.absolutePath
         pultusORM = PultusORM("user.db", appPath)
 
-        val content = SpannableString("Sing Up")
-        content.setSpan(UnderlineSpan(), 0, content.length, 0)
-        signUpBtn.text = content
-        //글꼴 변경
+
 
         signUpBtn.setOnClickListener {
-            var intent = Intent(this, RegisterActivity::class.java)
+            var intent = Intent(this, SignUpOneActivity::class.java)
             startActivity(intent)
         }
 
