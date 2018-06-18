@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
         fun signIn() {
-            val res: Call<SignIn> = RetrofitUtil.postService.SignIn(loginId.text, loginPassword.text)
+            val res: Call<SignIn> = RetrofitUtil.postService.SignIn(loginId.text,loginPassword.text)
             Log.e("asdf", res.request().toString())
             res.enqueue(object : retrofit2.Callback<SignIn> {
                 override fun onResponse(call: Call<SignIn>?, response: Response<SignIn>?) {

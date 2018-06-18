@@ -24,6 +24,7 @@ object RetrofitUtil {
             .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
     val postService = retrofit!!.create(RetrofitServer::class.java)
 
     fun createMultipartBody(file: File, name: String): MultipartBody.Part {

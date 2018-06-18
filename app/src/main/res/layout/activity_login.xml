@@ -5,37 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fdfdfe"
+    android:background="@drawable/background"
     android:orientation="vertical"
-    android:weightSum="10"
     tools:context="com.example.pc.chatting.activity.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginBottom="11dp"
-            android:background="@drawable/topshape"/>
+            android:background="@drawable/loginIcon"
+            android:layout_margin="40dp"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/welcome"
-            />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="39dp"
-            android:background="@drawable/downshape"/>
     </LinearLayout>
 
     <LinearLayout
@@ -57,6 +43,7 @@
                 android:layout_marginTop="30dp"
                 android:gravity="center"
                 android:hint="Email"
+                android:textColorHint="@android:color/white"
                 android:theme="@style/loginStyle"/>
 
             <EditText
@@ -69,6 +56,7 @@
                 android:layout_marginTop="22dp"
                 android:gravity="center"
                 android:hint="Password"
+                android:textColorHint="@android:color/white"
                 android:inputType="textPassword"
                 android:theme="@style/loginStyle"/>
 
@@ -97,6 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textColor="@android:color/black"
                     android:text="Don’t have an account yet?"/>
 
                 <TextView
@@ -106,7 +95,7 @@
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
                     android:text="Sign up"
-                    android:textColor="#505050"
+                    android:textColor="@android:color/white"
                     android:textStyle="bold"/>
             </LinearLayout>
         </RelativeLayout>

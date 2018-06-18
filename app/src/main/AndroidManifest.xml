@@ -60,6 +60,14 @@
             android:label="@string/title_activity_add_frind"
             android:theme="@style/AppTheme">
         </activity>
+        <activity android:name=".activity.SelectActivity">
+        </activity>
+        <activity android:name=".SignUpOneActivity">
+        </activity>
+        <activity android:name=".SignUpTwoActivity">
+        </activity>
+        <activity android:name=".SignUpThreeActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@
 
     <style name="loginStyle">
         <item name="colorControlActivated">#8f91ec</item>
-        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
     <style name="SignUpStyle">

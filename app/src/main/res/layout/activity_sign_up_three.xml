@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpTwoActivity"
+    android:background="@drawable/background"
+    android:weightSum="10"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8.8dp"
+            android:background="@drawable/signUpTwo"/>
+
+        <view
+            android:layout_width="67dp"
+            android:layout_height="1dp"
+            android:layout_marginRight="7.8dp"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8.3dp"
+            android:background="@drawable/signUpTwo"/>
+
+        <view
+            android:layout_width="67dp"
+            android:layout_height="1dp"
+            android:layout_marginRight="5.3dp"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5.5dp"
+            android:background="@drawable/signUpOne"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/ProfileLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        >
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/signUpProfile"
+        android:layout_height="130dp"
+        android:layout_width="130dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/circle"
+        />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/camera"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:gravity="center|top"
+        android:paddingTop="100dp"
+        >
+
+        <Button
+            android:id="@+id/signUpThreeBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/signbutton"
+            android:text="back"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/signUpThreeFinish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/signbutton"
+            android:text="Finish"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</LinearLayout>

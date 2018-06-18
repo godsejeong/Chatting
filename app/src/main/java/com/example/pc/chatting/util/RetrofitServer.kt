@@ -28,7 +28,7 @@ interface RetrofitServer {
     fun SignUp(@Part("email") email : String,
                @Part("passwd") passwd : String,
                @Part("name") name: String,
-               @Part("phone") phone: Int,
+               @Part("phone") phone: String,
                @Part profileImg : MultipartBody.Part) : Call<SignUp>
 
 

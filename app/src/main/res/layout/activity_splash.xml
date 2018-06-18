@@ -5,15 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/background"
     tools:context="com.example.pc.chatting.activity.SplashActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="로딩화면임ㅇㅇ"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="50sp"
-        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/SplashIcon"/>
 
 </LinearLayout>
