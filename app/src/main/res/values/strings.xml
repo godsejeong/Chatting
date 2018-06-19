@@ -4,4 +4,6 @@
     <string name="rationale_camera">This app needs access to your camera so you can take pictures.</string>
     <string name="title_activity_addfrindacitvity">addfrindacitvity</string>
     <string name="title_activity_add_frind">AddFrindActivity</string>
+    <string name="opentext">Open Drawar</string>
+    <string name="closetext">Close Drawar</string>
 </resources>

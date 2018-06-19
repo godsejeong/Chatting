@@ -34,9 +34,6 @@ class AddFrindActivity : AppCompatActivity() {
         var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
         token = pres.getString("token", "")
 
-
-
-
         addBtn.setOnClickListener {
             frindEmail = addFrindEt.text.toString()
             userFind()
@@ -78,13 +75,15 @@ class AddFrindActivity : AppCompatActivity() {
             val res: Call<FrindAdd> = RetrofitUtil.postService.Useradd(email,token)
             res.enqueue(object : Callback<FrindAdd> {
                 override fun onResponse(call: Call<FrindAdd>?, response: Response<FrindAdd>?) {
-                    if(response!!.code() == 200) {
+                    if (response!!.code() == 200) {
                         response.body()?.let {
                             Log.e("frindlog", token)
                             Log.e("Frindadd", Gson().toJson(response.body()!!))
                             Toast.makeText(context, "친구가 추가되었습니다.", Toast.LENGTH_SHORT).show()
                         }
-                    }else if(response!!.code() == 404){
+                    } else if (response!!.code() == 404) {
+                        Toast.makeText(context, "친구가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 409) {
                         Toast.makeText(context, "이미 추가 된 친구입니다.", Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(context, "알 수 없는 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()

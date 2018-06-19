@@ -6,9 +6,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.view.GravityCompat
+import android.support.v7.app.ActionBarDrawerToggle
 import com.example.pc.chatting.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.pc.chatting.util.RetrofitUtil
@@ -19,6 +22,7 @@ import com.example.pc.chatting.data.SignUp
 import com.example.pc.chatting.data.Token
 import com.example.pc.chatting.data.User
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.app_bar_layout.*
 import ninja.sakib.pultusorm.core.PultusORM
 
 
@@ -33,6 +37,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.e("starttoken",token)
+        setSupportActionBar(mainToolbar)
+        var toggle = ActionBarDrawerToggle(this,mainDrawer,mainToolbar,R.string.opentext,R.string.closetext)
+        mainDrawer.addDrawerListener(toggle)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toggle.isDrawerIndicatorEnabled = false
+        supportActionBar?.setHomeButtonEnabled(true)
+
+        toggle.toolbarNavigationClickListener = View.OnClickListener{
+            mainDrawer.openDrawer(GravityCompat.START)
+        }
+        toggle.setHomeAsUpIndicator(R.drawable.drawericon)
+
         val appPath: String = applicationContext.filesDir.absolutePath
         pultusORM = PultusORM("user.db", appPath)
         var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
@@ -50,21 +66,21 @@ class MainActivity : AppCompatActivity() {
             name = user.name
             phone = user.phone
             img = user.profileImg
-            mainEmail.text = mainEmail.text.toString() + email
-            mainName.text = mainName.text.toString() + name
-            mainPhone.text = mainPhone.text.toString() + phone
-            Glide.with(this).load(img).into(mainImg)
+//            mainEmail.text = mainEmail.text.toString() + email
+//            mainName.text = mainName.text.toString() + name
+//            mainPhone.text = mainPhone.text.toString() + phone
+//            Glide.with(this).load(img).into(mainImg)
             }
-
-        logout.setOnClickListener {
-            editor.remove("token")
-            editor.commit()
-            token = ""
-            pultusORM.drop(User())
-            Log.e("endtoken",token)
-            var intent = Intent(this,SelectActivity::class.java)
-            startActivity(intent)
-        }
+//
+//        logout.setOnClickListener {
+//            editor.remove("token")
+//            editor.commit()
+//            token = ""
+//            pultusORM.drop(User())
+//            Log.e("endtoken",token)
+//            var intent = Intent(this,SelectActivity::class.java)
+//            startActivity(intent)
+//        }
 
         frindAddFab.setOnClickListener {
             var intent = Intent(this,AddFrindActivity::class.java)

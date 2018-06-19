@@ -33,8 +33,6 @@ class LoginActivity : AppCompatActivity() {
         val appPath: String = applicationContext.filesDir.absolutePath
         pultusORM = PultusORM("user.db", appPath)
 
-
-
         signUpBtn.setOnClickListener {
             var intent = Intent(this, SignUpOneActivity::class.java)
             startActivity(intent)
