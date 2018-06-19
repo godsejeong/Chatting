@@ -7,7 +7,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     >
-    
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/frindAddFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="10dp"
+        android:src="@drawable/add"
+        />
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/mainDrawer"
         android:layout_width="match_parent"
@@ -102,13 +111,6 @@
 
     </FrameLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/frindAddFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="10dp"
-        android:src="@drawable/add"
-        />
+
 
 </android.support.design.widget.CoordinatorLayout>

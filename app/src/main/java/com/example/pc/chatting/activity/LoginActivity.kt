@@ -64,8 +64,6 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("Retrofit", response!!.code().toString())
                     if (response!!.code() == 200) {
                         response.body()?.let {
-
-
                             var pres : SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
                             token = response.body()!!.token
                             var editer : SharedPreferences.Editor = pres.edit()
@@ -73,7 +71,6 @@ class LoginActivity : AppCompatActivity() {
                             editer.commit()
                             Log.e("토큰",token)
                             userToken()
-                            Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
 
                             //토큰값 저장
                         }
@@ -102,7 +99,9 @@ class LoginActivity : AppCompatActivity() {
                     if (response!!.code() == 200) {
                         response.body()?.let {
                             pultusORM.save(response!!.body()!!.user!!)
+                            finish()
                             startActivity(intent)
+                            Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         Toast.makeText(applicationContext, "알 수 없는 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
