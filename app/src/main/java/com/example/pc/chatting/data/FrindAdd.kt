@@ -1,3 +1,5 @@
 package com.example.pc.chatting.data
 
-class FrindAdd(var list : String = "")
+class FrindAdd{
+   val list : ArrayList<FrindGetData>? = null
+}

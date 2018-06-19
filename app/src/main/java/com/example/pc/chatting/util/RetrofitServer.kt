@@ -45,5 +45,7 @@ interface RetrofitServer {
     fun Useradd(@Field("token") token : String,
                 @Field("email") email : String) : Call<FrindAdd>
 
-
+    @FormUrlEncoded
+    @POST("/chk")
+    fun FrindList(@Field("token") token : String) : Call<FrindAdd>
 }

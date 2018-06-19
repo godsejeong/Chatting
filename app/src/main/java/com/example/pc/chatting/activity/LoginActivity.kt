@@ -84,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<SignIn>?, t: Throwable?) {
                     Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
                     Log.e("retrofit Error", t!!.message)
-                    if(t!!.message!!.contains("No address associated with hostname")){
+                    if(t.message!!.contains("No address associated with hostname")){
                         Toast.makeText(applicationContext, "인터넷이 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -98,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
                     if (response!!.code() == 200) {
                         response.body()?.let {
-                            pultusORM.save(response!!.body()!!.user!!)
+                            pultusORM.save(response.body()!!.user!!)
                             finish()
                             startActivity(intent)
                             Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()

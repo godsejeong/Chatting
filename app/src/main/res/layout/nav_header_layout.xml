@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/nav_header"
               android:layout_width="match_parent"
               android:layout_height="160dp"
@@ -16,6 +17,7 @@
         android:id="@+id/navImage"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        app:civ_border_color="#00ff0000"
         android:src="@mipmap/ic_launcher" />
 
     <TextView

@@ -72,7 +72,9 @@ class AddFrindActivity : AppCompatActivity() {
         Glide.with(this).load(img).into(frindImg)
         frindLayout.visibility = View.VISIBLE
         frindBtn.setOnClickListener{
-            val res: Call<FrindAdd> = RetrofitUtil.postService.Useradd(email,token)
+            Log.e("email__",email)
+            Log.e("token__",token)
+            val res: Call<FrindAdd> = RetrofitUtil.postService.Useradd(token,email)
             res.enqueue(object : Callback<FrindAdd> {
                 override fun onResponse(call: Call<FrindAdd>?, response: Response<FrindAdd>?) {
                     if (response!!.code() == 200) {
