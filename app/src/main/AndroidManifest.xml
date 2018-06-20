@@ -40,6 +40,7 @@
             android:theme="@android:style/Theme.Dialog">
         </activity>
 
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.pc.provider"
@@ -51,14 +52,7 @@
         </provider>
 
         <activity
-            android:name=".activity.addfrindacitvity"
-            android:label="@string/title_activity_addfrindacitvity"
-            android:theme="@style/AppTheme">
-        </activity>
-        <activity
-            android:name=".activity.AddFrindActivity"
-            android:label="@string/title_activity_add_frind"
-            android:theme="@style/AppTheme">
+            android:name=".activity.AddFrindActivity">
         </activity>
         <activity android:name=".activity.SelectActivity">
         </activity>
@@ -70,12 +64,7 @@
         </activity>
         <activity android:name=".Drawer_Activity">
         </activity>
-        <activity android:name=".activity.ChatActivity">
-        </activity>
-        <activity
-            android:name=".test"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme">
+        <activity android:name=".activity.ChatActivity"  android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
     </application>
 

@@ -1,7 +1,9 @@
 package com.example.pc.chatting.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -9,9 +11,16 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.pc.chatting.R
-import com.example.pc.chatting.data.FrindGetData
+import com.example.pc.chatting.activity.ChatActivity
+import com.example.pc.chatting.data.FrindAdd
 import com.example.pc.chatting.data.FrindItemData
+import com.example.pc.chatting.data.RoomId
+import com.example.pc.chatting.util.RetrofitUtil
 import com.mikhaellopez.circularimageview.CircularImageView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 
 class RecyclerAdapter(frinditems : ArrayList<FrindItemData>,context : Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
@@ -35,6 +44,7 @@ class RecyclerAdapter(frinditems : ArrayList<FrindItemData>,context : Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+        var intent = Intent(adapterContext,ChatActivity::class.java)
         var items = frinditems[position]
         holder!!.name.text = items.name
         Glide.with(adapterContext).load(items.img).into(holder.img)
@@ -43,8 +53,38 @@ class RecyclerAdapter(frinditems : ArrayList<FrindItemData>,context : Context) :
         holder!!.notice.text = items.notice.toString()
 
         holder.itemView.setOnClickListener {
-            Toast.makeText(adapterContext,items.name + "님을 클릭하셨습니다.",Toast.LENGTH_SHORT).show()
+
+            intent.putExtra("room",room(items.email))
+            intent.putExtra("name",items.name)
+            intent.putExtra("img",items.img)
+            adapterContext!!.startActivity(intent)
         }
+    }
+
+    fun room(email : String) : String{
+        Log.e("emailemail",email)
+        val res: Call<RoomId> = RetrofitUtil.postService.FrindRoom(email)
+        var returnString = ""
+
+        res.enqueue(object : Callback<RoomId>{
+
+            override fun onResponse(call: Call<RoomId>?, response: Response<RoomId>?) {
+                if(response!!.code() == 200){
+                    response.body()?.let {
+                        returnString = response.body()!!.roomID
+                        Log.e("returnString",returnString)
+                    }
+                }else{
+                    Log.e("adapterserver","에러")
+                }
+            }
+            override fun onFailure(call: Call<RoomId>?, t: Throwable?) {
+               Log.e("servererror",t!!.message)
+               Toast.makeText(adapterContext, "Sever Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        return returnString
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

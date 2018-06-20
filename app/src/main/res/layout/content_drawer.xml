@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="10dp"
-            android:src="@drawable/add"
+            app:backgroundTint="#0087d6"
+            android:src="@drawable/addfrindicon"
             />
 
     </FrameLayout>

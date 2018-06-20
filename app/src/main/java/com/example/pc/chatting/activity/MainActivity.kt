@@ -35,33 +35,33 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var pultusORM : PultusORM
+    lateinit var pultusORM: PultusORM
     var token: String = ""
     var img: String = ""
     var email: String = ""
     var name: String = ""
     var phone: String = ""
-    var frindname : String = ""
-    var frindImg : String = ""
+    var frindname: String = ""
+    var frindImg: String = ""
 
-    var items : ArrayList<FrindItemData> = ArrayList()
-    var responsedata : ArrayList<FrindGetData> = ArrayList()
+    var items: ArrayList<FrindItemData> = ArrayList()
+    var responsedata: ArrayList<FrindGetData> = ArrayList()
 
-    var adapterContext : Context = this
+    var adapterContext: Context = this
     var layoutmanager = LinearLayoutManager(this)
 
     var i = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.e("starttoken",token)
+        Log.e("starttoken", token)
         setSupportActionBar(mainToolbar)
 
         frindAddFab.setOnClickListener {
-            var intent = Intent(this,AddFrindActivity::class.java)
-            startActivityForResult(intent,100)
+            var intent = Intent(this, AddFrindActivity::class.java)
+            startActivityForResult(intent, 100)
         }
 
         mainRecyclerView.layoutManager = layoutmanager
@@ -73,10 +73,10 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         pultusORM = PultusORM("user.db", appPath)
         token = pres.getString("token", "")
 
-        var toggle = ActionBarDrawerToggle(this,mainDrawer,mainToolbar,R.string.opentext,R.string.closetext)
+        var toggle = ActionBarDrawerToggle(this, mainDrawer, mainToolbar, R.string.opentext, R.string.closetext)
         mainDrawer.addDrawerListener(toggle)
         toggle.isDrawerIndicatorEnabled = false
-        toggle.toolbarNavigationClickListener = View.OnClickListener{
+        toggle.toolbarNavigationClickListener = View.OnClickListener {
             mainDrawer.openDrawer(GravityCompat.START)
         }
         toggle.setHomeAsUpIndicator(R.drawable.drawericon)
@@ -91,38 +91,38 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         var hearderText = header.findViewById(R.id.navName) as TextView
         var hearderImage = header.findViewById(R.id.navImage) as ImageView
 
-        navLogout.setOnMenuItemClickListener{
+        navLogout.setOnMenuItemClickListener {
             editor.remove("token")
             editor.commit()
             finish()
-            var intent = Intent(this,SelectActivity::class.java)
+            var intent = Intent(this, SelectActivity::class.java)
             startActivity(intent)
             token = ""
             pultusORM.drop(User())
         }
 
         val userList: List<Any> = pultusORM.find(User())
-          Log.e("suerList", userList.size.toString())
-        if(userList.isNotEmpty()){
-            var user= userList[userList.size - 1] as User
+        Log.e("suerList", userList.size.toString())
+        if (userList.isNotEmpty()) {
+            var user = userList[userList.size - 1] as User
             email = user.email
             name = user.name
             phone = user.phone
             img = user.profileImg
 
             navEmail.title = email
-            navPhone.title =  phone
+            navPhone.title = phone
             hearderText.text = name
 
             Glide.with(this).load(img).into(hearderImage)
-            }
+        }
 
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 100 && resultCode === Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
             bringList()
         }
     }
@@ -133,30 +133,32 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
     //서버연동
-    fun bringList(){
-        var adapter = RecyclerAdapter(items,adapterContext)
+    fun bringList() {
+        var adapter = RecyclerAdapter(items, adapterContext)
         val res: Call<FrindAdd> = RetrofitUtil.postService.FrindList(token)
         res.enqueue(object : Callback<FrindAdd> {
 
             override fun onResponse(call: Call<FrindAdd>?, response: Response<FrindAdd>?) {
-              if(response!!.code() == 200){
+                if (response!!.code() == 200) {
+                    response.body()?.let {
+                        Log.e("asdfdata", Gson().toJson(response.body()!!))
 
-                  Log.e("asdfdata",Gson().toJson(response.body()!!))
+                        var obj = JSONObject(Gson().toJson(response.body()!!))
+                        var title = obj.getJSONArray("list") as JSONArray
 
-                  var obj = JSONObject(Gson().toJson(response.body()!!))
-                  var title = obj.getJSONArray("list") as JSONArray
-
-                  for(i in 0 until  title.length()){
-                      var arr = title.getJSONObject(i) as JSONObject
-                      var name =  arr.getString("name") as String
-                      var profile =  arr.getString("profileImg") as String
-                    items.add(FrindItemData(name,profile,"친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()),0))
-                  }
-
-                  mainRecyclerView.adapter = adapter
-              }else if(response.code() == 404){
-                  Log.e("retrofit404",response.message())
-              }
+                        for (i in 0 until title.length()) {
+                            var arr = title.getJSONObject(i) as JSONObject
+                            var name = arr.getString("name") as String
+                            var profile = arr.getString("profileImg") as String
+                            var email = arr.getString("email") as String
+                            var phone = arr.getString("phone") as String
+                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()), 0))
+                        }
+                    }
+                    mainRecyclerView.adapter = adapter
+                } else if (response.code() == 404) {
+                    Log.e("retrofit404", response.message())
+                }
 
             }
 
