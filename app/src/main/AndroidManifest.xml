@@ -70,6 +70,13 @@
         </activity>
         <activity android:name=".Drawer_Activity">
         </activity>
+        <activity android:name=".activity.ChatActivity">
+        </activity>
+        <activity
+            android:name=".test"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

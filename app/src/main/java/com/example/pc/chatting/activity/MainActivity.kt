@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.ColorSpace
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -25,11 +24,10 @@ import com.example.pc.chatting.adapter.RecyclerAdapter
 import com.example.pc.chatting.data.*
 import com.example.pc.chatting.util.RetrofitUtil
 import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
+import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.content_drawer.*
 import org.json.JSONArray
 import org.json.JSONObject
-import org.json.simple.parser.JSONParser
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,7 +35,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var pultusORM : PultusORM
     var token: String = ""
@@ -60,15 +58,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         Log.e("starttoken",token)
         setSupportActionBar(mainToolbar)
-        mainRecyclerView.layoutManager = layoutmanager
-//        var adapter = RecyclerAdapter(items,this)
 
+        frindAddFab.setOnClickListener {
+            var intent = Intent(this,AddFrindActivity::class.java)
+            startActivityForResult(intent,100)
+        }
+
+        mainRecyclerView.layoutManager = layoutmanager
 
         var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
         val editor = pres.edit()
-
-
-
 
         val appPath: String = applicationContext.filesDir.absolutePath
         pultusORM = PultusORM("user.db", appPath)
@@ -118,10 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Glide.with(this).load(img).into(hearderImage)
             }
 
-        frindAddFab.setOnClickListener {
-            var intent = Intent(this,AddFrindActivity::class.java)
-            startActivityForResult(intent,100)
-        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -132,13 +128,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
-        Log.e("click","clickclick")
-        when(item.itemId){
-
-            R.id.nav_logout -> {
-            }
-        }
         mainDrawer.closeDrawer(GravityCompat.START)
         return true
     }
@@ -161,12 +150,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                       var arr = title.getJSONObject(i) as JSONObject
                       var name =  arr.getString("name") as String
                       var profile =  arr.getString("profileImg") as String
-                    items.add(FrindItemData(name,profile,"친구가 되었습니다.",SimpleDateFormat("a hh:mm").format(Date()),0))
+                    items.add(FrindItemData(name,profile,"친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()),0))
                   }
+
                   mainRecyclerView.adapter = adapter
               }else if(response.code() == 404){
-
+                  Log.e("retrofit404",response.message())
               }
+
             }
 
             override fun onFailure(call: Call<FrindAdd>?, t: Throwable?) {

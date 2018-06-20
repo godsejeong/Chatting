@@ -1,9 +1,16 @@
 <resources>
-    <string name="app_name">Chatting</string>
+    <string name="app_name">TimeStone</string>
     <string name="sing_name">User Name</string>
     <string name="rationale_camera">This app needs access to your camera so you can take pictures.</string>
     <string name="title_activity_addfrindacitvity">addfrindacitvity</string>
     <string name="title_activity_add_frind">AddFrindActivity</string>
     <string name="opentext">Open Drawar</string>
     <string name="closetext">Close Drawar</string>
+    <string name="title_activity_test">test</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -6,6 +6,7 @@ class FrindItemData(name : String,img : String, messge: String, time: String, no
     var notice : Int = 0
     var name : String = ""
     var img : String = ""
+
     init {
         this.messge = messge
         this.time = time
