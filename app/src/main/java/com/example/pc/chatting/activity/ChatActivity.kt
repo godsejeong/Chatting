@@ -1,5 +1,6 @@
 package com.example.pc.chatting.activity
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.example.pc.chatting.data.User
 import com.example.pc.chatting.util.RetrofitUtil
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat.*
 import ninja.sakib.pultusorm.core.PultusORM
 //import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
@@ -18,6 +20,10 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import com.google.gson.reflect.TypeToken
+import android.content.SharedPreferences
+
+
 
 
 class ChatActivity : AppCompatActivity() {
@@ -29,9 +35,7 @@ class ChatActivity : AppCompatActivity() {
     var myname: String = ""
     var room: String = ""
     var senditems: ArrayList<ChatSendData> = ArrayList()
-//    var reciveitems : ArrayList<ChatReciveData> = ArrayList()
     private lateinit var sendadapter: ChatSendAdapter
-//    private lateinit var reciveadapter: ChatReciveAdapter
     var layoutmanager = LinearLayoutManager(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +47,7 @@ class ChatActivity : AppCompatActivity() {
         chatRecyclerView.layoutManager = layoutmanager
 
         pultusORM = PultusORM("user.db", appPath)
-
+        loadNowData()
         sendadapter = ChatSendAdapter(senditems,this)
         chatRecyclerView.adapter = sendadapter
 
@@ -70,6 +74,7 @@ class ChatActivity : AppCompatActivity() {
             soket.emit("send message", myname, chatText.text, room)
             senditems.add(ChatSendData(chatText.text.toString(), date,"","","","",0))
             sendadapter.notifyDataSetChanged()
+            saveNowData()
         }
     }
 
@@ -82,7 +87,26 @@ class ChatActivity : AppCompatActivity() {
             message = data.getString("index")
             senditems.add(ChatSendData("","",username,message,date,img,1))
             sendadapter.notifyDataSetChanged()
+            saveNowData()
             Log.e("username",img)
         }
+    }
+
+    fun loadNowData() {
+        val gson = Gson()
+        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
+        val json = pref.getString("save", "")
+        var items: ArrayList<ChatSendData>?
+        items = gson.fromJson<ArrayList<ChatSendData>>(json, object : TypeToken<ArrayList<ChatSendData>>(){}.type)
+        if (items != null) senditems.addAll(items)
+    }
+
+
+    fun saveNowData() { //items 안의 내용이 저장됨
+        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        val json = Gson().toJson(senditems)
+        editor.putString("save", json)
+        editor.commit()
     }
 }

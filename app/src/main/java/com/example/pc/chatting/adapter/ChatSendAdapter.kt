@@ -14,6 +14,12 @@ import com.bumptech.glide.Glide
 import com.example.pc.chatting.R
 import com.example.pc.chatting.data.ChatSendData
 import com.mikhaellopez.circularimageview.CircularImageView
+import com.google.gson.Gson
+import android.R.id.edit
+import android.content.SharedPreferences
+import android.content.Context.MODE_PRIVATE
+
+
 
 class ChatSendAdapter(items: ArrayList<ChatSendData>, context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var senditems: ArrayList<ChatSendData> = ArrayList()
@@ -85,4 +91,7 @@ class ChatSendAdapter(items: ArrayList<ChatSendData>, context: Context) : Recycl
         var resivemessge = itemView.findViewById(R.id.chatresivemessge) as TextView
         var resivetime = itemView.findViewById(R.id.chatresivetime) as TextView
     }
+
+
+
 }
