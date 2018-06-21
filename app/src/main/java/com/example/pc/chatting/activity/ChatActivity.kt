@@ -11,6 +11,7 @@ import com.example.pc.chatting.data.User
 import com.example.pc.chatting.util.RetrofitUtil
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat.*
 import ninja.sakib.pultusorm.core.PultusORM
 //import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
@@ -45,35 +46,31 @@ class ChatActivity : AppCompatActivity() {
         soket.on("receive message", OnMessage)
         soket.connect()
         val userList: List<Any> = pultusORM.find(User())
+
         if (userList.isNotEmpty()) {
             var user = userList[userList.size - 1] as User
             myname = user.name
         }
+
         chatSendBtn.setOnClickListener {
-            val data = JSONObject()
-            try {
-                data.put("name", myname)
-                data.put("index", chatText.text)
-                data.put("room", room)
-                soket.emit("send message",data)
-
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-
+            Log.e("chatonclick", myname)
+                soket.emit("send message", myname,chatText.text,room)
         }
-
     }
 
     private var OnMessage = Emitter.Listener { args ->
         this.runOnUiThread {
-            var data = args[0].toString()
-            Log.e("asdfjson",data)
-            val json = JSONParser().parse(data) as JSONObject
-            username = json .getString("name")
-            message = json .getString("index")
-            Log.e("username",username)
-            Log.e("message",message)
+            try {
+                Log.e("recivemassge", "in")
+                var data = args[0]
+                var json = Gson().toJson(data)
+                Log.e("asdfjson", data.toString())
+
+                Log.e("username", username)
+                Log.e("message", message)
+            } catch (e : ClassCastException) {
+
+            }
         }
     }
 }
