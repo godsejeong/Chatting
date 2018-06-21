@@ -16,6 +16,7 @@ import com.example.pc.chatting.data.FrindAdd
 import com.example.pc.chatting.data.FrindItemData
 import com.example.pc.chatting.data.RoomId
 import com.example.pc.chatting.util.RetrofitUtil
+import com.github.nkzawa.socketio.client.IO
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,10 +24,9 @@ import retrofit2.Response
 import java.util.*
 
 
-class RecyclerAdapter(frinditems : ArrayList<FrindItemData>,context : Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
-
-    var frinditems : ArrayList<FrindItemData> = ArrayList()
-    var adapterContext : Context? = null
+class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+    var frinditems: ArrayList<FrindItemData> = ArrayList()
+    var adapterContext: Context? = null
 
     init {
         this.frinditems = frinditems
@@ -44,55 +44,45 @@ class RecyclerAdapter(frinditems : ArrayList<FrindItemData>,context : Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        var intent = Intent(adapterContext,ChatActivity::class.java)
+        var intent = Intent(adapterContext, ChatActivity::class.java)
         var items = frinditems[position]
         holder!!.name.text = items.name
         Glide.with(adapterContext).load(items.img).into(holder.img)
         holder!!.messge.text = items.messge
         holder!!.time.text = items.time
         holder!!.notice.text = items.notice.toString()
+        var returnString = ""
+        val res: Call<RoomId> = RetrofitUtil.postService.FrindRoom(items.email)
+        res.enqueue(object : Callback<RoomId> {
 
+            override fun onResponse(call: Call<RoomId>?, response: Response<RoomId>?) {
+                if (response!!.code() == 200) {
+                    returnString = response.body()!!.roomID
+                    Log.e("returnString", returnString)
+                } else {
+                    Log.e("adapterserver", "에러")
+                }
+            }
+
+            override fun onFailure(call: Call<RoomId>?, t: Throwable?) {
+                Log.e("servererror", t!!.message)
+            }
+        })
+        Log.e("recyclerroom", returnString)
         holder.itemView.setOnClickListener {
-
-            intent.putExtra("room",room(items.email))
-            intent.putExtra("name",items.name)
-            intent.putExtra("img",items.img)
+            intent.putExtra("room",returnString)
+            intent.putExtra("name", items.name)
+            intent.putExtra("img", items.img)
             adapterContext!!.startActivity(intent)
         }
     }
 
-    fun room(email : String) : String{
-        Log.e("emailemail",email)
-        val res: Call<RoomId> = RetrofitUtil.postService.FrindRoom(email)
-        var returnString = ""
-
-        res.enqueue(object : Callback<RoomId>{
-
-            override fun onResponse(call: Call<RoomId>?, response: Response<RoomId>?) {
-                if(response!!.code() == 200){
-                    response.body()?.let {
-                        returnString = response.body()!!.roomID
-                        Log.e("returnString",returnString)
-                    }
-                }else{
-                    Log.e("adapterserver","에러")
-                }
-            }
-            override fun onFailure(call: Call<RoomId>?, t: Throwable?) {
-               Log.e("servererror",t!!.message)
-               Toast.makeText(adapterContext, "Sever Error", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        return returnString
-    }
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name : TextView = itemView.findViewById(R.id.frindItemName) as TextView
-        var img : CircularImageView = itemView.findViewById(R.id.frindItemProfile) as CircularImageView
-        var messge : TextView = itemView.findViewById(R.id.frindItemMessge) as TextView
-        var time : TextView = itemView.findViewById(R.id.frindItemTime) as TextView
-        var notice : TextView = itemView.findViewById(R.id.frindItemNotice) as TextView
+        var name: TextView = itemView.findViewById(R.id.frindItemName) as TextView
+        var img: CircularImageView = itemView.findViewById(R.id.frindItemProfile) as CircularImageView
+        var messge: TextView = itemView.findViewById(R.id.frindItemMessge) as TextView
+        var time: TextView = itemView.findViewById(R.id.frindItemTime) as TextView
+        var notice: TextView = itemView.findViewById(R.id.frindItemNotice) as TextView
 
     }
 

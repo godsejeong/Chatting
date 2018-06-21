@@ -64,7 +64,7 @@
         </activity>
         <activity android:name=".Drawer_Activity">
         </activity>
-        <activity android:name=".activity.ChatActivity"  android:windowSoftInputMode="adjustPan|stateHidden">
+        <activity android:name=".activity.ChatActivity"  android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
     </application>
 

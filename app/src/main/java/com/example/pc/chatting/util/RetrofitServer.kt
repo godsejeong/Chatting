@@ -53,5 +53,4 @@ interface RetrofitServer {
     @POST("/room")
     fun FrindRoom(@Field("email") email : String) : Call<RoomId>
 
-
 }

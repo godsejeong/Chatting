@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -209,12 +210,16 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
         if(requestCode == 300) {
             gallery()
         }
+
         if(requestCode == 200){
             camera()
         }
     }
+
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) {
         Toast.makeText(this,"권한이 없습니다", Toast.LENGTH_SHORT).show()
     }
 
 }
+
+

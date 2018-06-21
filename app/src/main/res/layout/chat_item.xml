@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:gravity="right"
+    android:id="@+id/chatlayout"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/chatitemtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="오후 12 :14"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:id="@+id/chatitemmessge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="안녕"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:background="@drawable/chatbackground"
+        android:layout_marginRight="13dp"
+        />
+
+</LinearLayout>

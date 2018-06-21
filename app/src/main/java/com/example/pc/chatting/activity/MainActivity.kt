@@ -116,8 +116,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             Glide.with(this).load(img).into(hearderImage)
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -152,14 +150,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             var profile = arr.getString("profileImg") as String
                             var email = arr.getString("email") as String
                             var phone = arr.getString("phone") as String
-                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()), 0))
+                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.",SimpleDateFormat("a hh:mm").format(Date()), 0))
                         }
                     }
                     mainRecyclerView.adapter = adapter
                 } else if (response.code() == 404) {
                     Log.e("retrofit404", response.message())
                 }
-
             }
 
             override fun onFailure(call: Call<FrindAdd>?, t: Throwable?) {
