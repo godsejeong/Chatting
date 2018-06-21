@@ -1,29 +1,20 @@
 package com.example.pc.chatting.activity
 
-import android.app.Activity
-import android.app.PendingIntent.getActivity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.widget.Adapter
 import com.example.pc.chatting.R
-import com.example.pc.chatting.adapter.ChatListAdapter
-import com.example.pc.chatting.data.ChatData
-import com.example.pc.chatting.data.ChatMyData
+import com.example.pc.chatting.adapter.ChatSendAdapter
+import com.example.pc.chatting.data.ChatSendData
 import com.example.pc.chatting.data.User
 import com.example.pc.chatting.util.RetrofitUtil
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.content_drawer.*
 import ninja.sakib.pultusorm.core.PultusORM
 //import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
-import org.json.JSONException
 import org.json.JSONObject
-import org.json.simple.parser.JSONParser
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,9 +28,10 @@ class ChatActivity : AppCompatActivity() {
     var message: String = ""
     var myname: String = ""
     var room: String = ""
-    var items: ArrayList<ChatMyData> = ArrayList()
-    var senditems : ArrayList<ChatData> = ArrayList()
-    lateinit var adapter: ChatListAdapter
+    var senditems: ArrayList<ChatSendData> = ArrayList()
+//    var reciveitems : ArrayList<ChatReciveData> = ArrayList()
+    private lateinit var sendadapter: ChatSendAdapter
+//    private lateinit var reciveadapter: ChatReciveAdapter
     var layoutmanager = LinearLayoutManager(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +40,12 @@ class ChatActivity : AppCompatActivity() {
         var soket = IO.socket(RetrofitUtil.URL)
         val appPath: String = applicationContext.filesDir.absolutePath
 
-        chatListView.layoutManager = layoutmanager
+        chatRecyclerView.layoutManager = layoutmanager
 
         pultusORM = PultusORM("user.db", appPath)
 
-        adapter = ChatListAdapter(items,senditems, this, R.layout.chat_item)
-        chatListView.adapter = adapter
+        sendadapter = ChatSendAdapter(senditems,this)
+        chatRecyclerView.adapter = sendadapter
 
         name = intent.getStringExtra("name")
         img = intent.getStringExtra("img")
@@ -76,23 +68,21 @@ class ChatActivity : AppCompatActivity() {
             Log.e("chatonclick", myname)
             var date = SimpleDateFormat("a hh:mm").format(Date())
             soket.emit("send message", myname, chatText.text, room)
-            items.add(ChatMyData(chatText.text.toString(), date))
-            adapter.notifyDataSetChanged()
+            senditems.add(ChatSendData(chatText.text.toString(), date,"","","","",0))
+            sendadapter.notifyDataSetChanged()
         }
     }
 
     private var OnMessage = Emitter.Listener { args ->
-        adapter = ChatListAdapter(items,senditems, this, R.layout.chat_item)
         this.runOnUiThread {
             var data = args[0] as JSONObject
             var date = SimpleDateFormat("a hh:mm").format(Date())
-            Log.e("asdfjson", data.toString())
+            Log.e("asdfjson",img)
             username = data.getString("name")
             message = data.getString("index")
-            senditems.add(ChatData(username,message,date,img))
-            adapter.notifyDataSetChanged()
-            Log.e("username", username)
-            Log.e("message", message)
+            senditems.add(ChatSendData("","",username,message,date,img,1))
+            sendadapter.notifyDataSetChanged()
+            Log.e("username",img)
         }
     }
 }

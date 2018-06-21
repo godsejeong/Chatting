@@ -23,7 +23,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/chatListView"
+        android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/textlayout"
@@ -34,8 +34,8 @@
         android:id="@+id/textlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
         android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark"
         android:orientation="horizontal"
         android:weightSum="10">
 
@@ -58,11 +58,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_weight="8"
-            android:paddingBottom="11dp"
             android:background="@color/colorPrimaryDark"
             android:hint="메시지"
-            android:textColorHint="@android:color/white"
-            android:paddingLeft="10dp"/>
+            android:paddingBottom="11dp"
+            android:paddingLeft="10dp"
+            android:textColorHint="@android:color/white"/>
 
         <LinearLayout
             android:layout_width="0dp"
