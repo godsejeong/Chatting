@@ -51,6 +51,16 @@ interface RetrofitServer {
 
     @FormUrlEncoded
     @POST("/room")
-    fun FrindRoom(@Field("email") email : String) : Call<RoomId>
+    fun FrindRoom(@Field("email") email : String,
+                  @Field("token") token : String) : Call<RoomId>
 
+    @FormUrlEncoded
+    @POST("/roomlist")
+    fun FrindRoomList(@Field("email") email : String,
+                  @Field("roomId") roomId : String) : Call<RoomId>
+
+    @FormUrlEncoded
+    @POST("/ischat")
+    fun IsChat(@Field("email") email : String,
+               @Field("token") token : String) : Call<IsChaData>
 }

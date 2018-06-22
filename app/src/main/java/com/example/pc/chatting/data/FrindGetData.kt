@@ -5,4 +5,5 @@ class FrindGetData{
     val email : String = ""
     val phone : String = ""
     val profileImg : String = ""
+    var isChat : Boolean? = null
 }

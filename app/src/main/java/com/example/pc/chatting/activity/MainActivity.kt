@@ -24,6 +24,7 @@ import com.example.pc.chatting.adapter.RecyclerAdapter
 import com.example.pc.chatting.data.*
 import com.example.pc.chatting.util.RetrofitUtil
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.content_drawer.*
 import org.json.JSONArray
@@ -65,7 +66,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         mainRecyclerView.layoutManager = layoutmanager
-
         var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
         val editor = pres.edit()
 
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.toolbarNavigationClickListener = View.OnClickListener {
             mainDrawer.openDrawer(GravityCompat.START)
         }
-        toggle.setHomeAsUpIndicator(R.drawable.drawericon)
+        toggle.setHomeAsUpIndicator(R.drawable.nav_drawer)
 
         bringList()
         var menu = nav_view.menu
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             var profile = arr.getString("profileImg") as String
                             var email = arr.getString("email") as String
                             var phone = arr.getString("phone") as String
-                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.",SimpleDateFormat("a hh:mm").format(Date()), 0))
+                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.",SimpleDateFormat("a hh:mm").format(Date()), 0,token))
                         }
                     }
                     mainRecyclerView.adapter = adapter
@@ -165,4 +165,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         })
     }
+//    fun loadNowData() {
+//        val gson = Gson()
+//        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
+//        val json = pref.getString("save", "")
+//        var item: ArrayList<FrindItemData>?
+//        chatRecyclerView.scrollToPosition(json.length)
+//        item = gson.fromJson<ArrayList<FrindItemData>>(json, object : TypeToken<ArrayList<FrindItemData>>(){}.type)
+//        if (item != null) {
+//            items.addAll(item)
+//        }
+//    }
+//
+//    fun saveNowData() { //items 안의 내용이 저장됨
+//        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
+//        val editor = pref.edit()
+//        val json = Gson().toJson(items)
+//        editor.putString("save", json)
+//        editor.commit()
+//    }
+
 }

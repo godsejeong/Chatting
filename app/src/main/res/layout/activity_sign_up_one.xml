@@ -16,12 +16,26 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/signupOneIcon"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12.8dp"
-            android:background="@drawable/signupone"/>
+            android:layout_marginRight="9dp"
+            >
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signupindexicon"/>
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signupindexemptyicon"/>
+
+
+        </RelativeLayout>
 
         <View
             android:layout_width="67dp"
@@ -30,11 +44,10 @@
             android:background="@android:color/white"/>
 
         <ImageView
-            android:id="@+id/signupTwoIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8.8dp"
-            android:background="@drawable/signuptwo"/>
+            android:background="@drawable/signupindexemptyicon"/>
 
         <View
             android:layout_width="67dp"
@@ -43,19 +56,18 @@
             android:background="@android:color/white"/>
 
         <ImageView
-            android:id="@+id/signupThreeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/signuptwo"/>
+            android:background="@drawable/signupindexemptyicon"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="50dp"
         android:layout_weight="6"
         android:gravity="center"
-        android:layout_marginTop="50dp"
         android:orientation="vertical"
         >
 

@@ -23,12 +23,11 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8.8dp"
-            android:background="@drawable/signuptwo"/>
+            android:background="@drawable/signupindexemptyicon"/>
 
         <View
             android:layout_width="67dp"
@@ -40,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8.3dp"
-            android:background="@drawable/signuptwo"/>
+            android:background="@drawable/signupindexemptyicon"/>
 
         <View
             android:layout_width="67dp"
@@ -48,11 +47,26 @@
             android:layout_marginRight="5.3dp"
             android:background="@android:color/white"/>
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5.5dp"
-            android:background="@drawable/signupone"/>
+            android:layout_marginRight="9dp"
+            >
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signupindexicon"/>
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signupindexemptyicon"/>
+
+
+        </RelativeLayout>
 
     </LinearLayout>
 

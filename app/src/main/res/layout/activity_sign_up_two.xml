@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8.8dp"
-            android:background="@drawable/signuplook"/>
+            android:background="@drawable/signupindexemptyicon"/>
 
         <View
             android:layout_width="67dp"
@@ -29,11 +29,26 @@
             android:layout_marginRight="7.8dp"
             android:background="@android:color/white"/>
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8.3dp"
-            android:background="@drawable/signupunlook"/>
+            android:layout_marginRight="9dp"
+            >
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signupindexicon"/>
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signupindexemptyicon"/>
+
+
+        </RelativeLayout>
         <View
             android:layout_width="67dp"
             android:layout_height="1dp"
@@ -43,7 +58,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/signuplook"/>
+            android:background="@drawable/signupindexemptyicon"/>
 
     </LinearLayout>
 
@@ -97,7 +112,6 @@
             android:textColor="@android:color/white"/>
 
         <Button
-
             android:id="@+id/signUpTwoNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

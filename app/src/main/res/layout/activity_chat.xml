@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".activity.ChatActivity">
 
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,17 +18,52 @@
             android:id="@+id/chatToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.AppBarOverlay">
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:gravity="center|left"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:background="@color/colorPrimaryDark">-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/chatBack"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:background="@drawable/backicon"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--/>                         -->
+
+        <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+            <!--android:layout_width="45dp"-->
+            <!--android:layout_height="45dp"-->
+            <!--android:id="@+id/chatProfile"-->
+            <!--android:background="@drawable/signupindexemptyicon"-->
+            <!--/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/chatName"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="이름">-->
+
+        <!--</TextView>-->
+
+    <!--</LinearLayout>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/textlayout"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        >
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
@@ -35,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
+        android:background="@android:color/white"
         android:orientation="horizontal"
         android:weightSum="10">
 
@@ -43,13 +79,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="6dp">
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/chatFileBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/addfileicon"/>
+                android:background="@drawable/chatmanu"/>
         </LinearLayout>
 
         <EditText
@@ -58,23 +94,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_weight="8"
-            android:background="@color/colorPrimaryDark"
             android:hint="메시지"
+            android:background="@android:color/white"
             android:paddingBottom="11dp"
             android:paddingLeft="10dp"
-            android:textColorHint="@android:color/white"/>
+            android:textColorHint="#575757"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="6dp">
+            android:padding="8dp">
 
             <Button
                 android:id="@+id/chatSendBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/addsendicon"/>
+                android:background="@drawable/sendicon"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
