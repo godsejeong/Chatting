@@ -1,3 +1,3 @@
 package com.example.pc.chatting.data
 
-class IsChaData(var isChat : Boolean)
+class IsChatData(val isChat : Boolean)

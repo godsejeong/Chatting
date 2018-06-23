@@ -41,13 +41,15 @@ class SplashActivity : AppCompatActivity() {
                     if (response!!.code() == 200) {
                         response.body()?.let {
                             Log.e("splash",Gson().toJson(response.body()!!.user))
-                            finish()
+
                             Toast.makeText(applicationContext, "자동로그인이 되었습니다.", Toast.LENGTH_SHORT).show()
                             startActivity(successintent)
+                            finish()
                             Log.e("auto", "자동로그인 완료")
                         }
                     } else {
                         startActivity(failintent)
+                        finish()
                         Log.e("auto", "자동로그인 비완료")
                     }
                 }

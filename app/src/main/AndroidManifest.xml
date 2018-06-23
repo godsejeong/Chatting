@@ -62,8 +62,6 @@
         </activity>
         <activity android:name=".activity.SignUpThreeActivity">
         </activity>
-        <activity android:name=".Drawer_Activity">
-        </activity>
         <activity android:name=".activity.ChatActivity"  android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
     </application>

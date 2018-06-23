@@ -13,10 +13,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.pc.chatting.R
 import com.example.pc.chatting.activity.ChatActivity
-import com.example.pc.chatting.data.FrindAdd
-import com.example.pc.chatting.data.FrindItemData
-import com.example.pc.chatting.data.IsChaData
-import com.example.pc.chatting.data.RoomId
+import com.example.pc.chatting.data.*
 import com.example.pc.chatting.util.RetrofitUtil
 import com.github.nkzawa.socketio.client.IO
 import com.mikhaellopez.circularimageview.CircularImageView
@@ -29,7 +26,7 @@ import java.util.*
 class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     var frinditems: ArrayList<FrindItemData> = ArrayList()
     var adapterContext: Context? = null
-
+    var isbool : Boolean? = null
     init {
         this.frinditems = frinditems
         this.adapterContext = context
@@ -54,14 +51,21 @@ class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : 
         holder!!.time.text = items.time
         holder!!.notice.text = items.notice.toString()
         var returnString = ""
+        var isbool: Boolean? = null
 
-        if (!Cheak.isChat(items.email,items.token)) {
-            Log.e("cheak","안녕")
-            returnString = Room.room(items.email, items.token)
-            dataSave(items.name,returnString)
-        }
+
+
+
+//        Log.e("testtest", ischat(items.email,items.token).toString())
+
+//        if (!isbool!!) {
+//            Log.e("cheak", "안녕")
+//            returnString = Room.room(items.email, items.token)
+//            dataSave(items.name, returnString)
+//        }
 
         Log.e("recyclerroom", returnString)
+
         holder.itemView.setOnClickListener {
             intent.putExtra("room", returnString)
             intent.putExtra("name", items.name)
@@ -70,60 +74,59 @@ class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : 
         }
     }
 
-    fun dataSave(name : String,room : String){
-        var pres : SharedPreferences = adapterContext!!.getSharedPreferences("pres", Context.MODE_PRIVATE)
-        var editer : SharedPreferences.Editor = pres.edit()
-        editer.putString(name,room)
+    fun dataSave(name: String, room: String) {
+        var pres: SharedPreferences = adapterContext!!.getSharedPreferences("pres", Context.MODE_PRIVATE)
+        var editer: SharedPreferences.Editor = pres.edit()
+        editer.putString(name, room)
         editer.commit()
     }
 
-    object Cheak{
-        var isbool : Boolean? = null
-        fun isChat(email: String, token: String) : Boolean{
-            val res : Call<IsChaData> = RetrofitUtil.postService.IsChat(email,token)
-            res.enqueue(object : Callback<IsChaData> {
-
-                override fun onResponse(call: Call<IsChaData>?, response: Response<IsChaData>?) {
+    fun ischat(email : String,token : String) : Boolean{
+        val res: Call<IsChatData> = RetrofitUtil.postService.Ischat(token,email)
+        res.enqueue(object : Callback<IsChatData> {
+                override fun onResponse(call: Call<IsChatData>?, response: Response<IsChatData>?) {
+                    Log.e("isfrindlist", response!!.code().toString())
                     if (response!!.code() == 200) {
                         isbool = response.body()!!.isChat
                         Log.e("returnString1234", isbool.toString())
-                    } else if(response!!.code() == 404){
+                    } else if (response!!.code() == 404) {
                         Log.e("adapterserver", "에러")
                     }
                 }
 
-                override fun onFailure(call: Call<IsChaData>?, t: Throwable?) {
-                    Log.e("adapterservererror", t!!.message)
-                }
-
-            })
-            return isbool!!
-        }
-    }
-
-    object Room {
-        var returnString = ""
-        fun room(email: String, token: String): String {
-            val res: Call<RoomId> = RetrofitUtil.postService.FrindRoom(email, token)
-
-            res.enqueue(object : Callback<RoomId> {
-
-                override fun onResponse(call: Call<RoomId>?, response: Response<RoomId>?) {
-                    if (response!!.code() == 200) {
-                        returnString = response.body()!!.roomID
-                        Log.e("returnString1234", returnString)
-                    } else {
-                        Log.e("adapterserver", "에러")
-                    }
-                }
-
-                override fun onFailure(call: Call<RoomId>?, t: Throwable?) {
+                override fun onFailure(call: Call<IsChatData>?, t: Throwable?) {
                     Log.e("adapterservererror", t!!.message)
                 }
             })
-            return returnString
-        }
+
+        return isbool!!
     }
+//
+//    class Room {
+//        companion object Room {
+//            var returnString = ""
+//            fun room(email: String, token: String): String {
+//                val res: Call<RoomId> = RetrofitUtil.postService.FrindRoom(email, token)
+//
+//                res.enqueue(object : Callback<RoomId> {
+//
+//                    override fun onResponse(call: Call<RoomId>?, response: Response<RoomId>?) {
+//                        if (response!!.code() == 200) {
+//                            returnString = response.body()!!.roomID
+//                            Log.e("returnString1234", returnString)
+//                        } else {
+//                            Log.e("adapterserver", "에러")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<RoomId>?, t: Throwable?) {
+//                        Log.e("adapterservererror", t!!.message)
+//                    }
+//                })
+//                return returnString
+//            }
+//        }
+//    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var name: TextView = itemView.findViewById(R.id.frindItemName) as TextView

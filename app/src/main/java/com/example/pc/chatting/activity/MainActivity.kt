@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var adapterContext: Context = this
     var layoutmanager = LinearLayoutManager(this)
 
+    var isbool : Boolean? = null
+
     var i = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.setHomeAsUpIndicator(R.drawable.nav_drawer)
 
         bringList()
+        
         var menu = nav_view.menu
         var navPhone = menu.findItem(R.id.nav_phone)
         var navEmail = menu.findItem(R.id.nav_email)
@@ -130,9 +133,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+
     //서버연동
     fun bringList() {
         var adapter = RecyclerAdapter(items, adapterContext)
+        mainRecyclerView.adapter = adapter
         val res: Call<FrindAdd> = RetrofitUtil.postService.FrindList(token)
         res.enqueue(object : Callback<FrindAdd> {
 
@@ -143,17 +148,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                         var obj = JSONObject(Gson().toJson(response.body()!!))
                         var title = obj.getJSONArray("list") as JSONArray
-
                         for (i in 0 until title.length()) {
+
                             var arr = title.getJSONObject(i) as JSONObject
                             var name = arr.getString("name") as String
                             var profile = arr.getString("profileImg") as String
                             var email = arr.getString("email") as String
                             var phone = arr.getString("phone") as String
-                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.",SimpleDateFormat("a hh:mm").format(Date()), 0,token))
+                            ischat(email,token)
+                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.",SimpleDateFormat("a hh:mm").format(Date()), 0,isbool!!,token))
                         }
+                        adapter.notifyDataSetChanged()
                     }
-                    mainRecyclerView.adapter = adapter
+                    adapter.notifyDataSetChanged()
                 } else if (response.code() == 404) {
                     Log.e("retrofit404", response.message())
                 }
@@ -165,6 +172,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         })
     }
+
+    fun ischat(email : String,token : String){
+        val res: Call<IsChatData> = RetrofitUtil.postService.Ischat(token,email)
+        res.enqueue(object : Callback<IsChatData> {
+            override fun onResponse(call: Call<IsChatData>?, response: Response<IsChatData>?) {
+                Log.e("채팅","들어옴")
+                if (response!!.code() == 200) {
+                    isbool = response.body()!!.isChat
+                    Log.e("채팅내역", isbool.toString())
+                } else {
+                    Log.e("채팅추소", isbool.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<IsChatData>?, t: Throwable?) {
+                Log.e("retrofit Error!", t!!.message)
+                Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 //    fun loadNowData() {
 //        val gson = Gson()
 //        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
