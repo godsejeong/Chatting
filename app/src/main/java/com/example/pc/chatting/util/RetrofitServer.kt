@@ -26,7 +26,7 @@ interface RetrofitServer {
                @Part("passwd") passwd: String,
                @Part("name") name: String,
                @Part("phone") phone: String,
-               @Part profileImg: MultipartBody.Part): Call<SignUp>
+               @Part profileImg : MultipartBody.Part) : Call<SignUp>
 
 
     @GET("/auto/{token}")
@@ -41,6 +41,11 @@ interface RetrofitServer {
     @POST("/add")
     fun Useradd(@Field("token") token: String,
                 @Field("email") email: String): Call<FrindAdd>
+
+    @FormUrlEncoded
+    @POST("/ischat")
+    fun Ischat(@Field("token") token : String,
+               @Field("email") email : String) : Call<IsChatData>
 
     @FormUrlEncoded
     @POST("/chk")
@@ -60,5 +65,12 @@ interface RetrofitServer {
     @POST("/roomchk")
     fun RoomCheak(@Field("email") email: String,
                   @Field("token") token: String): Call<RoomId>
+
+
+    @FormUrlEncoded
+    @POST("/roomlist")
+    fun FrindRoomList(@Field("email") email : String,
+                  @Field("roomId") roomId : String) : Call<RoomId>
+
 
 }

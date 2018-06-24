@@ -17,8 +17,7 @@
         android:id="@+id/navImage"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:civ_border_color="#00ff0000"
-        android:src="@mipmap/ic_launcher" />
+        app:civ_border_color="#00ff0000" />
 
     <TextView
         android:id="@+id/navName"

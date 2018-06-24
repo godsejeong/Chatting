@@ -15,7 +15,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/splashicon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -61,8 +61,6 @@
         <activity android:name=".activity.SignUpTwoActivity">
         </activity>
         <activity android:name=".activity.SignUpThreeActivity">
-        </activity>
-        <activity android:name=".Drawer_Activity">
         </activity>
         <activity android:name=".activity.ChatActivity"  android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>

@@ -25,6 +25,7 @@ import com.example.pc.chatting.data.*
 import com.example.pc.chatting.util.IsChat
 import com.example.pc.chatting.util.RetrofitUtil
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.content_drawer.*
 import org.json.JSONArray
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var adapterContext: Context = this
     var layoutmanager = LinearLayoutManager(this)
 
+    var isbool: Boolean? = null
 
     var i = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,11 +67,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         frindAddFab.setOnClickListener {
             var intent = Intent(this, AddFrindActivity::class.java)
-            startActivityForResult(intent,100)
+            startActivityForResult(intent, 100)
         }
 
         mainRecyclerView.layoutManager = layoutmanager
-
         var pres: SharedPreferences = getSharedPreferences("pres", Context.MODE_PRIVATE)
         val editor = pres.edit()
 
@@ -86,6 +87,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.setHomeAsUpIndicator(R.drawable.nav_drawer)
 
         bringList()
+
         var menu = nav_view.menu
 //        var navPhone = menu.findItem(R.id.nav_phone)
 //        var navEmail = menu.findItem(R.id.nav_email)
@@ -125,8 +127,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
-            var bl  = data!!.getStringExtra("frind")
-            if(bl == "OK") {
+            var bl = data!!.getStringExtra("frind")
+            if (bl == "OK") {
                 items.clear()
                 Log.e("mainfrind", data.toString())
                 bringList()
@@ -139,9 +141,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+
     //서버연동
     fun bringList() {
         var adapter = RecyclerAdapter(items, adapterContext)
+        mainRecyclerView.adapter = adapter
         val res: Call<FrindAdd> = RetrofitUtil.postService.FrindList(token)
         res.enqueue(object : Callback<FrindAdd> {
 
@@ -152,19 +156,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                         var obj = JSONObject(Gson().toJson(response.body()!!))
                         var title = obj.getJSONArray("list") as JSONArray
-
                         for (i in 0 until title.length()) {
+
                             var arr = title.getJSONObject(i) as JSONObject
                             var name = arr.getString("name") as String
                             var profile = arr.getString("profileImg") as String
                             var email = arr.getString("email") as String
                             var phone = arr.getString("phone") as String
-                            var ischat = IsChat(email,token)
+                            var ischat = IsChat(email, token)
                             ischat.start()
                             ischat.join()
                             var chat = ischat.ischat()
                             Log.e("채팅add", chat.toString())
-                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()), token,chat,0))
+                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()), token, chat, 0))
                         }
                         mainRecyclerView.adapter = adapter
                     }

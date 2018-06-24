@@ -23,7 +23,11 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
+<<<<<<< HEAD
                                                 <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_send_black_24dp.xml" />
+=======
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_keyboard_backspace_black_24dp.xml" />
+>>>>>>> 56ce1c9bd2daf79ab9fc3818deaeb58d390ea6a1
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +38,11 @@
                                   <option name="values">
                                     <map>
                                       <entry key="imageAsset" value="C:\Users\pc\Downloads\camera_2018-06-18\drawable-hdpi\camera.png" />
+<<<<<<< HEAD
                                       <entry key="outputName" value="send_messge_icon" />
+=======
+                                      <entry key="outputName" value="backicon" />
+>>>>>>> 56ce1c9bd2daf79ab9fc3818deaeb58d390ea6a1
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="575757" />
                                     </map>

@@ -23,6 +23,11 @@ import kotlin.collections.ArrayList
 import com.google.gson.reflect.TypeToken
 import android.content.SharedPreferences
 import android.widget.Toast
+import kotlinx.android.synthetic.main.content_drawer.*
+import android.R.attr.data
+import android.widget.AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL
+
+
 
 
 class ChatActivity : AppCompatActivity() {
@@ -37,28 +42,35 @@ class ChatActivity : AppCompatActivity() {
     var soket = IO.socket(RetrofitUtil.URL)
     var senditems: ArrayList<ChatSendData> = ArrayList()
     private lateinit var sendadapter: ChatSendAdapter
+
     var layoutmanager = LinearLayoutManager(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
         setSupportActionBar(chatToolbar)
         val appPath: String = applicationContext.filesDir.absolutePath
+        setSupportActionBar(chatToolbar)
 
         chatRecyclerView.scrollToPosition(senditems.size)
-        chatRecyclerView.layoutManager = layoutmanager
 
+        chatRecyclerView.layoutManager = layoutmanager
         pultusORM = PultusORM("user.db", appPath)
-        sendadapter = ChatSendAdapter(senditems, this)
+
+        sendadapter = ChatSendAdapter(senditems,this)
         chatRecyclerView.adapter = sendadapter
-        email = intent.getStringExtra("email")
+
+        Log.e("chatlodeindex",senditems.size.toString())
         name = intent.getStringExtra("name")
         img = intent.getStringExtra("img")
         room = intent.getStringExtra("room")
+        email = intent.getStringExtra("email")
         Log.e("chatroom", room)
         supportActionBar!!.title = name
 
         loadNowData(email)
-        soket.emit("join room", name, room)
+
+        soket.emit("join room", name,room)
         soket.on("receive message", OnMessage)
         soket.connect()
 
@@ -82,12 +94,20 @@ class ChatActivity : AppCompatActivity() {
                 saveNowData(email)
                 chatText.setText("")
             }
+
+            chatRecyclerView.scrollToPosition(senditems.size)
+            Log.e("chatonclick", myname)
+            var date = SimpleDateFormat("a hh:mm").format(Date())
+            soket.emit("send message", myname, chatText.text, room)
+            senditems.add(ChatSendData(chatText.text.toString(), date,"","","","",0))
+            sendadapter.notifyDataSetChanged()
+//            saveNowData()
+            chatText.setText("")
         }
     }
 
     private var OnMessage = Emitter.Listener { args ->
         this.runOnUiThread {
-
             chatRecyclerView.scrollToPosition(senditems.size)
             var data = args[0] as JSONObject
             var date = SimpleDateFormat("a hh:mm").format(Date())
@@ -124,4 +144,26 @@ class ChatActivity : AppCompatActivity() {
         editor.putString("save", json)
         editor.commit()
     }
+
+
+//    fun loadNowData() {
+//        val gson = Gson()
+//        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
+//        val json = pref.getString("save", "")
+//        var items: ArrayList<ChatSendData>?
+//        chatRecyclerView.scrollToPosition(json.length)
+//        items = gson.fromJson<ArrayList<ChatSendData>>(json, object : TypeToken<ArrayList<ChatSendData>>(){}.type)
+//        if (items != null) {
+//            senditems.addAll(items)
+//            chatRecyclerView.scrollToPosition(senditems.size)
+//        }
+//    }
+//
+//    fun saveNowData() { //items 안의 내용이 저장됨
+//        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
+//        val editor = pref.edit()
+//        val json = Gson().toJson(senditems)
+//        editor.putString("save", json)
+//        editor.commit()
+//    }
 }
