@@ -4,7 +4,8 @@
     android:id="@+id/chatlayout"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:gravity="right"
     android:orientation="horizontal">
 

@@ -1,3 +1,3 @@
 package com.example.pc.chatting.data
 
-class RoomId(var roomID : String)
+class IsChatData(var isChat : Boolean)

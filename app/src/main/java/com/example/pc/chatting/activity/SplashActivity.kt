@@ -48,6 +48,7 @@ class SplashActivity : AppCompatActivity() {
                         }
                     } else {
                         startActivity(failintent)
+                        finish()
                         Log.e("auto", "자동로그인 비완료")
                     }
                 }

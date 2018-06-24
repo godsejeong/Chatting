@@ -15,7 +15,9 @@ import com.example.pc.chatting.activity.ChatActivity
 import com.example.pc.chatting.data.FrindAdd
 import com.example.pc.chatting.data.FrindItemData
 import com.example.pc.chatting.data.RoomId
+import com.example.pc.chatting.util.CreateRoom
 import com.example.pc.chatting.util.RetrofitUtil
+import com.example.pc.chatting.util.RoomCheak
 import com.github.nkzawa.socketio.client.IO
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
@@ -51,28 +53,47 @@ class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : 
         holder!!.messge.text = items.messge
         holder!!.time.text = items.time
         holder!!.notice.text = items.notice.toString()
-        var returnString = ""
-        val res: Call<RoomId> = RetrofitUtil.postService.FrindRoom(items.email)
-        res.enqueue(object : Callback<RoomId> {
+        var returnroom = ""
 
-            override fun onResponse(call: Call<RoomId>?, response: Response<RoomId>?) {
-                if (response!!.code() == 200) {
-                    returnString = response.body()!!.roomID
-                    Log.e("returnString", returnString)
-                } else {
-                    Log.e("adapterserver", "에러")
-                }
-            }
+        if (!items.ischat!!) {
+            Log.e("roominfomation",false.toString())
 
-            override fun onFailure(call: Call<RoomId>?, t: Throwable?) {
-                Log.e("servererror", t!!.message)
-            }
-        })
-        Log.e("recyclerroom", returnString)
+            val res: Call<RoomId> = RetrofitUtil.postService.FrindRoom(items.email,items.token)
+
+                res.enqueue(object : Callback<RoomId> {
+
+                    override fun onResponse(call: Call<RoomId>?, response: Response<RoomId>?) {
+                        if (response!!.code() == 200) {
+                            returnroom = response.body()!!.roomID
+                            Log.e("returnString1234",returnroom)
+                        } else {
+                            Log.e("adapterserver", "에러")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<RoomId>?, t: Throwable?) {
+                        Log.e("adapterservererror", t!!.message)
+                    }
+                })
+
+//            var createroom = CreateRoom(items.email, items.token)
+//            createroom.start()
+//            createroom.join()
+//            returnroom = createroom.room()
+        } else if (items.ischat!!) {
+            Log.e("roominfomation",true.toString())
+            var roomcheak = RoomCheak(items.email, items.token)
+            roomcheak.start()
+            roomcheak.join()
+            returnroom = roomcheak.cheak()
+        }
+
+        Log.e("roominfomation", returnroom)
         holder.itemView.setOnClickListener {
-            intent.putExtra("room",returnString)
+            intent.putExtra("room", returnroom)
             intent.putExtra("name", items.name)
             intent.putExtra("img", items.img)
+            intent.putExtra("email", items.email)
             adapterContext!!.startActivity(intent)
         }
     }

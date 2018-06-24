@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
+        android:background="@android:color/white"
         android:orientation="horizontal"
         android:weightSum="10">
 
@@ -43,13 +43,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="6dp">
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/chatFileBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/addfileicon"/>
+                android:background="@drawable/chat_manu_button"/>
         </LinearLayout>
 
         <EditText
@@ -58,23 +58,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_weight="8"
-            android:background="@color/colorPrimaryDark"
+            android:background="@android:color/white"
             android:hint="메시지"
             android:paddingBottom="11dp"
             android:paddingLeft="10dp"
-            android:textColorHint="@android:color/white"/>
+            android:textColorHint="#585858"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="6dp">
+            android:padding="8dp">
 
             <Button
                 android:id="@+id/chatSendBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/addsendicon"/>
+                android:background="@drawable/send_messge_icon"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

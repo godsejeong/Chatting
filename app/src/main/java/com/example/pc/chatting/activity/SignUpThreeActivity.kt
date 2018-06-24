@@ -31,17 +31,18 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCallbacks{
+class SignUpThreeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     var image: File? = null
     var path: String? = null
     var fileuri: Uri? = null
     var file: File? = null
     var uri: Uri? = null
     var i: Int = 0
-    var Name : String = ""
-    var Phone : String = ""
-    var Email : String = ""
-    var Passwd : String = ""
+    var Name: String = ""
+    var Phone: String = ""
+    var Email: String = ""
+    var Passwd: String = ""
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_three)
@@ -50,7 +51,10 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
         Name = intent.getStringExtra("name")
         Phone = intent.getStringExtra("phone")
 
-        signUpThreeFinish.setOnClickListener{
+        signUpThreeFinish.setOnClickListener {
+            if (i <= 0) {
+                BasicProfileSetting()
+            }
             signup()
         }
 
@@ -58,33 +62,34 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
             finish()
         }
 
-        ProfileLayout.setOnClickListener{
+        ProfileLayout.setOnClickListener {
+            i = i.plus(1)
             var intent = Intent(this, CameraPopupActivity::class.java)
-            startActivityForResult(intent,1)
+            startActivityForResult(intent, 1)
         }
 
     }
 
-    fun camera(){
-        if(EasyPermissions.hasPermissions(this, android.Manifest.permission.CAMERA)) {
+    fun camera() {
+        if (EasyPermissions.hasPermissions(this, android.Manifest.permission.CAMERA)) {
             var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Log.e("cameraUri", fileuri.toString())
             file = getOutputMediaFileUri()
-            fileuri = FileProvider.getUriForFile(this,"com.example.pc.provider",file!!)
-            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,fileuri)
+            fileuri = FileProvider.getUriForFile(this, "com.example.pc.provider", file!!)
+            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileuri)
             startActivityForResult(cameraIntent, 100)
         } else {
-            EasyPermissions.requestPermissions(this,"사진을 찍으려면 권한이 필요합니다",200, android.Manifest.permission.CAMERA)
+            EasyPermissions.requestPermissions(this, "사진을 찍으려면 권한이 필요합니다", 200, android.Manifest.permission.CAMERA)
         }
     }
 
-    fun gallery(){
-        if(EasyPermissions.hasPermissions(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+    fun gallery() {
+        if (EasyPermissions.hasPermissions(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
-            startActivityForResult(galleryIntent,200)
+            startActivityForResult(galleryIntent, 200)
         } else {
-            EasyPermissions.requestPermissions(this,"파일을 읽으려면 권한이 필요합니다",300, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            EasyPermissions.requestPermissions(this, "파일을 읽으려면 권한이 필요합니다", 300, android.Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
 
@@ -92,13 +97,13 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == 0) {
             BasicProfileSetting()
-                var img = data?.getStringExtra("img")
-                if (img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
-                    //setdata
-                    signUpProfile.setImageResource(R.drawable.emptyimg)
-                    signUpCamera.visibility = View.GONE
-                }
+            var img = data?.getStringExtra("img")
+            if (img == "basic") {//팝업밖의 레이아웃을 눌렀을때 이미지 변경을 방지
+                //setdata
+                signUpProfile.setImageResource(R.drawable.emptyimg)
+                signUpCamera.visibility = View.GONE
             }
+        }
         if (resultCode == 1) {
             camera()
         }
@@ -125,29 +130,32 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
         }
     }
 
-    fun signup(){
-        var loginintent = Intent(this,LoginActivity::class.java)
-        val res : Call<SignUp> = RetrofitUtil.postService.SignUp(
+    fun signup() {
+        var loginintent = Intent(this, LoginActivity::class.java)
+        val res: Call<SignUp> = RetrofitUtil.postService.SignUp(
                 Email,
                 Passwd,
                 Name,
                 Phone,
-                RetrofitUtil.createMultipartBody(file!!,"profileImg")
+                RetrofitUtil.createMultipartBody(file!!, "profileImg")
         )
 
         res.enqueue(object : Callback<SignUp> {
             override fun onResponse(call: Call<SignUp>?, response: Response<SignUp>?) {
-                Log.e("register",response!!.code().toString())
-                Log.e("register_Message",response.message())
-                if(response!!.code() == 200){
+                Log.e("register", response!!.code().toString())
+                Log.e("register_Message", response.message())
+                if (response!!.code() == 200) {
                     response.body()?.let {
                         Toast.makeText(applicationContext, "회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
                         startActivity(loginintent)
+                        finish()
+                        finish()
+                        finish()
                     }
-                }else if(response.code() == 409){
-                    Toast.makeText(applicationContext,"이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show()
-                }else if(response.code() == 400){
-                    Toast.makeText(applicationContext,"Server Error", Toast.LENGTH_SHORT).show()
+                } else if (response.code() == 409) {
+                    Toast.makeText(applicationContext, "이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show()
+                } else if (response.code() == 400) {
+                    Toast.makeText(applicationContext, "Server Error", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -158,7 +166,7 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
     }
 
     //camera_저장경로 설정
-    private fun getOutputMediaFileUri() : File? {
+    private fun getOutputMediaFileUri(): File? {
         if (isExternalStorageAvailable()) {
             val imagePath = "IMG_" + SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
             val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Chatting")
@@ -172,19 +180,19 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
         return image
     }
 
-    private fun isExternalStorageAvailable() : Boolean{
+    private fun isExternalStorageAvailable(): Boolean {
         val state = Environment.getExternalStorageState()
         return Environment.MEDIA_MOUNTED == state
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     //drawable -> file저장
-    fun BasicProfileSetting(){
+    fun BasicProfileSetting() {
         var drawable: Drawable = getDrawable(R.drawable.emptyimg)
         var bitmap = (drawable as BitmapDrawable).bitmap
-        var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting")//파일경로
+        var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "TimeStone")//파일경로
         filepath.mkdir()
-        file= File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting/basicimg.jpg")//파일생성
+        file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "TimeStone/basicimg.jpg")//파일생성
         //메모리 관리를 위해 파일명 고정
         Log.e("basicuri", file.toString())
         var stream = FileOutputStream(file)
@@ -207,17 +215,17 @@ class SignUpThreeActivity : AppCompatActivity() , EasyPermissions.PermissionCall
 
     //esaypermission_override
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {
-        if(requestCode == 300) {
+        if (requestCode == 300) {
             gallery()
         }
 
-        if(requestCode == 200){
+        if (requestCode == 200) {
             camera()
         }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) {
-        Toast.makeText(this,"권한이 없습니다", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "권한이 없습니다", Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -22,6 +22,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.example.pc.chatting.adapter.RecyclerAdapter
 import com.example.pc.chatting.data.*
+import com.example.pc.chatting.util.IsChat
 import com.example.pc.chatting.util.RetrofitUtil
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat.*
@@ -33,6 +34,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.xml.transform.Result
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -52,6 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var adapterContext: Context = this
     var layoutmanager = LinearLayoutManager(this)
 
+
     var i = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +62,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.e("starttoken", token)
         setSupportActionBar(mainToolbar)
 
+
         frindAddFab.setOnClickListener {
             var intent = Intent(this, AddFrindActivity::class.java)
-            startActivityForResult(intent, 100)
+            startActivityForResult(intent,100)
         }
 
         mainRecyclerView.layoutManager = layoutmanager
@@ -79,12 +83,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.toolbarNavigationClickListener = View.OnClickListener {
             mainDrawer.openDrawer(GravityCompat.START)
         }
-        toggle.setHomeAsUpIndicator(R.drawable.drawericon)
+        toggle.setHomeAsUpIndicator(R.drawable.nav_drawer)
 
         bringList()
         var menu = nav_view.menu
-        var navPhone = menu.findItem(R.id.nav_phone)
-        var navEmail = menu.findItem(R.id.nav_email)
+//        var navPhone = menu.findItem(R.id.nav_phone)
+//        var navEmail = menu.findItem(R.id.nav_email)
         var navLogout = menu.findItem(R.id.nav_logout)
 
         val header = nav_view.getHeaderView(0)
@@ -110,8 +114,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             phone = user.phone
             img = user.profileImg
 
-            navEmail.title = email
-            navPhone.title = phone
+//            navEmail.title = email
+//            navPhone.title = phone
             hearderText.text = name
 
             Glide.with(this).load(img).into(hearderImage)
@@ -121,7 +125,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode === Activity.RESULT_OK) {
-            bringList()
+            var bl  = data!!.getStringExtra("frind")
+            if(bl == "OK") {
+                items.clear()
+                Log.e("mainfrind", data.toString())
+                bringList()
+            }
         }
     }
 
@@ -150,10 +159,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             var profile = arr.getString("profileImg") as String
                             var email = arr.getString("email") as String
                             var phone = arr.getString("phone") as String
-                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.",SimpleDateFormat("a hh:mm").format(Date()), 0))
+                            var ischat = IsChat(email,token)
+                            ischat.start()
+                            ischat.join()
+                            var chat = ischat.ischat()
+                            Log.e("채팅add", chat.toString())
+                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()), token,chat,0))
                         }
+                        mainRecyclerView.adapter = adapter
                     }
-                    mainRecyclerView.adapter = adapter
                 } else if (response.code() == 404) {
                     Log.e("retrofit404", response.message())
                 }
@@ -166,3 +180,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
     }
 }
+
+
+

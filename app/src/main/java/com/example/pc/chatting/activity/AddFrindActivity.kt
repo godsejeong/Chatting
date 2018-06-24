@@ -19,6 +19,10 @@ import kotlinx.android.synthetic.main.activity_add_frind.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.app.Activity
+import android.content.Intent
+
+
 
 class AddFrindActivity : AppCompatActivity() {
     var frindEmail  = ""
@@ -79,9 +83,13 @@ class AddFrindActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<FrindAdd>?, response: Response<FrindAdd>?) {
                     if (response!!.code() == 200) {
                         response.body()?.let {
+                            val returnIntent = Intent()
+                            returnIntent.putExtra("frind","OK")
+                            setResult(Activity.RESULT_OK, returnIntent)
                             Log.e("frindlog", token)
                             Log.e("Frindadd", Gson().toJson(response.body()!!))
                             Toast.makeText(context, "친구가 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                            finish()
                         }
                     } else if (response!!.code() == 404) {
                         Toast.makeText(context, "친구가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()

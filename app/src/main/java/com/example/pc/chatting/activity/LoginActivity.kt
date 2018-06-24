@@ -100,6 +100,7 @@ class LoginActivity : AppCompatActivity() {
                         response.body()?.let {
                             pultusORM.save(response.body()!!.user!!)
                             finish()
+                            finish()
                             startActivity(intent)
                             Toast.makeText(applicationContext, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                         }
