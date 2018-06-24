@@ -3,6 +3,7 @@ package com.example.pc.chatting.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
@@ -26,6 +27,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import android.content.Context.MODE_PRIVATE
+
+
 
 
 class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
@@ -53,6 +57,15 @@ class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : 
         holder!!.name.text = items.name
         Glide.with(adapterContext).load(items.img).into(holder.img)
         holder!!.messge.text = items.messge
+
+        if(items.time == "0") {
+            holder.time.visibility = View.INVISIBLE
+        }
+
+        if(items.notice == 0){
+            holder.notice.visibility = View.INVISIBLE
+        }
+
         holder!!.time.text = items.time
         holder!!.notice.text = items.notice.toString()
         var returnroom = ""
@@ -87,6 +100,7 @@ class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : 
         }
 
         holder.itemView.setOnClickListener {
+            deletecount(items.email)
             intent.putExtra("room", returnroom)
             intent.putExtra("name", items.name)
             intent.putExtra("img", items.img)
@@ -95,32 +109,11 @@ class RecyclerAdapter(frinditems: ArrayList<FrindItemData>, context: Context) : 
         }
     }
 
-    fun dataSave(name: String, room: String) {
-        var pres: SharedPreferences = adapterContext!!.getSharedPreferences("pres", Context.MODE_PRIVATE)
-        var editer: SharedPreferences.Editor = pres.edit()
-        editer.putString(name, room)
-        editer.commit()
-    }
-
-    fun ischat(email : String,token : String) : Boolean{
-        val res: Call<IsChatData> = RetrofitUtil.postService.Ischat(token,email)
-        res.enqueue(object : Callback<IsChatData> {
-                override fun onResponse(call: Call<IsChatData>?, response: Response<IsChatData>?) {
-                    Log.e("isfrindlist", response!!.code().toString())
-                    if (response!!.code() == 200) {
-                        isbool = response.body()!!.isChat
-                        Log.e("returnString1234", isbool.toString())
-                    } else if (response!!.code() == 404) {
-                        Log.e("adapterserver", "에러")
-                    }
-                }
-
-                override fun onFailure(call: Call<IsChatData>?, t: Throwable?) {
-                    Log.e("adapterservererror", t!!.message)
-                }
-            })
-
-        return isbool!!
+    fun deletecount(email: String) {
+        val pref = adapterContext!!.getSharedPreferences(email, MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.remove("count")
+        editor.commit()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

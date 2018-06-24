@@ -26,8 +26,15 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.content_drawer.*
 import android.R.attr.data
 import android.widget.AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL
-
-
+import android.app.ActivityManager.RunningTaskInfo
+import android.content.Context.ACTIVITY_SERVICE
+import android.app.ActivityManager
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.res.Resources
+import android.graphics.BitmapFactory
+import android.support.v7.app.NotificationCompat
+import com.bumptech.glide.load.engine.Resource
 
 
 class ChatActivity : AppCompatActivity() {
@@ -42,7 +49,7 @@ class ChatActivity : AppCompatActivity() {
     var soket = IO.socket(RetrofitUtil.URL)
     var senditems: ArrayList<ChatSendData> = ArrayList()
     private lateinit var sendadapter: ChatSendAdapter
-
+    var count = 0
     var layoutmanager = LinearLayoutManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,10 +64,10 @@ class ChatActivity : AppCompatActivity() {
         chatRecyclerView.layoutManager = layoutmanager
         pultusORM = PultusORM("user.db", appPath)
 
-        sendadapter = ChatSendAdapter(senditems,this)
+        sendadapter = ChatSendAdapter(senditems, this)
         chatRecyclerView.adapter = sendadapter
 
-        Log.e("chatlodeindex",senditems.size.toString())
+        Log.e("chatlodeindex", senditems.size.toString())
         name = intent.getStringExtra("name")
         img = intent.getStringExtra("img")
         room = intent.getStringExtra("room")
@@ -70,7 +77,7 @@ class ChatActivity : AppCompatActivity() {
 
         loadNowData(email)
 
-        soket.emit("join room", name,room)
+        soket.emit("join room", name, room)
         soket.on("receive message", OnMessage)
         soket.connect()
 
@@ -94,20 +101,21 @@ class ChatActivity : AppCompatActivity() {
                 saveNowData(email)
                 chatText.setText("")
             }
-
-            chatRecyclerView.scrollToPosition(senditems.size)
-            Log.e("chatonclick", myname)
-            var date = SimpleDateFormat("a hh:mm").format(Date())
-            soket.emit("send message", myname, chatText.text, room)
-            senditems.add(ChatSendData(chatText.text.toString(), date,"","","","",0))
-            sendadapter.notifyDataSetChanged()
 //            saveNowData()
-            chatText.setText("")
         }
     }
 
     private var OnMessage = Emitter.Listener { args ->
         this.runOnUiThread {
+
+            val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val info: List<RunningTaskInfo>
+            info = activityManager.getRunningTasks(1)
+            val runningTaskInfo = info[0]
+            val curActivityName = runningTaskInfo.topActivity.className
+
+
+
             chatRecyclerView.scrollToPosition(senditems.size)
             var data = args[0] as JSONObject
             var date = SimpleDateFormat("a hh:mm").format(Date())
@@ -122,6 +130,33 @@ class ChatActivity : AppCompatActivity() {
                 saveNowData(email)
                 Log.e("username", img)
             }
+
+            if (curActivityName != "com.example.pc.chatting.activity.ChatActivity") {
+//                savecount(email,count++)
+                count += 1
+                savecount(email,count)
+                Log.e("count",count.toString())
+                var res: Resources = resources
+                val builder = NotificationCompat.Builder(this)
+
+                builder.setContentTitle(name)
+                        .setContentText(message)
+                        .setSmallIcon(R.drawable.icon)
+                        .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.icon))
+                        .setAutoCancel(true)
+                        .setWhen(System.currentTimeMillis())
+                        .setDefaults(Notification.DEFAULT_ALL)
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    builder.setCategory(Notification.CATEGORY_MESSAGE)
+                            .setPriority(Notification.PRIORITY_HIGH)
+                            .setVisibility(Notification.VISIBILITY_PUBLIC);
+                }
+                var nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                nm.notify(1234, builder.build())
+            }
+            Log.e("엑티비티 확인", curActivityName)
+
         }
     }
 
@@ -135,6 +170,13 @@ class ChatActivity : AppCompatActivity() {
         if (items != null) senditems.addAll(items)
     }
 
+    fun savecount(email: String, count: Int) {
+        var pref = getSharedPreferences(email, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt("count", count)
+        Log.e("savecount",count.toString())
+        editor.commit()
+    }
 
     fun saveNowData(email: String) { //items 안의 내용이 저장됨
         Log.e("save", email)
@@ -144,26 +186,4 @@ class ChatActivity : AppCompatActivity() {
         editor.putString("save", json)
         editor.commit()
     }
-
-
-//    fun loadNowData() {
-//        val gson = Gson()
-//        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
-//        val json = pref.getString("save", "")
-//        var items: ArrayList<ChatSendData>?
-//        chatRecyclerView.scrollToPosition(json.length)
-//        items = gson.fromJson<ArrayList<ChatSendData>>(json, object : TypeToken<ArrayList<ChatSendData>>(){}.type)
-//        if (items != null) {
-//            senditems.addAll(items)
-//            chatRecyclerView.scrollToPosition(senditems.size)
-//        }
-//    }
-//
-//    fun saveNowData() { //items 안의 내용이 저장됨
-//        val pref = getSharedPreferences("chat", Context.MODE_PRIVATE)
-//        val editor = pref.edit()
-//        val json = Gson().toJson(senditems)
-//        editor.putString("save", json)
-//        editor.commit()
-//    }
 }

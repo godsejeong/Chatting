@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import ninja.sakib.pultusorm.core.PultusORM
 import android.widget.ImageView
 import android.widget.Toast
+import com.eclipsesource.json.Json
 import com.example.pc.chatting.adapter.RecyclerAdapter
 import com.example.pc.chatting.data.*
 import com.example.pc.chatting.util.IsChat
@@ -36,6 +37,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.xml.transform.Result
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var adapterContext: Context = this
     var layoutmanager = LinearLayoutManager(this)
 
+    var test: ArrayList<ChatSendData> = ArrayList()
     var isbool: Boolean? = null
 
     var i = 0
@@ -157,7 +160,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         var obj = JSONObject(Gson().toJson(response.body()!!))
                         var title = obj.getJSONArray("list") as JSONArray
                         for (i in 0 until title.length()) {
-
                             var arr = title.getJSONObject(i) as JSONObject
                             var name = arr.getString("name") as String
                             var profile = arr.getString("profileImg") as String
@@ -168,7 +170,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             ischat.join()
                             var chat = ischat.ischat()
                             Log.e("채팅add", chat.toString())
-                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()),token,chat,0))
+                            var chatmessge = ""
+                            var chattime = ""
+                            var chatcount = 0
+                            var chatdata = loadNowData(email)
+
+                            if (chatdata == "") {
+                                chattime = "0"
+                                chatmessge = "친구가 되었습니다."
+                                Log.e("chatdata", chatdata)
+                            } else {
+                                var chatobj = JSONObject(chatdata)
+
+                                if (chatobj.getString("time") == "") {
+                                    chattime = chatobj.getString("resivetime")
+                                } else {
+                                    chattime = chatobj.getString("time")
+                                }
+
+                                if (chatobj.getString("message") == "") {
+                                    chatmessge = chatobj.getString("resivemessage")
+                                } else {
+                                    chatmessge = chatobj.getString("message")
+                                }
+
+                                Log.e("chatdata!!", chatdata)
+                            }
+                            chatcount = lodeconut(email)
+                            items.add(FrindItemData(name, email, phone, profile, chatmessge, chattime.format(Date()), token, chat, chatcount))
                         }
                         mainRecyclerView.adapter = adapter
                     }
@@ -182,6 +211,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(applicationContext, "Sever Error", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    fun loadNowData(email: String): String? {
+        val gson = Gson()
+        Log.e("save", email)
+        val pref = getSharedPreferences(email, Context.MODE_PRIVATE)
+        val json = pref.getString("save", "")
+
+        Log.e("items", json)
+        var items: ArrayList<ChatSendData>?
+        items = gson.fromJson<ArrayList<ChatSendData>>(json, object : TypeToken<ArrayList<ChatSendData>>() {}.type)
+
+        if (items != null)
+            test.addAll(items)
+
+        if (json == "") {
+            return ""
+        } else {
+            return Gson().toJson(test[test.size - 1])
+        }
+    }
+
+    fun lodeconut(email: String) : Int {
+        val pref = getSharedPreferences(email, Context.MODE_PRIVATE)
+        var data = pref.getInt("count",0)
+        Log.e("lodecount",data.toString())
+        return data
     }
 }
 
