@@ -148,9 +148,6 @@ class SignUpThreeActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                     response.body()?.let {
                         Toast.makeText(applicationContext, "회원가입이 정상적으로 완료되었습니다.", Toast.LENGTH_SHORT).show()
                         startActivity(loginintent)
-                        finish()
-                        finish()
-                        finish()
                     }
                 } else if (response.code() == 409) {
                     Toast.makeText(applicationContext, "이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show()
@@ -166,7 +163,7 @@ class SignUpThreeActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     }
 
     //camera_저장경로 설정
-    private fun getOutputMediaFileUri(): File? {
+    private fun getOutputMediaFileUri() : File? {
         if (isExternalStorageAvailable()) {
             val imagePath = "IMG_" + SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
             val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Chatting")
@@ -177,7 +174,7 @@ class SignUpThreeActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
             return image
         }
 
-        return image
+        return null
     }
 
     private fun isExternalStorageAvailable(): Boolean {
@@ -187,12 +184,12 @@ class SignUpThreeActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     //drawable -> file저장
-    fun BasicProfileSetting() {
+    fun BasicProfileSetting(){
         var drawable: Drawable = getDrawable(R.drawable.emptyimg)
         var bitmap = (drawable as BitmapDrawable).bitmap
-        var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "TimeStone")//파일경로
+        var filepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting")//파일경로
         filepath.mkdir()
-        file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "TimeStone/basicimg.jpg")//파일생성
+        file= File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Chatting/basicimg.jpg")//파일생성
         //메모리 관리를 위해 파일명 고정
         Log.e("basicuri", file.toString())
         var stream = FileOutputStream(file)

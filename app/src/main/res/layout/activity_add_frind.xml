@@ -11,36 +11,61 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:background="@drawable/frind_serch"/>
 
         <EditText
             android:id="@+id/addFrindEt"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="추가할 유저의 이메일을 입력하세요"
+            android:layout_weight="8"
+            android:gravity="left|center"
+            android:layout_marginLeft="10dp"
+            android:textColorHint="#000000"
+            android:background="#f9f9f9"
+            android:hint="이메일을 입력하세요"
             android:textSize="20dp"/>
 
         <Button
             android:id="@+id/addBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="45dp"
+            android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
-            android:text="클릭ㄱㄱ"/>
+            android:background="@drawable/frind_add"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        />
 
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/frindLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="19dp"
         android:orientation="horizontal"
+        android:gravity="center"
         android:weightSum="10">
 
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/frindImg"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
+            app:civ_border_color="#00ff0000"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_weight="1.2"
@@ -52,16 +77,21 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_weight="6"
-            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="#424242"
+            android:gravity="left|center"
             android:text="이름"/>
 
-        <Button
-            android:id="@+id/frindBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="2.8"
-            android:text="친구추가"/>
+
+            <ImageView
+                android:id="@+id/frindBtn"
+                android:layout_marginLeft="30dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/frind_add_btn"/>
+
+
     </LinearLayout>
 
 

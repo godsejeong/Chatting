@@ -68,6 +68,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(mainToolbar)
 
 
+//        mainRecyclerView.setOnClickListener {
+//
+//        }
+
         frindAddFab.setOnClickListener {
             var intent = Intent(this, AddFrindActivity::class.java)
             startActivityForResult(intent, 100)
@@ -144,7 +148,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-
     //서버연동
     fun bringList() {
         var adapter = RecyclerAdapter(items, adapterContext)
@@ -213,6 +216,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Log.e("백드롭","뒤로감")
+    }
     fun loadNowData(email: String): String? {
         val gson = Gson()
         Log.e("save", email)

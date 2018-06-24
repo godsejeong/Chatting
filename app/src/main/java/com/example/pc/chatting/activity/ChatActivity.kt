@@ -31,6 +31,8 @@ import android.content.Context.ACTIVITY_SERVICE
 import android.app.ActivityManager
 import android.app.Notification
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.support.v7.app.NotificationCompat
@@ -132,10 +134,12 @@ class ChatActivity : AppCompatActivity() {
             }
 
             if (curActivityName != "com.example.pc.chatting.activity.ChatActivity") {
-//                savecount(email,count++)
+                var notificationIntent = Intent(this, MainActivity ::class.java)
+                notificationIntent.putExtra ("notificationId", 9999) //전달할 값
+                var contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 count += 1
-                savecount(email,count)
-                Log.e("count",count.toString())
+                savecount(email, count)
+                Log.e("count", count.toString())
                 var res: Resources = resources
                 val builder = NotificationCompat.Builder(this)
 
@@ -145,6 +149,7 @@ class ChatActivity : AppCompatActivity() {
                         .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.icon))
                         .setAutoCancel(true)
                         .setWhen(System.currentTimeMillis())
+                        .setContentIntent(contentIntent)
                         .setDefaults(Notification.DEFAULT_ALL)
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -156,7 +161,6 @@ class ChatActivity : AppCompatActivity() {
                 nm.notify(1234, builder.build())
             }
             Log.e("엑티비티 확인", curActivityName)
-
         }
     }
 
@@ -174,7 +178,7 @@ class ChatActivity : AppCompatActivity() {
         var pref = getSharedPreferences(email, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putInt("count", count)
-        Log.e("savecount",count.toString())
+        Log.e("savecount", count.toString())
         editor.commit()
     }
 

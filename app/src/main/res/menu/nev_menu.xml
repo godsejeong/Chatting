@@ -10,10 +10,13 @@
     </group>
     <group android:id="@+id/grp2">
             <item android:id="@+id/nav_my_infomation"
-                  android:title="내정보"/>
+                  android:title="내정보"
+                android:icon="@drawable/my_infomation"/>
             <item android:id="@+id/nav_version"
-                  android:title="버전정보"/>
+                  android:title="버전정보"
+                  android:icon="@drawable/version_icon"/>
             <item android:id="@+id/nav_logout"
-                  android:title="로그아웃"/>
+                  android:title="로그아웃"
+                android:icon="@drawable/logout_icon"/>
     </group>
 </menu>
