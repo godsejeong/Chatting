@@ -3,13 +3,8 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:shape="oval">
 
-<<<<<<< HEAD
     <solid
         android:color="@color/colorPrimary"/>
-=======
-<solid
-    android:color="@color/colorPrimaryDark"/>
->>>>>>> 56ce1c9bd2daf79ab9fc3818deaeb58d390ea6a1
 
 <size
     android:width="60dp"

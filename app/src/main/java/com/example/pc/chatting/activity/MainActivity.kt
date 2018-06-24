@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             ischat.join()
                             var chat = ischat.ischat()
                             Log.e("채팅add", chat.toString())
-                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()), token, chat, 0))
+                            items.add(FrindItemData(name, email, phone, profile, "친구가 되었습니다.", SimpleDateFormat("a hh:mm").format(Date()),token,chat,0))
                         }
                         mainRecyclerView.adapter = adapter
                     }
